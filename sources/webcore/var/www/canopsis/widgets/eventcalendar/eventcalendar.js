@@ -155,6 +155,9 @@ Ext.define('widgets.eventcalendar.eventcalendar' , {
 					calendarRoot.sources_byComponent[currentSource.component] = currentSource;
 				};
 
+				if(event.visibility === "hidden")
+					element.css({ "display": "none" });
+
 				if(event.type === "stacked")
 				{
 					element.css({"background-color" : calendarRoot.stackedEventColor, "border-color" : calendarRoot.stackedEventColor});
@@ -250,7 +253,7 @@ Ext.define('widgets.eventcalendar.eventcalendar' , {
 			return false;
 		};
 
-		if(raw.visibility !== "hidden" && raw.event_type === "calendar" && in_sources_array(raw.component))
+		if(raw.event_type === "calendar" && in_sources_array(raw.component))
 		{
 			$('#'+ this.wcontainer.id).fullCalendar( 'removeEvents', raw.resource);
 			var event = {
@@ -261,7 +264,8 @@ Ext.define('widgets.eventcalendar.eventcalendar' , {
 					allDay: raw.all_day,
 					type: raw.event_type,
 					component: raw.component,
-					rrule: raw.rrule
+					rrule: raw.rrule,
+					visibility: raw.visibility
 				};
 
 			$('#'+ this.wcontainer.id).fullCalendar('renderEvent',
