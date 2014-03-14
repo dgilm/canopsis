@@ -155,6 +155,8 @@ Ext.define('canopsis.lib.view.cwebsocketWidget', {
      */
 
 	on_event: function(raw, rk) {
+		log.error("event not handled by websocket widget");
+		log.dump(raw);
 	},
 
 	/**

@@ -60,7 +60,7 @@ Ext.define('widgets.eventcalendar.eventcalendar' , {
 	/**
 	 * @see cwebsocketWidget
 	 */
-	amqp_queue: 'alerts',
+	amqp_queue: 'events',
 	sources: [],
 	sources_byComponent:{},
 
@@ -219,20 +219,27 @@ Ext.define('widgets.eventcalendar.eventcalendar' , {
 				'state': 0,
 				'start': tsStartDatetime / 1000,
 				'end': tsEndDatetime / 1000,
-				'all_day': calevents[i].allDay
+				'all_day': calevents[i].allDay,
+				'visibility': calevents[i].visibility
 			};
 
 			if(calevents[i].rrule !== null && calevents[i].rrule !== undefined)
 				event_raw.rrule = calevents[i].rrule;
 
+			log.debug("publish event from calendar", this.logAuthor);
+			log.dump(event_raw);
 			this.publishEvent('events', event_raw, false);
 		};
 	},
-	
+
 	/**
 	 * @see cwebsocketWidget
 	 */
 	on_event: function(raw, rk) {
+		log.debug("["+ this.wcontainer.id +"] on_event");
+		log.dump(rk);
+		log.dump(raw);
+
 		var me = this;
 
 		function in_sources_array(raw_component) {

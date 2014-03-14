@@ -156,7 +156,6 @@ Ext.define('widgets.eventcalendar.editwindow' , {
 							listeners : {
 								change: function(combo, e, eOpts) {
 									combo.nextSibling().setValue(combo.getValue());
-
 								}
 							}
 					},{
@@ -187,6 +186,7 @@ Ext.define('widgets.eventcalendar.editwindow' , {
 		this.addMode = true;
 
 		this._form.down("#tabs").setActiveTab(0);
+		this.down("#deleteButton").hide();
 
 		var tabEvent = this._form.down("#tabEvent");
 		var tabRecurrence = this._form.down("#tabRecurrence");
@@ -216,10 +216,27 @@ Ext.define('widgets.eventcalendar.editwindow' , {
 		this.show();
 	},
 
+	buildBar: function(){
+		var editWindow = this;
+
+		var bar = this.callParent();
+
+		bar.insert(0, Ext.create('Ext.Button',{
+			"itemId": "deleteButton",
+			"text": "Delete",
+			"handler": function() {
+				editWindow.deleteEvent();
+    		}
+		}));
+
+		return bar;
+	},
+
 	showEditEvent: function(event, eventHtml){
 		this.setTitle( _("Edit event"));
 
 		this._form.down("#tabs").setActiveTab(0);
+		this.down("#deleteButton").show();
 
 		var tabEvent = this._form.down("#tabEvent");
 
@@ -263,6 +280,36 @@ Ext.define('widgets.eventcalendar.editwindow' , {
 	},
 
 	ok_button_function: function(){
+		var newEvent = this.getEventFromForm();
+
+		if(newEvent !== undefined) {
+			$('#'+ this.calendar.wcontainer.id).fullCalendar('removeEvents', newEvent.id);
+
+			this.calendar.send_events([newEvent]);
+
+			this.hide();
+		}
+	},
+
+	deleteEvent: function() {
+		var newEvent = this.getEventFromForm();
+
+		if(newEvent !== undefined) {
+			newEvent.visibility = "hidden";
+			this.calendar.send_events([newEvent]);
+			log.debug("deleteEvent");
+			log.dump(newEvent);
+
+			this.hide();
+		}
+	},
+
+	hide: function() {
+		this.calendar.resetEventStyle(this.currentEditedEventHtml, this.currentEditedEvent);
+		this.callParent();
+	},
+
+	getEventFromForm: function() {
 		var newEvent = {}; //TODO set this as a property to save hidden props
 
 		var tabEvent = this._form.down("#tabEvent");
@@ -307,30 +354,26 @@ Ext.define('widgets.eventcalendar.editwindow' , {
 		newEvent.start = start_datetime;
 		newEvent.end = end_datetime;
 
-		var rrule = tabRecurrence.down("#rrule").getValue();
-
-		if(rrule !== "")
-			newEvent.rrule = rrule;
+		newEvent.rrule = tabRecurrence.down("#rrule").getValue();
 
 		var isHourfilledOnlyOnStartOrEnd = (startTimeWidget.getValue() === null && endTimeWidget.getValue() !== null)
 											|| (startTimeWidget.getValue() !== null && endTimeWidget.getValue() === null)
 
 		if(isHourfilledOnlyOnStartOrEnd)
+		{
 			global.notify.notify(_('Form problem'), _('"You must fill start and end times, or nothing for an all day event"'), 'info');
+			return undefined;
+		}
 		else if(newEvent.component === undefined || newEvent.component === null || newEvent.component === "")
+		{
 			global.notify.notify(_('Form problem'), _('"You must specify a source for the event"'), 'info');
+			return undefined;
+		}
 		else
 		{
 			newEvent.allDay = all_day;
-			//add the new event to the calendar, by sending it to amqp
-			this.calendar.send_events([newEvent]);
-
-			this.hide();
 		}
-	},
 
-	hide: function() {
-		this.calendar.resetEventStyle(this.currentEditedEventHtml, this.currentEditedEvent);
-		this.callParent();
+		return newEvent;
 	}
 });

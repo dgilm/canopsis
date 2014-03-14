@@ -47,7 +47,8 @@ def cal_get(source, interval_start, interval_end):
 		"$and": [
 			{"event_type" : "calendar"},
 			{"component" : source},
-			{"rrule" : {"$exists": False}},
+			{"visibility" : {"$ne" : "hidden"}},
+			{"$or": [{"rrule" : {"$exists": False}}, {"rrule": ""}]},
 			{"$or": [
 				{"$and": [
 							{"start": {"$gt": int(interval_start)}},
@@ -68,8 +69,12 @@ def cal_get(source, interval_start, interval_end):
 	filter = {
 		"$and": [
 			{"event_type" : "calendar"},
+			{"visibility" : {"$ne" : "hidden"}},
 			{"component" : source},
-			{"rrule" : {"$exists": True}}
+			{ "$and": [
+				{"rrule" : {"$exists": True}},
+				{"rrule": { "$ne": ""}}
+			]}
 		]
 	}
 
