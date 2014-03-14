@@ -250,7 +250,7 @@ Ext.define('widgets.eventcalendar.eventcalendar' , {
 			return false;
 		};
 
-		if(raw.event_type === "calendar" && in_sources_array(raw.component))
+		if(raw.visibility !== "hidden" && raw.event_type === "calendar" && in_sources_array(raw.component))
 		{
 			$('#'+ this.wcontainer.id).fullCalendar( 'removeEvents', raw.resource);
 			var event = {

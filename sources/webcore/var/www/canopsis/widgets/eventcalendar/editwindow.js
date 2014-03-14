@@ -300,6 +300,8 @@ Ext.define('widgets.eventcalendar.editwindow' , {
 			log.debug("deleteEvent");
 			log.dump(newEvent);
 
+			$('#'+ this.calendar.wcontainer.id).fullCalendar('removeEvents', newEvent.id);
+
 			this.hide();
 		}
 	},
