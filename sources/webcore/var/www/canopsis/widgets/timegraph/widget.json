@@ -253,7 +253,7 @@
 				}
 			]
 		},{
-			"title": "Aggregation / Consolidation",
+			"title": "Aggregation / Consolidation / Forecast",
 			"advanced": true,
 			"items" : [{
 						"xtype": "cfieldset",
@@ -341,7 +341,112 @@
 								}
 							}
 						]
+					},{
+
+						"xtype": "cfieldset",
+						"title": "Forecast parameters",
+						"items": [  { 
+										"xtype": "label",
+										"text": " Forecast needs an aggregated serie; use 'Aggregation' frame to define the way ( method: Mean, round time checked)",
+										"width": 500,
+										"height": 50,
+										"textAlign": "justified" 
+									},{
+										"xtype": "combobox",
+										"name": "forecast_checked",
+										"fieldLabel": "Make forecast :",
+										"queryMode": "local",
+										"displayField": "text",
+										"valueField": "value",
+										"value": "no",
+										"store": {
+													"xtype": "store",
+													"fields": ["value", "text"],
+													"data" : [  {"value": "no", "text": " No "},
+																{"value": "yes", "text": " Yes "} ]
+													}
+
+									},{
+										"xtype": "numberfield",
+										"name": "forecast_alertTreshold",
+										"fieldLabel": "Alert treshold ( % )",
+										"width": 300,
+										"value": 50,
+										"minValue": 0,
+										"maxValue": 100,
+										"step": 1 
+									},{
+										"xtype": "numberfield",
+										"name": "forecast_alertMax",
+										"fieldLabel": " Max value for metric ( if not defined )",
+										"width": 300,
+										"value": 0,
+										"minValue": 0,
+										"maxValue": 1000000000,
+										"step": 1 
+									},{
+										"xtype": "cduration",
+										"fieldLabel": "Metric seasonality ( optional )",
+										"name":"forecast_seasonality",
+										"value": 0
+
+									},{
+										"xtype": "combobox",
+										"name": "forecast_method",
+										"fieldLabel": "Forecast method ( optional ) ",
+										"queryMode": "local",
+										"displayField": "text",
+										"valueField": "value",
+										"value": null,
+										"store": {
+													"xtype": "store",
+													"fields": ["value", "text"],
+													"data" : [
+																{"value": "", "text": ""},
+																{"value": "h_linear", "text": " Holt linear"},
+																{"value": "hw_additive", "text": "Holt-Winters additive seasonal "},
+																{"value": "hw_multiplicative", "text": "Holt-Winters multiplicative seasonal"}
+
+																]
+													}
+
+									},{
+										"xtype": "numberfield",
+										"name": "forecast_alpha",
+										"fieldLabel": "coefficient alpha ( optional )",
+										"width": 300,
+										"value": 0.0,
+										"minValue": 0.0,
+										"maxValue": 0.9,
+										"step": 0.1 
+
+
+									},{
+										"xtype": "numberfield",
+										"name": "forecast_beta",
+										"fieldLabel": "coefficient beta ( optional )",
+										"width": 300,
+										"value": 0.0,
+										"minValue": 0.0,
+										"maxValue": 0.9,
+										"step": 0.1 
+
+
+									},{
+										"xtype": "numberfield",
+										"name": "forecast_gamma",
+										"fieldLabel": "coefficient gamma ( optional )",
+										"width": 300,
+										"value": 0.0,
+										"minValue": 0.0,
+										"maxValue": 0.9,
+										"step": 0.1 
+
+
+									} 
+							]
 					}
+
 				]
 		},{
 			"title": "Choose Metrics",

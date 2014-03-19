@@ -37,6 +37,7 @@ from ctools import internal_metrics
 
 import pyperfstore2
 import pyperfstore2.utils
+import pyperfstore2.forecastingMethods
 
 manager = None
 
@@ -66,7 +67,15 @@ def perfstore_values_route(start = None, stop = None):
 										aggregate_max_points = request.params.get('aggregate_max_points', default=None),
 										aggregate_round_time = request.params.get('aggregate_round_time', default=None),
 										consolidation_method = request.params.get('consolidation_method', default=None),
-										timezone = request.params.get('timezone', default=0),
+										forecast_checked = request.params.get('forecast_checked', default=None),
+										forecast_alertTreshold = request.params.get('forecast_alertTreshold', default=None),
+										forecast_alertMax = request.params.get('forecast_alertMax', default=None),
+										forecast_seasonality = request.params.get('forecast_seasonality', default=None),
+										forecast_method = request.params.get('forecast_method', default=None),
+										forecast_alpha = request.params.get('forecast_alpha', default=None),
+										forecast_beta = request.params.get('forecast_beta', default=None),
+										forecast_gamma = request.params.get('forecast_gamma', default=None),
+										timezone = request.params.get('timezone', default=None),
 										subset_selection = request.params.get('subset_selection', default={}))
 
 
@@ -89,6 +98,14 @@ def perfstore_nodes_get_values( start = None,
 								aggregate_max_points = None,
 								aggregate_round_time = None,
 								consolidation_method = None,
+								forecast_checked = None,
+								forecast_alertTreshold =None,
+								forecast_alertMax = None,
+								forecast_seasonality =None,
+								forecast_method = None,
+								forecast_alpha = None,
+								forecast_beta = None,
+								forecast_gamma = None,
 								timezone = 0,
 								subset_selection = {}):
 
@@ -120,7 +137,22 @@ def perfstore_nodes_get_values( start = None,
 	logger.debug(" + aggregate_max_points: %s" % aggregate_max_points)
 	logger.debug(" + aggregate_round_time: %s" % aggregate_round_time)
 	logger.debug(" + consolidation_method: %s" % consolidation_method)
+	logger.debug(" + forecast_checked: %s" % forecast_checked)
+	logger.debug(" + forecast_alertTreshold: %s" % forecast_alertTreshold)
+	logger.debug(" + forecast_alertMax: %s" % forecast_alertMax)
+	logger.debug(" + forecast_seasonality: %s" % forecast_seasonality)
+	logger.debug(" + forecast_method: %s" % forecast_method)
+	logger.debug(" + forecast_alpha: %s" % forecast_alpha)
+	logger.debug(" + forecast_beta: %s" % forecast_beta)
+	logger.debug(" + forecast_gamma: %s" % forecast_gamma)
 	logger.debug(" + timezone: %s" % timezone)
+
+	forecast_alertTreshold = int(forecast_alertTreshold)
+	forecast_seasonality = int(forecast_seasonality)
+	forecast_alpha = float(forecast_alpha)
+	forecast_beta = float(forecast_beta)
+	forecast_gamma = float(forecast_gamma)
+	forecast_alertMax = float(forecast_alertMax)
 
 	output = []
 
@@ -154,9 +186,14 @@ def perfstore_nodes_get_values( start = None,
 		elif consolidation_method == 'delta':
 			fn = lambda x: x[0] - x[-1]
 
+		mMax = 0
 		# calculate methods
 		values = dict()
 		for serie in output:
+
+			if serie['ma']!=None and mMax < serie['ma'] :
+				mMax = serie['ma']
+
 			for point in serie['values']:
 				if not point[0] in values:
 					values[point[0]] = []
@@ -178,7 +215,76 @@ def perfstore_nodes_get_values( start = None,
 			'values': points
 		}]
 
+		if forecast_checked == "yes" :
+			forecastSerie = perfstore_get_forecast_values( points,forecast_seasonality, 
+														   forecast_method, forecast_alpha, 
+														   forecast_beta, forecast_gamma )
+
+			output.append( { 'node': output[0]['node']+'_forecast',
+							 'metric': consolidation_method,
+							 'bunit': None,
+							 'type': 'GAUGE',
+							 'values' : forecastSerie
+								 } )
+
+			if mMax==0 and forecast_alertMax!=0 :
+				mMax = forecast_alertMax
+
+			if forecast_alertTreshold!=None and mMax!=0 :
+				output.append( { 'node': output[0]['node']+'_alert_treshold',
+								'metric' : 'Alert threshold ( ' + consolidation_method + ' )',
+								'bunit': None,
+								'type': 'GAUGE',
+								'values' : [ [ pt[0],float(mMax*forecast_alertTreshold)/100.0] for pt in forecastSerie ] } )
+
+
+	if aggregate_method and forecast_checked=="yes" and consolidation_method==None and len(output):
+		output_AggreggateAndForecastSeries = list()
+		logger.debug("output before forecast : %s " % output )
+
+		for serie in output:
+			output_AggreggateAndForecastSeries.append( serie )					
+
+			if forecast_alertTreshold!=None and serie['max']!=None :
+				maxSerie = forecast_alertTreshold*serie['max']/100.0
+
+			elif forecast_alertTreshold!=None and serie['max']==None and forecast_alertMax!=0 :
+				maxSerie = forecast_alertTreshold*forecast_alertMax/100.0
+			else:
+				maxSerie = 0
+
+			#Forecast processus
+			forecastSerie = perfstore_get_forecast_values( serie['values'],forecast_seasonality, 
+														   forecast_method, forecast_alpha, 
+														   forecast_beta, forecast_gamma )
+			# forecasting serie 
+			serie_forecast = dict( serie )
+			serie_forecast['node'] = serie_forecast['node']+'_forecast'
+			serie_forecast['values'] = forecastSerie
+
+			output_AggreggateAndForecastSeries.append( serie_forecast)
+
+			# Treshold serie
+			serie_threshold = dict( serie )
+			serie_threshold['node'] = serie_threshold['node']+'_alert_treshold'
+			serie_threshold['metric'] = 'Alert threshold ( ' + serie_threshold['metric'] + ' )'
+			serie_threshold['values']=[ [ pt[0],maxSerie] for pt in forecastSerie ]
+
+			logger.debug( 'serie_threshold : %s' % serie_threshold )
+
+			output_AggreggateAndForecastSeries.append(serie_threshold)
+
+
+		output = output_AggreggateAndForecastSeries
+
+
 	output = {'total': len(output), 'success': True, 'data': output}
+
+	logger.debug( '' )
+	logger.debug( '#####################################' )
+	logger.debug( 'output : %s' % output)
+	logger.debug( '#####################################' )
+
 	return output
 
 
@@ -684,6 +790,119 @@ def perfstore_get_values(_id, start=None, stop=None, aggregate_method=None, aggr
 		output.append({'node': _id, 'metric': meta['me'], 'values': points, 'bunit': meta['unit'], 'min': meta['min'], 'max': meta['max'], 'thld_warn': meta['thd_warn'], 'thld_crit': meta['thd_crit'], 'type': meta['type']})
 
 	return output
+
+###############################################################################
+#
+###############################################################################
+def perfstore_get_forecast_values( points, forecast_seasonality, forecast_method, 
+								   forecast_alpha, forecast_beta, forecast_gamma ):
+
+	forecastSerie = []
+
+	try:
+		
+		if len(points) :
+			# points validation
+			serieValidity = pyperfstore2.forecastingMethods.validateSerie(points)
+
+			if serieValidity['validity'] == 'all' :
+			   validBackground = points
+
+			elif serieValidity['validity'] == 'by period' :
+				validBackground = points[ serieValidity['lastIndice']+1: ]
+				
+			forecastDuration = int( len(validBackground)*0.5 )
+
+			if forecastDuration == 0 :
+				logger.debug(" Not enough data to make a forecast ")
+				logger.debug(" we just make a smoothing ")
+			
+			forecastingParameters = {}
+
+			if forecast_method == "" :
+				forecast_method = None
+
+			if forecast_seasonality == 0 : 
+						forecast_seasonality = None
+
+
+			if forecast_method!=None :
+
+				if forecast_method == "h_linear" and forecast_alpha!=0 and forecast_beta!=0:
+					forecastingParameters['method'] = forecast_method
+					forecastingParameters['alpha'] = forecast_alpha
+					forecastingParameters['beta'] = forecast_beta
+
+				elif( forecast_method!="h_linear" and forecast_seasonality!=None and 
+				      forecast_alpha!=0 and forecast_beta!=0 and forecast_gamma!=0 ):
+
+					forecastingParameters['method'] = forecast_method
+					forecastingParameters['alpha'] = forecast_alpha
+					forecastingParameters['beta'] = forecast_beta
+					forecastingParameters['seasonality'] = forecast_seasonality
+					forecastingParameters['gamma'] = forecast_gamma
+
+				else :
+
+					forecastingParameters = pyperfstore2.forecastingMethods.optimiseHoltWintersAlgorithm( points,
+						                                                                                  forecast_seasonality,
+																									      forecast_method )
+			else :
+				forecastingParameters = pyperfstore2.forecastingMethods.optimiseHoltWintersAlgorithm( points,
+						                                                                              forecast_seasonality,
+																									  forecast_method )
+
+			logger.debug("Forecast parameters :")
+			logger.debug("Duration : %s " % forecastDuration )
+			logger.debug(" Method : %s" % forecastingParameters['method'])
+
+			if forecastingParameters['method'] == 'h_linear' :            
+				logger.debug("Coeff alpha, beta : %s, %s" %( forecastingParameters['alpha'],forecastingParameters['beta']))
+
+				forecastSerie = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
+																						validBackground, 
+																						forecastDuration,
+																						forecastingParameters['alpha'],
+																						forecastingParameters['beta'] )
+
+			elif forecastingParameters['method'] == 'hw_additive' :
+				logger.debug("Coeff alpha, beta,gamma : %s, %s, %s" %( forecastingParameters['alpha'],
+																	   forecastingParameters['beta'],
+																	   forecastingParameters['gamma']) )
+
+				logger.debug("Calculated seasonality : %s" % forecastingParameters['seasonality'])
+				forecastSerie = pyperfstore2.forecastingMethods.calculateHoltWintersAdditiveSeasonalMethod( 
+																					validBackground, 
+																					forecastDuration,
+																					forecastingParameters['seasonality'],
+																					forecastingParameters['alpha'],
+																					forecastingParameters['beta'],
+																					forecastingParameters['gamma'] )
+
+			elif forecastingParameters['method'] == 'hw_multiplicative' :				
+				logger.debug("Coeff alpha, beta,gamma : %s, %s, %s" %( forecastingParameters['alpha'],
+																	   forecastingParameters['beta'],
+																	   forecastingParameters['gamma']) )
+				
+				logger.debug("Calculated seasonality : %s" % forecastingParameters['seasonality'])
+				forecastSerie = pyperfstore2.forecastingMethods.calculateHoltWintersMultiplicativeSeasonalMethod(
+																					validBackground, 
+																					forecastDuration,
+																					forecastingParameters['seasonality'],
+																					forecastingParameters['alpha'],
+																					forecastingParameters['beta'],
+																					forecastingParameters['gamma'] )
+
+
+	except Exception, err:
+		logger.error("Error when getting points: %s" % err)
+
+	logger.debug( '########################################' )
+	logger.debug( 'final forecast: %s ' % forecastSerie )
+	logger.debug( '############################' )
+
+	return  forecastSerie
+
 
 def exclude_points(points, subset_selection={}):
 	"""unit test

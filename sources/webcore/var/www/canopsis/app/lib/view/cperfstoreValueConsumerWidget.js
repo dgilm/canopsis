@@ -39,6 +39,8 @@ Ext.define('canopsis.lib.view.cperfstoreValueConsumerWidget', {
 				success: function(response) {
 					var data = Ext.JSON.decode(response.responseText);
 					data = data.data;
+					dataLength = data.length;
+					
 					var node,
 						filtered_data = [],
 						exclude_count = 0;
@@ -69,15 +71,34 @@ Ext.define('canopsis.lib.view.cperfstoreValueConsumerWidget', {
 						}
 					}
 
-					if(data.length > 0) {
-						if(this.nodesByID[data[0]['node']]['order'] !== undefined) {
-							var that = this;
+					if(dataLength > 0) {
 
-							data.sort(function(a,b) {
-								return that.nodesByID[a['node']]['order']-that.nodesByID[b['node']]['order'];
-							});
+						for( var i=0; i< dataLength;i++){
+
+							if( this.nodesByID[ data[i]['node'] ] === undefined ){
+
+								this.nodesByID[ data[i]['node']] = data[i];
+								this.nodesByID[ data[i]['node']]['metrics'] = [data[i]['metric']];
+
+								var nodeID = new String ( data[i]['node']);
+								if( nodeID.split('_').length == 2 ){
+									this.nodesByID[ data[i]['node']]['label'] = data[i]['metric']+' ( '+nodeID.split('_')[1] + ' )';
+								}else{
+									this.nodesByID[ data[i]['node']]['label'] = data[i]['metric'];
+								}
+								log.dump(this.nodesByID[ data[i]['node']]);	
+                             
+								}
+							}
+
+						//
+						//if(this.nodesByID[data[0]['node']]['order'] !== undefined) {
+						//	var that = this;
+						//
+						//	data.sort(function(a,b) {
+						//		return that.nodesByID[a['node']]['order']-that.nodesByID[b['node']]['order'];
+						//	});
 						}
-					}
 
 					this.onRefresh(data, from, to);
 				},

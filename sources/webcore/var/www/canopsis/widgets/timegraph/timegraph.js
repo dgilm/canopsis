@@ -35,6 +35,18 @@ Ext.define('widgets.timegraph.timegraph', {
 	aggregate_round_time: true,
 	consolidation_method: "",
 
+	forecast_checked: "no",
+	forecast_alertTreshold: 50,
+	forecast_alertMax: 0,
+	forecast_seasonality: 0,
+	forecast_method: "",
+	forecast_alpha: 0.0,
+	forecast_beta: 0.0,
+	forecast_gamma: 0.0,
+	xmin: 0,
+	xmax: 0,
+
+
 	legend: true,
 	legend_fontSize: 12,
 	legend_fontColor: "3E576F",
@@ -218,6 +230,15 @@ Ext.define('widgets.timegraph.timegraph', {
 
 		var now = Ext.Date.now();
 
+		this.xmin = now - (this.time_window_offset + this.time_window) * 1000;
+
+        if( this.forecast_checked !=="no"){
+            this.xmax = this.xmin + 1.5* this.time_window* 1000;
+
+        }else{
+            this.xmax = now - this.time_window_offset * 1000;
+        }
+
 		$.extend(this.options,
 			{
 				zoom: {
@@ -237,9 +258,9 @@ Ext.define('widgets.timegraph.timegraph', {
 					clickable: true
 				},
 
-				xaxis: {
-					min: now - (this.time_window_offset + this.time_window) * 1000,
-					max: now - this.time_window_offset * 1000
+				xaxis: {                    
+					min: this.xmin,
+                    max: this.xmax
 				},
 
 				yaxis: {
@@ -401,7 +422,7 @@ Ext.define('widgets.timegraph.timegraph', {
 				timestamp = now - this.time_window * 1000;
 			}
 
-			while(this.series[serieId].data.length > 0 && this.series[serieId].data[0][0] < timestamp) {
+			while(this.series[serieId].data[0][0] < timestamp) {
 				this.series[serieId].data.shift();
 			}
 
@@ -413,9 +434,21 @@ Ext.define('widgets.timegraph.timegraph', {
 			this.options.xaxis.min = from;
 			this.options.xaxis.max = to;
 		}
-		else {
-			this.options.xaxis.min = to - (this.time_window + this.time_window_offset) * 1000;
-			this.options.xaxis.max = to - this.time_window_offset * 1000;
+		else {            
+			this.options.xaxis.min = this.xmin;
+            this.options.xaxis.max = this.xmax;
+
 		}
+	},
+
+	processPostParams: function(post_params) {
+		post_params['forecast_checked'] = this.forecast_checked;
+		post_params['forecast_alertTreshold'] = this.forecast_alertTreshold;
+		post_params['forecast_alertMax'] = this.forecast_alertMax;
+		post_params['forecast_seasonality'] = this.forecast_seasonality;
+		post_params['forecast_method'] = this.forecast_method;
+		post_params['forecast_alpha'] = this.forecast_alpha;
+		post_params['forecast_beta'] = this.forecast_beta;
+		post_params['forecast_gamma'] = this.forecast_gamma;
 	}
 });
