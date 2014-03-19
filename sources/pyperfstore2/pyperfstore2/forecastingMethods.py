@@ -285,9 +285,9 @@ def calculateSeasonality( serie ):
 ###############################################################################
 #
 ###############################################################################
-def detectOutliers( serie,smoothing, maxError ):
+def detectOutliersOrTrendChanges( serie,smoothing, maxError ):
 
-	logger.debug(  'detectOutliers')
+	logger.debug(  'detectOutliersOrTrendChanges')
 
 	outliers = []
 
@@ -297,6 +297,7 @@ def detectOutliers( serie,smoothing, maxError ):
 		logger.debug(  'length of datasets no compatible' )
 		return -1
 	else:
+		outlier = False
 		for t in xrange(timePointNb) :
 			timePoint1 = serie[t]
 			timePoint2 = smoothing[t]
@@ -312,7 +313,27 @@ def detectOutliers( serie,smoothing, maxError ):
 			logger.debug( "t : %s, relative error : %s " % (t,relativeError))
 
 			if relativeError > maxError :
-				outliers.append( t )
+
+				for tbis in xrange(t+1,timePointNb) :
+					timePoint1 = serie[tbis]
+					timePoint2 = smoothing[tbis]
+					RMSE = calculateRMSE( [timePoint1], [timePoint2] )
+
+					if timePoint2[1] != 0.0 :
+						relativeError = abs(RMSE/timePoint2[1])
+					elif timePoint1[1] != 0.0 :
+						relativeError = abs(RMSE/timePoint1[1])
+					else:
+						relativeError = 0.0
+
+					if relativeError < maxError :
+						outliers.append(t)
+						outlier = True
+						break
+
+			if outlier == False :
+				
+
 
 	logger.debug( 'outlier list : %s' % outliers )
 
