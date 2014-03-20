@@ -288,7 +288,12 @@ def calculateSeasonality( serie ):
 def detectOutliersOrTrendChanges( serie,smoothing, maxError ):
 
 	logger.debug(  'detectOutliersOrTrendChanges')
+	logger.debug(  '')
+	logger.debug(  'serie : %s' % serie )
+	logger.debug(  '')
+	logger.debug(  'smoothing : %s' % smoothing )
 	indiceRecord = {}
+	indiceRecord['trendChange'] = -1
 	outliers = []
 
 	timePointNb = len(serie)
@@ -297,16 +302,18 @@ def detectOutliersOrTrendChanges( serie,smoothing, maxError ):
 		logger.debug(  'length of datasets no compatible' )
 		return -1
 	else:
+
 		outlier = False
+
 		for t in xrange(timePointNb) :
 			timePoint1 = serie[t]
 			timePoint2 = smoothing[t]
 			RMSE = calculateRMSE( [timePoint1], [timePoint2] )
 
-			if timePoint2[1] != 0.0 :
-				relativeError = abs(RMSE/timePoint2[1])
-			elif timePoint1[1] != 0.0 :
-				relativeError = abs(RMSE/timePoint1[1])
+			maxValue = max(timePoint1,timePoint2)
+			
+			if maxValue != 0.0 :
+				relativeError = abs(RMSE/maxValue)
 			else:
 				relativeError = 0.0
 
@@ -331,10 +338,10 @@ def detectOutliersOrTrendChanges( serie,smoothing, maxError ):
 						outlier = True
 						break
 
-			if outlier == False :
-				indiceRecord['trendChange'] = t
-				indiceRecord['outliers'] = outliers
-				return indiceRecord
+				if outlier == False :
+					indiceRecord['trendChange'] = t
+					indiceRecord['outliers'] = outliers
+					return indiceRecord
 
 
 	logger.debug( 'outlier list : %s' % outliers )
@@ -581,30 +588,30 @@ def calculateHoltWintersLinearMethod( serie, duration, alpha=0.3, beta=0.1,callb
 		forecastingSerie = [0]*forecastingDuration
 	
 		logger.debug(  ' forecasting duration :  %s ' % forecastingDuration )
-	  
+		
 		# Initialization
 		level[0] = serie[0][1]
 		trend[0] = serie[1][1] - serie[0][1] 
 		forecastingSerie[0] = [ serie[0][0], level[0] ]
 		forecastingSerie[1] = [ serie[1][0], level[0] + trend[0] ]
 
-		if 0 >= serieLength - duration  :
-			tp = serie[0[0] + duration*( serie[-1][0]-serie[-2][0] )
+		if 1 >= serieLength - duration  :
+			tp = serie[0][0] + duration*( serie[-1][0]-serie[-2][0] )
 			forecastingSerie[ duration ] = [ tp, level[0]+duration*trend[0] ] 
 
 		for t in xrange( 1, serieLength ):    
-			logger.debug(  ' t :  %s ' % t )                   
+			#logger.debug(  ' t :  %s ' % t )                   
 			level[t] = alpha*serie[t][1] + (1-alpha)*(level[t-1]+trend[t-1])
 			trend[t] = beta*(level[t]-level[t-1]) + (1-beta)*trend[t-1] 
 
-			if( t+1 < serieLength):
+			if t+1 < serieLength :
 				  forecastingSerie[ t+1 ] = [ serie[t+1][0], level[t]+trend[t] ]
 
 			if t+1 >= serieLength - duration  :
 				tp = serie[t][0] + duration*( serie[-1][0]-serie[-2][0] )
 				forecastingSerie[ t+duration ] = [ tp, level[t]+duration*trend[t] ] 
 
-			logger.debug( 'forecast serie in progress: %s ' % forecastingSerie )		
+			#logger.debug( 'forecast serie in progress: %s ' % forecastingSerie )		
 		logger.debug( '  ' )
 		logger.debug( ' Linear forecast serie : %s ' % forecastingSerie )
 

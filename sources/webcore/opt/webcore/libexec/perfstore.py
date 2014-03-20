@@ -810,12 +810,13 @@ def perfstore_get_forecast_values( points, forecast_seasonality, forecast_method
 
 			elif serieValidity['validity'] == 'by period' :
 				validBackground = points[ serieValidity['lastIndice']+1: ]
-				
+			
 			forecastDuration = int( len(validBackground)*0.5 )
 
 			if forecastDuration == 0 :
 				logger.debug(" Not enough data to make a forecast ")
 				logger.debug(" we just make a smoothing ")
+						
 			
 			forecastingParameters = {}
 
@@ -844,11 +845,14 @@ def perfstore_get_forecast_values( points, forecast_seasonality, forecast_method
 
 				else :
 
-					forecastingParameters = pyperfstore2.forecastingMethods.optimiseHoltWintersAlgorithm( points,
+					forecastingParameters = pyperfstore2.forecastingMethods.optimiseHoltWintersAlgorithm( validBackground,
 						                                                                                  forecast_seasonality,
 																									      forecast_method )
+
+
+
 			else :
-				forecastingParameters = pyperfstore2.forecastingMethods.optimiseHoltWintersAlgorithm( points,
+				forecastingParameters = pyperfstore2.forecastingMethods.optimiseHoltWintersAlgorithm( validBackground,
 						                                                                              forecast_seasonality,
 																									  forecast_method )
 
@@ -860,32 +864,41 @@ def perfstore_get_forecast_values( points, forecast_seasonality, forecast_method
 
 				logger.debug("Coeff alpha, beta : %s, %s" %( forecastingParameters['alpha'],forecastingParameters['beta']))
 
-				forecastSmoothing = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
+				indiceOutliers = { 'trendChange':0, 'outliers':[] }
+
+				while indiceOutliers['trendChange']!=-1 :
+					forecastSmoothing = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
 																						validBackground, 
 																						0,
 																						forecastingParameters['alpha'],
 																						forecastingParameters['beta'] )
 
-				indiceOutliers = pyperfstore2.forecastingMethods.detectOutliersOrTrendChanges( validBackground,
-					                                                                           forecastSmoothing,
-					                                                                           0.15)
-				
-				while(indiceOutliers['trendChange']):
-					tc = indiceOutliers['trendChange']
-					forecastSmoothing = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
-																						validBackground[ tc:], 
-																						0,
-																						forecastingParameters['alpha'],
-																						forecastingParameters['beta'] )
-
-					indiceOutliers = pyperfstore2.forecastingMethods.detectOutliersOrTrendChanges( validBackground[ tc:],
+					indiceOutliers = pyperfstore2.forecastingMethods.detectOutliersOrTrendChanges( validBackground,
 						                                                                           forecastSmoothing,
-						                                                                           0.15)
-					print indiceOutliers
+						 																		    0.15)
+					
+					logger.debug( 'indiceOutliers : %s' % indiceOutliers)
+					tc = indiceOutliers['trendChange']	
+					                                                
+					if tc !=-1 :
+						validBackground = validBackground[ (tc-1) : ]
 
+
+					logger.debug( "indiceOutliers : %s" %  indiceOutliers )
+
+
+				forecastingParameters = pyperfstore2.forecastingMethods.optimiseHoltWintersAlgorithm( validBackground,
+						                                                                              forecast_seasonality,
+																									  forecast_method )
+
+				forecastDuration = int( len(validBackground)*0.5 )
+
+				if forecastDuration == 0 :
+					logger.debug(" Not enough data to make a forecast ")
+					logger.debug(" we just make a smoothing ")
 
 				forecastSerie = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
-																						validBackground[tc:], 
+																						validBackground, 
 																						forecastDuration,
 																						forecastingParameters['alpha'],
 																						forecastingParameters['beta'] )
