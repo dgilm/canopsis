@@ -856,14 +856,40 @@ def perfstore_get_forecast_values( points, forecast_seasonality, forecast_method
 			logger.debug("Duration : %s " % forecastDuration )
 			logger.debug(" Method : %s" % forecastingParameters['method'])
 
-			if forecastingParameters['method'] == 'h_linear' :            
+			if forecastingParameters['method'] == 'h_linear' :  
+
 				logger.debug("Coeff alpha, beta : %s, %s" %( forecastingParameters['alpha'],forecastingParameters['beta']))
 
-				forecastSerie = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
+				forecastSmoothing = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
 																						validBackground, 
+																						0,
+																						forecastingParameters['alpha'],
+																						forecastingParameters['beta'] )
+
+				indiceOutliers = pyperfstore2.forecastingMethods.detectOutliersOrTrendChanges( validBackground,
+					                                                                           forecastSmoothing,
+					                                                                           0.15)
+				
+				while(indiceOutliers['trendChange']):
+					tc = indiceOutliers['trendChange']
+					forecastSmoothing = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
+																						validBackground[ tc:], 
+																						0,
+																						forecastingParameters['alpha'],
+																						forecastingParameters['beta'] )
+
+					indiceOutliers = pyperfstore2.forecastingMethods.detectOutliersOrTrendChanges( validBackground[ tc:],
+						                                                                           forecastSmoothing,
+						                                                                           0.15)
+					print indiceOutliers
+
+
+				forecastSerie = pyperfstore2.forecastingMethods.calculateHoltWintersLinearMethod(  
+																						validBackground[tc:], 
 																						forecastDuration,
 																						forecastingParameters['alpha'],
 																						forecastingParameters['beta'] )
+
 
 			elif forecastingParameters['method'] == 'hw_additive' :
 				logger.debug("Coeff alpha, beta,gamma : %s, %s, %s" %( forecastingParameters['alpha'],

@@ -288,7 +288,7 @@ def calculateSeasonality( serie ):
 def detectOutliersOrTrendChanges( serie,smoothing, maxError ):
 
 	logger.debug(  'detectOutliersOrTrendChanges')
-
+	indiceRecord = {}
 	outliers = []
 
 	timePointNb = len(serie)
@@ -332,12 +332,14 @@ def detectOutliersOrTrendChanges( serie,smoothing, maxError ):
 						break
 
 			if outlier == False :
-				
+				indiceRecord['trendChange'] = t
+				indiceRecord['outliers'] = outliers
+				return indiceRecord
 
 
 	logger.debug( 'outlier list : %s' % outliers )
-
-	return outliers
+	indiceRecord['outliers'] = outliers 
+	return indiceRecord
 
 ###############################################################################
 #
@@ -378,22 +380,22 @@ def repairOutliers(serie, outliers, optimizedParameters ):
 
 		elif optimizedParameters['method'] == 'hw_additive' :
 			forecast = calculateHoltWintersAdditiveSeasonalMethod( correctedSerie[0:indice_noOutlier+1], 
-														 		   indice-indice_noOutlier,
+																   indice-indice_noOutlier,
 																   optimizedParameters['seasonality'],
-												                   optimizedParameters['alpha'],
-														           optimizedParameters['beta'],
-														           optimizedParameters['gamma'] )
+																   optimizedParameters['alpha'],
+																   optimizedParameters['beta'],
+																   optimizedParameters['gamma'] )
 
 		elif optimizedParameters['method'] == 'hw_multiplicative' :
 			forecast = calculateHoltWintersMultiplicativeSeasonalMethod( correctedSerie[0:indice_noOutlier+1],
-															             indice-indice_noOutlier,
+																		 indice-indice_noOutlier,
 																		 optimizedParameters['seasonality'],
 																		 optimizedParameters['alpha'],
 																		 optimizedParameters['beta'],
 																		 optimizedParameters['gamma'] )
 
 		logger.debug("old | new value : %s | %s" % (correctedSerie[indice],
-			                                        forecast[-1] ) )
+													forecast[-1] ) )
 		correctedSerie[indice] = forecast[-1]
 
 
@@ -415,7 +417,6 @@ def optimiseHoltWintersAlgorithm( serie, seasonality=None, method=None ):
 		seasonality = calculateSeasonality(serie)
 	
 	if seasonality == None :
-		logger.debug("I should walk by here...")
 		method = 'h_linear'
 
 	logger.debug(" seasonality : %s" % seasonality )
@@ -427,7 +428,7 @@ def optimiseHoltWintersAlgorithm( serie, seasonality=None, method=None ):
 
 	serieLength = len(serie)
 	serieTestLength = int(float(serieLength)/2.0)
-	serieTest = serie[0:serieTestLength+1]
+	serieTest = serie[0:serieTestLength]
 	duration = serieLength - serieTestLength
 
 	if method == None :
@@ -587,7 +588,12 @@ def calculateHoltWintersLinearMethod( serie, duration, alpha=0.3, beta=0.1,callb
 		forecastingSerie[0] = [ serie[0][0], level[0] ]
 		forecastingSerie[1] = [ serie[1][0], level[0] + trend[0] ]
 
-		for t in xrange( 1, serieLength ):                       
+		if 0 >= serieLength - duration  :
+			tp = serie[0[0] + duration*( serie[-1][0]-serie[-2][0] )
+			forecastingSerie[ duration ] = [ tp, level[0]+duration*trend[0] ] 
+
+		for t in xrange( 1, serieLength ):    
+			logger.debug(  ' t :  %s ' % t )                   
 			level[t] = alpha*serie[t][1] + (1-alpha)*(level[t-1]+trend[t-1])
 			trend[t] = beta*(level[t]-level[t-1]) + (1-beta)*trend[t-1] 
 
@@ -595,9 +601,10 @@ def calculateHoltWintersLinearMethod( serie, duration, alpha=0.3, beta=0.1,callb
 				  forecastingSerie[ t+1 ] = [ serie[t+1][0], level[t]+trend[t] ]
 
 			if t+1 >= serieLength - duration  :
-				tp = serie[t][0] + (duration)*( serie[-1][0]-serie[-2][0] )
+				tp = serie[t][0] + duration*( serie[-1][0]-serie[-2][0] )
 				forecastingSerie[ t+duration ] = [ tp, level[t]+duration*trend[t] ] 
-					
+
+			logger.debug( 'forecast serie in progress: %s ' % forecastingSerie )		
 		logger.debug( '  ' )
 		logger.debug( ' Linear forecast serie : %s ' % forecastingSerie )
 
@@ -607,7 +614,7 @@ def calculateHoltWintersLinearMethod( serie, duration, alpha=0.3, beta=0.1,callb
 #
 ###############################################################################
 def calculateHoltWintersAdditiveSeasonalMethod( serie, duration, season,
-                                                alpha=0.3, beta=0.3, gamma=0.3 ):
+												alpha=0.3, beta=0.3, gamma=0.3 ):
 	
 	logger.debug('calculateHoltWintersAdditiveSeasonalMethod')
 
