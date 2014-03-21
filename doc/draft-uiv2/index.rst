@@ -6,4 +6,4 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   specifications/routes-and-actions
+   specifications/scenario-steps
