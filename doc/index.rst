@@ -15,6 +15,7 @@ Contents:
    user-guide/index
    administrator-guide/index
    developper-guide/index
+   draft-uiv2/index
    changelogs
    glossary
 .. #EXTRA_SECTIONS#
