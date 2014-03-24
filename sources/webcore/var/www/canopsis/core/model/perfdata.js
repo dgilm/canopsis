@@ -4,7 +4,7 @@ define([
 	'app/lib/ember-data',
 	'app/application'
 ], function($, Ember, DS, Application) {
-	Application.Perfdata = DS.Model.extend({
+	Application.Perfdata = Application.Crecord.extend({
 		component: DS.attr('string'),
 		resource: DS.attr('string'),
 		metric: DS.attr('string'),

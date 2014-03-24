@@ -4,7 +4,7 @@ define([
 	'app/lib/ember-data',
 	'app/application'
 ], function($, Ember, DS, Application) {
-	Application.Group = DS.Model.extend({
+	Application.Group = Application.Crecord.extend({
 		name: DS.attr('string'),
 		description: DS.attr('string')
 	});

@@ -4,7 +4,7 @@ define([
 	'app/lib/ember-data',
 	'app/application'
 ], function($, Ember, DS, Application) {
-	Application.Selector = DS.Model.extend({
+	Application.Selector = Application.Crecord.extend({
 		rk: DS.attr('string'),
 		enable: DS.attr('boolean'),
 		loaded: DS.attr('boolean'),

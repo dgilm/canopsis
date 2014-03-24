@@ -4,7 +4,7 @@ define([
 	'app/lib/ember-data',
 	'app/application'
 ], function($, Ember, DS, Application) {
-	Application.Curve = DS.Model.extend({
+	Application.Curve = Application.Crecord.extend({
 		line_color: DS.attr('string'),
 		area_color: DS.attr('string'),
 		line_style: DS.attr('string'),

@@ -4,7 +4,7 @@ define([
 	'app/lib/ember-data',
 	'app/application'
 ], function($, Ember, DS, Application) {
-	Application.Consolidation = DS.Model.extend({
+	Application.Consolidation = Application.Crecord.extend({
 		loaded: DS.attr('boolean'),
 		enable: DS.attr('boolean'),
 
