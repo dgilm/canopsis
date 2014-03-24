@@ -7,6 +7,7 @@ require.config({
 
 		'moment': 'webcore-libs/moment.min',
 		'jquery': 'webcore-libs/dev/jquery-1.10.2',
+		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all',
 
 		'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
 		'jquery.md5': 'webcore-libs/jquery.md5',
@@ -14,8 +15,7 @@ require.config({
 		'handlebars': 'webcore-libs/dev/handlebars-1.0.0',
 		'ember': 'webcore-libs/dev/ember',
 		'ember-data': 'webcore-libs/dev/ember-data',
-		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
-		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all'
+		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min'
 	},
 
 	shim: {

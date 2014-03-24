@@ -1,10 +1,10 @@
 define([
 	'canopsis/commit',
 	'jquery',
+	'app/application',
 	'bootstrap',
 	'app/lib/helpers',
 	'app/lib/templates',
-	'app/application',
 	'app/controller/crecords',
 	'app/controller/crecord',
 	'app/controller/login',
@@ -20,7 +20,7 @@ define([
 	'app/view/login',
 	'app/view/application',
 	'app/view/accounts'
-], function(commit, $, _bootstrap, _helpers, _tmpls, Application) {
+], function(commit, $, Application) {
 	window.Canopsis = Application;
 	Canopsis.commit = commit;
 });

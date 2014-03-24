@@ -10,14 +10,15 @@ var templates = [
 	'userviews'
 ];
 
-var deps = ['app/lib/ember'];
+var deps = ['app/lib/ember', 'app/lib/mmenu'];
+var depsSize = deps.length;
 
 for(var i = 0; i < templates.length; i++) {
 	deps.push('text!app/templates/' + templates[i] + '.html');
 }
 
 define(deps, function(Ember) {
-	for(var i = 1; i < arguments.length; i++) {
-		Ember.TEMPLATES[templates[i - 1]] = Ember.Handlebars.compile(arguments[i]);
+	for(var i = depsSize; i < arguments.length; i++) {
+		Ember.TEMPLATES[templates[i - depsSize]] = Ember.Handlebars.compile(arguments[i]);
 	}
 });

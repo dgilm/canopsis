@@ -39,6 +39,11 @@ define([
 				this.send(action);
 			},
 
+			add: function(){
+				console.log("open mmenu");
+				$("#mmenu").trigger("open");
+			},
+
 			remove: function(){
 				this.removeObjects(this.filterBy('isSelected', true));
 			}

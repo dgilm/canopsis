@@ -33,10 +33,6 @@ define([
 		actions: {
 			refresh: function() {
 				this.set('content', this.store.findAll('group'));
-			},
-
-			add: function() {
-				;
 			}
 		}
 	});
