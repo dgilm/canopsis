@@ -45,16 +45,18 @@ define([
 			this.resource('accounts');
 			this.resource('groups');
 			this.resource('curves');
-			this.resource('perfdata');
+			this.resource('perfdatas');
 			this.resource('selectors');
-			this.resource('consolidation');
+			this.resource('consolidations');
 			this.resource('topologies');
 			this.resource('eventfilter');
 		});
 
 		this.resource('run', function() {
-			this.resource('dashboard');
+			this.resource('userviews');
 		});
+		// this.resource('userview', { path: '/userview/:userview_id' });
+
 	});
 
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({

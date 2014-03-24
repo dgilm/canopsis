@@ -13,6 +13,7 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
+				<th>Check</th>
 				<th>Loaded</th>
 				<th>Enabled</th>
 				<th>Name</th>
@@ -27,8 +28,9 @@
 		</thead>
 
 		<tbody>
-			{{#each consolidations}}
+			{{#each consolidation in controller}}
 				<tr>
+					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
 					<td>{{enableview loaded}}</td>
 					<td>{{enableview enable}}</td>
 					<td>{{name}}</td>

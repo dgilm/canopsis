@@ -2,7 +2,8 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
-	'app/application'
+	'app/application',
+	'app/model/crecord'
 ], function($, Ember, DS, Application) {
 	Application.Account = Application.Crecord.extend({
 		enable: DS.attr('boolean'),
@@ -28,7 +29,6 @@ define([
 
 		extractFindAll: function(store, payload) {
 			var data = [];
-
 			for(var i = 0; i < payload.data.length; i++) {
 				var account = payload.data[i];
 

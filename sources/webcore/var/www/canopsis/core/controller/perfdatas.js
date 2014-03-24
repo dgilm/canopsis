@@ -2,28 +2,25 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/group'
-], function($, Ember, Application, Group) {
-	Application.GroupsRoute = Application.AuthenticatedRoute.extend({
+	'app/model/perfdata'
+], function($, Ember, Application, Perfdata) {
+	Application.PerfdatasRoute = Application.AuthenticatedRoute.extend({
 		setupController: function(controller, model) {
 			controller.set('content', model);
 			controller.set('toolitems', controller.toolbar);
+
 		},
 
 		model: function() {
-			return this.store.findAll('group');
+			return this.store.findAll('perfdata');
 		}
 	});
 
-	Application.GroupsController = Application.CrecordsController.extend({
+	Application.PerfdatasController = Application.CrecordsController.extend({
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',
 			icon: 'refresh'
-		},{
-			title: 'Add',
-			action: 'add',
-			icon: 'plus-sign'
 		},{
 			title: 'Remove',
 			action: 'remove',
@@ -32,14 +29,10 @@ define([
 
 		actions: {
 			refresh: function() {
-				this.set('content', this.store.findAll('group'));
+				controller.set('content', this.store.findAll('perfdata'));
 			},
-
-			add: function() {
-				;
-			}
 		}
 	});
 
-	return Application.GroupsController;
+	return Application.PerfdatasController;
 });

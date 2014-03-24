@@ -14,17 +14,17 @@
 		<thead>
 			<tr>
 				<th>Check</th>
-				<th>Name</th>
-				<th>Description</th>
+				<th>type</th>
+				<th>name</th>
 			</tr>
 		</thead>
 
 		<tbody>
-			{{#each group in controller}}
+			{{#each userview in controller}}
 				<tr>
 					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
+					<td>{{crecord_type}}</td>
 					<td>{{name}}</td>
-					<td>{{description}}</td>
 				</tr>
 			{{/each}}
 		</tbody>

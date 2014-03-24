@@ -10,9 +10,9 @@ define(['app/lib/ember', 'app/application'], function(Ember, Application) {
 						{url: '/build/accounts', title: 'Accounts', icon: 'user'},
 						{url: '/build/groups', title: 'Groups', icon: 'book'},
 						{url: '/build/curves', title: 'Curves', icon: 'picture'},
-						{url: '/build/perfdata', title: 'PerfData', icon: 'stats'},
+						{url: '/build/perfdatas', title: 'PerfDatas', icon: 'stats'},
 						{url: '/build/selectors', title: 'Selectors', icon: 'link'},
-						{url: '/build/consolidation', title: 'Consolidation', icon: 'compressed'},
+						{url: '/build/consolidations', title: 'Consolidations', icon: 'compressed'},
 						{url: '/build/topologies', title: 'Topologies', icon: 'tree-conifer'},
 						{url: '/build/eventfilter', title: 'Filter Rules', icon: 'filter'}
 					]
@@ -20,7 +20,8 @@ define(['app/lib/ember', 'app/application'], function(Ember, Application) {
 					name: 'Run',
 					icon: 'play',
 					links: [
-						{url: '/run/dashboard', title: 'Dashboard', icon: 'dashboard'}
+						{url: '/run/userviews', title: 'Userviews', icon: 'dashboard'},
+						{url: '/userview/dashboard', title: 'Dashboard', icon: 'dashboard'}
 					]
 				}]
 			};

@@ -8,11 +8,11 @@
 		{{/each}}
 	</div>
 </div>
-
 <div class="table-responsive">
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
+				<th>Check</th>
 				<th>Enabled</th>
 				<th>Login</th>
 				<th>First Name</th>
@@ -24,8 +24,9 @@
 		</thead>
 
 		<tbody>
-			{{#each accounts}}
+			{{#each account in controller}}
 				<tr>
+					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
 					<td>{{enableview enable}}</td>
 					<td>{{user}}</td>
 					<td>{{firstname}}</td>

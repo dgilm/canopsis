@@ -13,6 +13,7 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
+				<th>Check</th>
 				<th>Line Color</th>
 				<th>Area Color</th>
 				<th>Line Style</th>
@@ -25,8 +26,9 @@
 		</thead>
 
 		<tbody>
-			{{#each curves}}
+			{{#each curve in controller}}
 				<tr>
+					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
 					<td>{{colorview line_color}}</td>
 					<td>{{colorview area_color}}</td>
 					<td>{{line_style}}</td>

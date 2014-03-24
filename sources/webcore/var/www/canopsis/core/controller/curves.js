@@ -6,10 +6,8 @@ define([
 ], function($, Ember, Application, Curve) {
 	Application.CurvesRoute = Application.AuthenticatedRoute.extend({
 		setupController: function(controller, model) {
-			controller.set('content', {
-				toolitems: controller.toolbar,
-				curves: model
-			});
+			controller.set('content', model);
+			controller.set('toolitems', controller.toolbar);
 		},
 
 		model: function() {
@@ -17,7 +15,7 @@ define([
 		}
 	});
 
-	Application.CurvesController = Ember.ObjectController.extend({
+	Application.CurvesController = Application.CrecordsController.extend({
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',
@@ -37,23 +35,8 @@ define([
 		}],
 
 		actions: {
-			do: function(action) {
-				this.send(action);
-			},
-
 			refresh: function() {
-				controller.set('content', {
-					'toolitems': this.toolbar,
-					'curves': this.store.findAll('curve')
-				});
-			},
-
-			duplicate: function() {
-				;
-			},
-
-			remove: function() {
-				;
+				controller.set('content', this.store.findAll('curve'));
 			}
 		}
 	});

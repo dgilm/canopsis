@@ -4,9 +4,10 @@ var templates = [
 	'accounts',
 	'groups',
 	'curves',
-	'perfdata',
+	'perfdatas',
 	'selectors',
-	'consolidation'
+	'consolidations',
+	'userviews'
 ];
 
 var deps = ['app/lib/ember'];
