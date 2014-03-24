@@ -14,7 +14,8 @@ require.config({
 		'handlebars': 'webcore-libs/dev/handlebars-1.0.0',
 		'ember': 'webcore-libs/dev/ember',
 		'ember-data': 'webcore-libs/dev/ember-data',
-		'bootstrap': 'webcore-libs/bootstrap/3.0.3/js/bootstrap.min'
+		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
+		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all'
 	},
 
 	shim: {
