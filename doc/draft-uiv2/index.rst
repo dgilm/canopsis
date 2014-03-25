@@ -6,4 +6,5 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   specifications/models
    specifications/scenario-steps
