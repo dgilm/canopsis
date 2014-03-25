@@ -7,7 +7,8 @@ var templates = [
 	'perfdatas',
 	'selectors',
 	'consolidations',
-	'userviews'
+	'userviews',
+	'addcrecordform'
 ];
 
 var deps = ['app/lib/ember', 'app/lib/mmenu'];

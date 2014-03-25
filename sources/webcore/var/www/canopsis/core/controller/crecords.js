@@ -38,12 +38,9 @@ define([
 			do: function(action) {
 				this.send(action);
 			},
-
-			add: function(){
-				console.log("open mmenu");
-				$("#mmenu").trigger("open");
+			add: function() {
+				this.controllerFor('application').send('show_add_crecord_form', this.get("content").type.typeKey);
 			},
-
 			remove: function(){
 				this.removeObjects(this.filterBy('isSelected', true));
 			}

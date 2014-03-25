@@ -1,5 +1,5 @@
 <div id="canopsis-main" role="main">
-	<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+	<div class="navbar navbar-inverse navbar-fixed-top mm-fixed-top" role="navigation">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
@@ -53,12 +53,10 @@
 	</div>
 
 	<div>
-		<nav id="mmenu">
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/about/">About us</a></li>
-				<li><a href="/contact/">Contact</a></li>
-			</ul>
+		<nav id="mmenu" class="tip mm-menu mm-ismenu">
+			<div class="mm-panel mmenu-content">
+				{{outlet sidebar}}
+			</div>
 		</nav>
 	</div>
 	<script type="text/javascript">

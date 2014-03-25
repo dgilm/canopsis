@@ -6,6 +6,7 @@ define([
 	'app/lib/helpers',
 	'app/lib/templates',
 	'app/controller/crecords',
+	'app/controller/crecordform',
 	'app/controller/crecord',
 	'app/controller/login',
 	'app/controller/application',

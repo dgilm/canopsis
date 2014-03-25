@@ -6,7 +6,7 @@ define([
 	'app/model/crecord'
 ], function($, Ember, DS, Application) {
 	Application.Consolidation = Application.Crecord.extend({
-		loaded: DS.attr('boolean'),
+		loaded: DS.attr('boolean', {defaultValue: false, hiddenFromForm:true}),
 		enable: DS.attr('boolean'),
 
 		name: DS.attr('string'),

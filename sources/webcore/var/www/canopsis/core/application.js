@@ -30,6 +30,31 @@ define([
 		},
 
 		actions: {
+			show_add_crecord_form: function(crecord_type){
+				console.log("open mmenu");
+				var referenceModel = Application[crecord_type.capitalize()];
+				console.log(crecord_type.capitalize());
+				console.log(referenceModel);
+
+				//TODO put this in crecordformController
+				var transformedAttributes = Ember.get(referenceModel, 'attributes')
+
+				var attributes = [];
+				transformedAttributes.forEach(function(field, attr) {
+					attributes.push({field: field, type: attr.type});
+				});
+
+				crecordformController = Application.CrecordformController.create();
+				crecordformController.set('content', attributes);
+
+				this.render("addcrecordform", {
+					into: 'application',
+					outlet: 'sidebar',
+					controller: crecordformController
+				});
+
+				$("#mmenu").trigger("open");
+			},
 			error: function(reason, transition) {
 				if(reason.status === 403 || reason.status === 401) {
 					this.loginRequired(transition);
