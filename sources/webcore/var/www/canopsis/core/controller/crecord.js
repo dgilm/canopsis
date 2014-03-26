@@ -6,6 +6,11 @@ define([
 ], function($, Ember, Application, Account) {
 
 	Application.CrecordController = Ember.ObjectController.extend({
+		actions: {
+			addRecord2: function() {
+				console.log("test from CrecordController");
+			}
+		}
 	});
 
 	return Application.CrecordController;

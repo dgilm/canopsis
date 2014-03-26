@@ -1,11 +1,13 @@
-<h1>New CRECORD</h1>
-{{log attributes}}
+<h1>New {{crecord_type}}</h1>
 {{#each attr in controller}}
-	{{#if attr.type.options.hiddenFromForm}}
+	{{#if attr.model.options.hiddenInForm}}
 	{{else}}
-		{{attr.field}} : {{attr.type}}<br/>
+		<div>
+			<span class="mmenulabel">{{attr.field}}</span>
+			{{editor this attr.model.type}}
+		</div>
 	{{/if}}
 {{/each}}
 <br/>
 
-add record button
+<button {{action "addRecord"}} class="addRecord">Add</button>

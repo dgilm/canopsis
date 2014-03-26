@@ -8,7 +8,9 @@ var templates = [
 	'selectors',
 	'consolidations',
 	'userviews',
-	'addcrecordform'
+	'addcrecordform',
+	'editors/defaultpropertyeditor',
+	'editors/boolean'
 ];
 
 var deps = ['app/lib/ember', 'app/lib/mmenu'];
@@ -20,6 +22,7 @@ for(var i = 0; i < templates.length; i++) {
 
 define(deps, function(Ember) {
 	for(var i = depsSize; i < arguments.length; i++) {
-		Ember.TEMPLATES[templates[i - depsSize]] = Ember.Handlebars.compile(arguments[i]);
+		var templateName = templates[i - depsSize].replace("/", "-");
+		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
 	}
 });

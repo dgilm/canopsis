@@ -30,22 +30,21 @@ define([
 		},
 
 		actions: {
+			//should be in a class that inherits from authenticatedroute
 			show_add_crecord_form: function(crecord_type){
-				console.log("open mmenu");
 				var referenceModel = Application[crecord_type.capitalize()];
-				console.log(crecord_type.capitalize());
-				console.log(referenceModel);
 
 				//TODO put this in crecordformController
-				var transformedAttributes = Ember.get(referenceModel, 'attributes')
+				var modelAttributes = Ember.get(referenceModel, 'attributes')
 
 				var attributes = [];
-				transformedAttributes.forEach(function(field, attr) {
-					attributes.push({field: field, type: attr.type});
+				modelAttributes.forEach(function(field, attrModel) {
+					attributes.push({field: field, model: attrModel});
 				});
 
 				crecordformController = Application.CrecordformController.create();
 				crecordformController.set('content', attributes);
+				crecordformController.set('crecord_type', crecord_type);
 
 				this.render("addcrecordform", {
 					into: 'application',

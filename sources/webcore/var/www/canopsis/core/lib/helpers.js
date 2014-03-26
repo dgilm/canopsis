@@ -96,4 +96,14 @@ define(['moment', 'app/lib/ember'], function(moment, Ember) {
 			return new Ember.Handlebars.SafeString('');
 		}
 	});
+
+	Ember.Handlebars.registerBoundHelper('editor', function(context, attr, options) {
+		var typeName = attr;
+		var editorName = "editors-" + attr;
+
+		if(Ember.TEMPLATES[editorName] === undefined) {
+			editorName = "editors-defaultpropertyeditor";
+		}
+		return Ember.Handlebars.helpers.partial.call(context, editorName, options);
+	});
 });

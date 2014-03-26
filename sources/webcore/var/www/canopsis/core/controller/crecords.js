@@ -12,7 +12,7 @@ define([
 			icon: 'refresh'
 		},{
 			title: 'Add',
-			action: 'add',
+			action: 'showAddForm',
 			icon: 'plus-sign'
 		},{
 			title: 'Duplicate',
@@ -38,7 +38,22 @@ define([
 			do: function(action) {
 				this.send(action);
 			},
-			add: function() {
+			addRecord: function(crecord_type, model) {
+				var raw_record = {};
+
+				raw_record[crecord_type] = crecord_type;
+
+				model.forEach(function(attr) {
+					if(attr.value !== undefined) {
+						raw_record[attr.field] = attr.value;
+					}
+				});
+
+				var record = this.store.createRecord(crecord_type, raw_record);
+
+				// record.save();
+			},
+			showAddForm: function() {
 				this.controllerFor('application').send('show_add_crecord_form', this.get("content").type.typeKey);
 			},
 			remove: function(){
