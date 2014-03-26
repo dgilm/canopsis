@@ -19,6 +19,7 @@
 # ---------------------------------
 
 from cengine import cengine
+import cschema
 import cevent
 import time
 import json
@@ -29,6 +30,9 @@ class TaskHandler(cengine):
 		super(TaskHandler, self).__init__(*args, **kwargs)
 		self.amqp_queue = self.name
 
+	def run_task(self, task, job):
+		self.amqp.publish(job, 'task_{0}'.format(task), 'amq.direct')
+
 	def work(self, msg, *args, **kwargs):
 		self.logger.info('Received job: {0}'.format(msg))
 
@@ -38,12 +42,19 @@ class TaskHandler(cengine):
 		output = None
 		state = 3
 
-		try:
-			job = json.loads(msg)
+		if isinstance(msg, dict):
+			job = msg
 
-		except ValueError, err:
-			self.logger.error('Impossible to decode message: {0}'.format(err))
-			return
+		else:
+			try:
+				job = json.loads(msg)
+
+			except ValueError, err:
+				self.logger.error('Impossible to decode message: {0}'.format(err))
+				return
+
+		if not cschema.validate(job, 'job.{0}'.format(self.name)):
+			pass
 
 		state, output = self.handle_task(job)
 

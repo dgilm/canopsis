@@ -19,9 +19,9 @@
 # ---------------------------------
 
 from ctaskhandler import TaskHandler
-from caccount import caccount
+from caccount import caccount, caccount_get
 from cstorage import cstorage
-from cfile import cfile
+from cfile import cfile, cfile_get
 
 from email import Encoders
 from email.MIMEBase import MIMEBase
@@ -35,23 +35,25 @@ import time
 import re
 
 
-NAME='task_mail'
+NAME = 'task_mail'
 
 
 class engine(TaskHandler):
 	def __init__(self, *args, **kwargs):
 		super(engine, self).__init__(name=NAME, *args, **kwargs)
 
+
 	def handle_task(self, job):
 		user = job.get('user', 'root')
-		group = job.get('group', 'root')
 
-		account = caccount(user=user, group=group)
+		storage = get_storage('object', account=caccount(user='root', group='root'))
+		account = caccount_get(storage, user)
+		del storage
 
-		recipients = job.get('recipients', None)
+		recipients = job.get('recipients', [])
 		subject = job.get('subject', None)
 		body = job.get('body', None)
-		attachments = job.get('attachments', None)
+		attachments = job.get('attachments', [])
 		smtp_host = job.get('smtp_host', 'localhost')
 		smtp_port = job.get('smtp_port', 25)
 		html = job.get('html', False)
@@ -61,15 +63,31 @@ class engine(TaskHandler):
 
 	def sendmail(self, account, recipients, subject, body, attachments, smtp_host, smtp_port, html):
 		"""
-			account        : caccount or nothing for anon
-			recipients     : str("glehee@capensis.fr"), caccount
-			                 list of (caccount or string)
-			subject        : str("My Subject")
-			body           : str("My Body")
-			attachments    : cfile, list of cfile
-			smtp_host      : str("localhost")
-			smtp_port      : int(25)
-			html           : allow html into mail body (booleen)
+			:param account: User used to fetch data from MongoDB.
+			:type: account: caccount
+
+			:param recipients: Users who will receive the mail.
+			:type recipients: list of mail string
+
+			:param subject: Mail's subject.
+			:type subject: str
+
+			:param body: Mail's body.
+			:type body: str
+
+			:param attachments: Mail's attachments.
+			:type attachments: list of cfile id
+
+			:param smtp_host: SMTP Server address.
+			:type smtp_host: str
+
+			:param smtp_port: SMTP Server port.
+			:type smtp_port: int
+
+			:param html: Indicates if the mail contains HTML.
+			:type html: boolean
+
+			:returns: (<state>, <output>)
 		"""
 
 		# Verify account
@@ -103,32 +121,18 @@ class engine(TaskHandler):
 		if not recipients:
 			return (2, 'No recipients configured')
 
-		if not isinstance(recipients, list):
-			recipients = [recipients]
-
 		dests = []
 
 		for dest in recipients:
-			if isinstance(dest, basestring):
-				if re.match("^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.([a-zA-Z]{2,6})?$", dest):
-					dest_mail = dest
-					dest_full_mail = '"{0}" <{1}>'.format(
-						dest_mail.split('@')[0].title(),
-						dest_mail
-					)
-					dests.append(dest_full_mail)
-
-			else:
-				self.logger.error('Ignoring invalid recipient: {0}'.format(dest))
+			if re.match("^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.([a-zA-Z]{2,6})?$", dest):
+				dest_mail = dest
+				dest_full_mail = '"{0}" <{1}>'.format(
+					dest_mail.split('@')[0].title(),
+					dest_mail
+				)
+				dests.append(dest_full_mail)
 
 		dests_str = ', '.join(dests)
-
-		# Verify attachments
-		if attachments:
-			storage = cstorage(account=account, namespace='object')
-
-			if not isinstance(attachments, list):
-				attachments = [attachments]
 
 		# Send
 
@@ -145,20 +149,22 @@ class engine(TaskHandler):
 
 		msg['Date'] = formatdate(localtime=True)
 
-		if attachments:	
-			for _file in attachments:
+		if attachments:
+			storage = get_storage('object', account=account)
+
+			for file_id in attachments:
 				part = MIMEBase('application', "octet-stream")
 
-				if not isinstance(_file, cfile):
-					_file.__class__ = cfile
+				_file = cfile_get(file_id, storage)
 
-				#meta_file = _file.get(storage)
 				content_file = _file.get(storage)
 				part.set_payload(content_file)
 				Encoders.encode_base64(part)
 				part.add_header('Content-Disposition', 'attachment; filename="%s"' % _file.data['file_name'])
 				part.add_header('Content-Type', _file.data['content_type'])
 				msg.attach(part)
+
+			del storage
 
 		s = socket.socket()
 

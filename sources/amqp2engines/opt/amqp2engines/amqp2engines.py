@@ -23,9 +23,15 @@ from ConfigParser import RawConfigParser, ConfigParser, ParsingError
 import importlib
 
 import unittest
-import time, json, logging
+import logging
 import inspect
+import socket
+import time
+import json
 
+from ctaskhandler import TaskHandler
+from cstorage import get_storage
+from caccount import caccount
 from cinit import cinit
 
 ## Engines path
@@ -173,6 +179,29 @@ def start_engines():
 			setattr(loaded_engine, param, engine_extra[param])
 
 		engines.append(loaded_engine)
+
+	# Update engines collection
+
+	storage = get_storage('engines', account=caccount(user='root', group='root')).get_backend()
+	hostname = socket.gethostname()
+
+	storage.remove({
+		'host': hostname
+	})
+
+	for engine in engines:
+		document = {
+			'type': 'engine',
+			'name': engine.name,
+			'host': hostname
+		}
+
+		if engine.__class__.__base__ is TaskHandler:
+			document['type'] = 'taskhandler'
+
+		# avoid duplicates
+		if storage.find(document).count() == 0:
+			storage.insert(document)
 
 	##################
 	# Start engines
