@@ -183,7 +183,7 @@ def start_engines():
 	# Update engines collection
 
 	storage = get_storage('engines', account=caccount(user='root', group='root')).get_backend()
-	hostname = socket.gethostname()
+	hostname = socket.getfqdn() or socket.gethostname()
 
 	storage.remove({
 		'host': hostname
@@ -202,6 +202,8 @@ def start_engines():
 		# avoid duplicates
 		if storage.find(document).count() == 0:
 			storage.insert(document)
+
+	del storage
 
 	##################
 	# Start engines

@@ -5,7 +5,7 @@
 		"viewname": {"type": "string", "required": true},
 		"start": {"type": "integer", "default": -1},
 		"stop": {"type": "integer"},
-		"subset_selection": {"type": "subset_selection", "required": true},
+		"subset_selection": {"type": "subset_selection"},
 		"interval": {"type": "integer"},
 		"account": {"type": "string", "required": true},
 		"owner": {"type": "string"},

@@ -42,7 +42,7 @@ class engine(cengine):
 		self.beat()
 
 	def beat(self):
-		self.logger.info('Reload jobs')
+		self.logger.debug('Reload jobs')
 
 		now = int(time.time())
 		prev = now - self.beat_interval
@@ -69,7 +69,7 @@ class engine(cengine):
 					self.do_job(job)
 
 	def do_job(self, job):
-		self.logger.info('Execute job: {0}'.format(job))
+		self.logger.debug('Execute job: {0}'.format(job))
 
 		job['params']['id'] = job['_id']
 

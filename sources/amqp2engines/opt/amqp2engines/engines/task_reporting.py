@@ -30,6 +30,7 @@ from wkhtmltopdf.wrapper import Wrapper
 import hashlib
 import datetime
 import time
+import json
 import os
 
 
@@ -190,9 +191,9 @@ class engine(TaskHandler):
 
 	def mail(self, job, mail, account, doc_id):
 		if isinstance(mail, dict):
-			mail['id'] = job['id']
+			mail['id'] = str(job['id'])
 			mail['user'] = account.user
-			mail['attachments'] = [doc_id]
+			mail['attachments'] = [str(doc_id)]
 
 			self.run_task('mail', mail)
 

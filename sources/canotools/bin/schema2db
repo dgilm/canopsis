@@ -57,7 +57,7 @@ class Schema2MongoDB(object):
 		super(Schema2MongoDB, self).__init__(*args, **kwargs)
 
 		self.handler = cinit()
-		self.logger = handler.getLogger('schema2db')
+		self.logger = self.handler.getLogger('schema2db')
 
 	def load(self):
 		# Load schemas
@@ -67,7 +67,7 @@ class Schema2MongoDB(object):
 
 		for filepath in os.listdir(schema_dir):
 			abspath = os.path.join(schema_dir, filepath)
-			schema_id = os.path.splitext(filepath)
+			schema_id = os.path.splitext(filepath)[0]
 
 			with open(abspath) as f:
 				self.logger.info('Loading: {0}'.format(abspath))
@@ -76,28 +76,50 @@ class Schema2MongoDB(object):
 	def build_one(self, schema_id):
 		self.logger.info('Building: {0}'.format(schema_id))
 
-		hierarchy = [schema_id]
+		self.hierarchy = [schema_id]
 
 		def _build(subschema):
 			updated = False
 
-			if 'type' in subschema and subschema['type'] not in self.stdtypes:
-				if subschema['type'] in hierarchy:
-					raise ModelRecursionError(schema_id)
+			if 'type' in subschema:
+				if isinstance(subschema['type'], list):
+					for stype in subschema['type']:
+						if stype not in self.stdtypes:
+							if stype in self.hierarchy:
+								raise ModelRecursionError(schema_id)
+
+							else:
+								model = self.schemas.get(stype)
+								idx = subschema['type'].index(stype)
+								subschema['type'][idx] = model
 
 				else:
-					model = self.schemas.get(subschema['type'])
-					subschema.update(model)
-					updated = True
+					if subschema['type'] not in self.stdtypes:
+						if subschema['type'] in self.hierarchy:
+							raise ModelRecursionError(schema_id)
+
+						else:
+							model = self.schemas.get(subschema['type'])
+							subschema.update(model)
+							updated = True
 
 			for key in subschema:
 				if key != 'type' and isinstance(subschema[key], dict):
 					subupdated = False
 
 					if 'type' in subschema:
-						hierarchy.append(subschema['type'])
-						subupdated = _build(subschema[key])
-						del hierarchy[-1]
+						if isinstance(subschema['type'], list):
+							length = - len(subschema['type'])
+							self.hierarchy += subschema['type']
+
+							subupdated = _build(subschema[key])
+
+							del self.hierarchy[length:]
+
+						else:
+							self.hierarchy.append(subschema['type'])
+							subupdated = _build(subschema[key])
+							del self.hierarchy[-1]
 
 					else:
 						subupdated = _build(subschema[key])
@@ -110,8 +132,6 @@ class Schema2MongoDB(object):
 		return _build(self.schemas[schema_id])
 
 	def build(self):
-		self.load_schemas()
-
 		keep_going = True
 
 		# Iterate until no update is done on any model

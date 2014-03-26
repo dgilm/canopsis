@@ -52,7 +52,7 @@ def get(schema_id):
 	"""
 
 	if schema_id not in cache:
-		db = get_storage('schemas', account=caccount(user='root', goup='root')).get_backend()
+		db = get_storage('schemas', account=caccount(user='root', group='root')).get_backend()
 		doc = db.find_one(schema_id)
 		del db
 

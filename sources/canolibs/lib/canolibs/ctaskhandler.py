@@ -34,7 +34,7 @@ class TaskHandler(cengine):
 		self.amqp.publish(job, 'task_{0}'.format(task), 'amq.direct')
 
 	def work(self, msg, *args, **kwargs):
-		self.logger.info('Received job: {0}'.format(msg))
+		self.logger.debug('Received job: {0}'.format(msg))
 
 		start = int(time.time())
 
@@ -54,7 +54,8 @@ class TaskHandler(cengine):
 				return
 
 		if not cschema.validate(job, 'job.{0}'.format(self.name)):
-			pass
+			self.logger.error('Message malformed, ignoring')
+			return
 
 		state, output = self.handle_task(job)
 

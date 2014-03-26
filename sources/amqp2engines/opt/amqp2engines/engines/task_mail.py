@@ -20,8 +20,8 @@
 
 from ctaskhandler import TaskHandler
 from caccount import caccount, caccount_get
-from cstorage import cstorage
-from cfile import cfile, cfile_get
+from cstorage import get_storage
+from cfile import cfile, get_cfile
 
 from email import Encoders
 from email.MIMEBase import MIMEBase
@@ -42,7 +42,6 @@ class engine(TaskHandler):
 	def __init__(self, *args, **kwargs):
 		super(engine, self).__init__(name=NAME, *args, **kwargs)
 
-
 	def handle_task(self, job):
 		user = job.get('user', 'root')
 
@@ -59,7 +58,7 @@ class engine(TaskHandler):
 		html = job.get('html', False)
 
 		# Execute the task
-		return self.sendmail(account, recipients, subject, body, smtp_host, smtp_port, html)
+		return self.sendmail(account, recipients, subject, body, attachments, smtp_host, smtp_port, html)
 
 	def sendmail(self, account, recipients, subject, body, attachments, smtp_host, smtp_port, html):
 		"""
@@ -155,7 +154,7 @@ class engine(TaskHandler):
 			for file_id in attachments:
 				part = MIMEBase('application', "octet-stream")
 
-				_file = cfile_get(file_id, storage)
+				_file = get_cfile(file_id, storage)
 
 				content_file = _file.get(storage)
 				part.set_payload(content_file)
@@ -187,3 +186,5 @@ class engine(TaskHandler):
 				2,
 				"Imposible to send mail: {0}".format(err)
 			)
+
+		return (0, '{0} sent mail to: {1}'.format(account_full_mail, dests))
