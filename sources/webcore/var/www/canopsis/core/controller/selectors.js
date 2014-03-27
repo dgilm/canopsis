@@ -4,7 +4,7 @@ define([
 	'app/application',
 	'app/model/selector'
 ], function($, Ember, Application, Selector) {
-	Application.SelectorsRoute = Application.AuthenticatedRoute.extend({
+	Application.SelectorsRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {
 			controller.set('content', {
 				toolitems: controller.toolbar,
@@ -24,7 +24,7 @@ define([
 			icon: 'refresh'
 		},{
 			title: 'Add',
-			action: 'add',
+			action: 'showAddForm',
 			icon: 'plus-sign'
 		},{
 			title: 'Duplicate',

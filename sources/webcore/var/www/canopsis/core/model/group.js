@@ -2,7 +2,8 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
-	'app/application'
+	'app/application',
+	'app/model/crecord'
 ], function($, Ember, DS, Application) {
 	Application.Group = Application.Crecord.extend({
 		name: DS.attr('string'),

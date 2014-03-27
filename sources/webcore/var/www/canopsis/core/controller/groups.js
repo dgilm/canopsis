@@ -4,7 +4,7 @@ define([
 	'app/application',
 	'app/model/group'
 ], function($, Ember, Application, Group) {
-	Application.GroupsRoute = Application.AuthenticatedRoute.extend({
+	Application.GroupsRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {
 			controller.set('content', model);
 			controller.set('toolitems', controller.toolbar);
@@ -22,7 +22,7 @@ define([
 			icon: 'refresh'
 		},{
 			title: 'Add',
-			action: 'add',
+			action: 'showAddForm',
 			icon: 'plus-sign'
 		},{
 			title: 'Remove',

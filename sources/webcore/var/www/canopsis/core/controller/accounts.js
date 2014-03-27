@@ -4,7 +4,7 @@ define([
 	'app/application',
 	'app/model/account'
 ], function($, Ember, Application, Account) {
-	Application.AccountsRoute = Application.AuthenticatedRoute.extend({
+	Application.AccountsRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {
 			controller.set('content', model);
 			controller.set('toolitems', controller.toolbar);

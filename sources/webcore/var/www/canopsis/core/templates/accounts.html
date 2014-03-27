@@ -13,6 +13,7 @@
 		<thead>
 			<tr>
 				<th>Check</th>
+				<th>Edit</th>
 				<th>Enabled</th>
 				<th>Login</th>
 				<th>First Name</th>
@@ -26,7 +27,8 @@
 		<tbody>
 			{{#each account in controller}}
 				<tr>
-					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
+					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</td>
+					<td>{{glyphicon "edit"}}</td>
 					<td>{{enableview enable}}</td>
 					<td>{{user}}</td>
 					<td>{{firstname}}</td>

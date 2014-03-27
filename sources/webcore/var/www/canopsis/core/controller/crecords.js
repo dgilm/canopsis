@@ -5,6 +5,20 @@ define([
 	'app/model/crecord'
 ], function($, Ember, Application, Crecord) {
 
+	Application.CrecordsRoute = Application.AuthenticatedRoute.extend({
+		actions: {
+			show_add_crecord_form: function(crecord_type){
+				crecordformController = Application.CrecordformController.create();
+				crecordformController.crecord_type = crecord_type;
+
+				this.render("crecordform", {
+					outlet: 'popup',
+					controller: crecordformController
+				});
+			},
+		}
+	});
+
 	Application.CrecordsController = Ember.ArrayController.extend({
 		toolbar: [{
 			title: 'Refresh',
@@ -38,6 +52,8 @@ define([
 			do: function(action) {
 				this.send(action);
 			},
+
+			//add record to the crecord array
 			addRecord: function(crecord_type, model) {
 				var raw_record = {};
 
@@ -51,10 +67,11 @@ define([
 
 				var record = this.store.createRecord(crecord_type, raw_record);
 
+				//send the new item via the API
 				// record.save();
 			},
 			showAddForm: function() {
-				this.controllerFor('application').send('show_add_crecord_form', this.get("content").type.typeKey);
+				this.send('show_add_crecord_form', this.get("content").type.typeKey);
 			},
 			remove: function(){
 				this.removeObjects(this.filterBy('isSelected', true));

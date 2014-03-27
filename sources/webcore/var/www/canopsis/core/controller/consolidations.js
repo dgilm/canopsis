@@ -4,7 +4,7 @@ define([
 	'app/application',
 	'app/model/consolidation'
 ], function($, Ember, Application, Consolidation) {
-	Application.ConsolidationsRoute = Application.AuthenticatedRoute.extend({
+	Application.ConsolidationsRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {
 			controller.set('content', model);
 			controller.set('toolitems', controller.toolbar);

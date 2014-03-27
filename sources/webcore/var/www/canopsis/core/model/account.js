@@ -7,10 +7,10 @@ define([
 ], function($, Ember, DS, Application) {
 	Application.Account = Application.Crecord.extend({
 		enable: DS.attr('boolean'),
-		user: DS.attr('string'),
+		user: DS.attr('string', {description: "the user name"}),
 		firstname: DS.attr('string'),
 		lastname: DS.attr('string'),
-		mail: DS.attr('string'),
+		mail: DS.attr('mail'),
 		group: DS.attr('string'),
 		groups: DS.attr('array')
 	});

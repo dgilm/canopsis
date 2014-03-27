@@ -8,9 +8,10 @@ var templates = [
 	'selectors',
 	'consolidations',
 	'userviews',
-	'addcrecordform',
+	'crecordform',
 	'editors/defaultpropertyeditor',
-	'editors/boolean'
+	'editors/boolean',
+	'editors/mail'
 ];
 
 var deps = ['app/lib/ember', 'app/lib/mmenu'];

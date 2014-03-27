@@ -4,7 +4,7 @@ define([
 	'app/application',
 	'app/model/perfdata'
 ], function($, Ember, Application, Perfdata) {
-	Application.PerfdatasRoute = Application.AuthenticatedRoute.extend({
+	Application.PerfdatasRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {
 			controller.set('content', model);
 			controller.set('toolitems', controller.toolbar);

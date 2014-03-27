@@ -30,30 +30,6 @@ define([
 		},
 
 		actions: {
-			//should be in a class that inherits from authenticatedroute
-			show_add_crecord_form: function(crecord_type){
-				var referenceModel = Application[crecord_type.capitalize()];
-
-				//TODO put this in crecordformController
-				var modelAttributes = Ember.get(referenceModel, 'attributes')
-
-				var attributes = [];
-				modelAttributes.forEach(function(field, attrModel) {
-					attributes.push({field: field, model: attrModel});
-				});
-
-				crecordformController = Application.CrecordformController.create();
-				crecordformController.set('content', attributes);
-				crecordformController.set('crecord_type', crecord_type);
-
-				this.render("addcrecordform", {
-					into: 'application',
-					outlet: 'sidebar',
-					controller: crecordformController
-				});
-
-				$("#mmenu").trigger("open");
-			},
 			error: function(reason, transition) {
 				if(reason.status === 403 || reason.status === 401) {
 					this.loginRequired(transition);

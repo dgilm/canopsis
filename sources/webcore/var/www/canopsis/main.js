@@ -19,6 +19,7 @@ define([
 	'app/controller/userview',
 	'app/controller/userviews',
 	'app/view/login',
+	'app/view/crecordform',
 	'app/view/application',
 	'app/view/accounts'
 ], function(commit, $, Application) {

@@ -7,8 +7,14 @@ define([
 
 	Application.CrecordController = Ember.ObjectController.extend({
 		actions: {
-			addRecord2: function() {
-				console.log("test from CrecordController");
+			show_add_crecord_form: function(crecord_type){
+				crecordformController = Application.CrecordformController.create();
+				crecordformController.crecord_type = crecord_type;
+
+				this.render("crecordform", {
+					outlet: 'popup',
+					controller: crecordformController
+				});
 			}
 		}
 	});
