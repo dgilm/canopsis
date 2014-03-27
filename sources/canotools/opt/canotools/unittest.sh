@@ -52,14 +52,4 @@ for UNITTEST in $UNITTESTS; do
 	fi
 done 
 
-echo "Check celery and tasks"
-runtask task_backup mongo
-bfile="$HOME/var/backups/backup_mongodb.tar.gz"
-if [ ! -e $bfile ]; then
-	echo " + Error, backup file not found ($bfile)"
-	hypcontrol stop
-	exit 1
-else
-	echo " + Ok"
-fi
 hypcontrol stop
