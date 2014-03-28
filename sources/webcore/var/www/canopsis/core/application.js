@@ -1,9 +1,11 @@
 define([
 	'jquery',
 	'app/lib/ember',
-	'app/lib/ember-data'
-], function($, Ember, DS) {
-	var Application = Ember.Application.create({});
+	'app/lib/ember-data',
+	'seeds/RoutesLoader',
+	'text!app/manifest.json',
+], function($, Ember, DS, routesLoader, manifest) {
+	var Application = Ember.Application.create({"menus":{}});
 
 	Application.register("transform:array", DS.ArrayTransform);
 
@@ -38,26 +40,8 @@ define([
 		}
 	});
 
-	Application.Router.map(function() {
-		this.resource('login');
-
-		this.resource('build', function() {
-			this.resource('accounts');
-			this.resource('groups');
-			this.resource('curves');
-			this.resource('perfdatas');
-			this.resource('selectors');
-			this.resource('consolidations');
-			this.resource('topologies');
-			this.resource('eventfilter');
-		});
-
-		this.resource('run', function() {
-			this.resource('userviews');
-		});
-		// this.resource('userview', { path: '/userview/:userview_id' });
-
-	});
+	//TODO auto-require files -->	routesLoader.initializeFiles(JSON.parse(manifest), function());
+	routesLoader.initializeRoutes(Application, JSON.parse(manifest));
 
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
 		findAll: function(store, type) {

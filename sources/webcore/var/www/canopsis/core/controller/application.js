@@ -2,28 +2,7 @@ define(['app/lib/ember', 'app/application'], function(Ember, Application) {
 	Application.ApplicationRoute = Application.AuthenticatedRoute.extend({
 		model: function() {
 			return {
-				title: 'Canopsis',
-				menu: [{
-					name: 'Build',
-					icon: 'cog',
-					links: [
-						{url: '/build/accounts', title: 'Accounts', icon: 'user'},
-						{url: '/build/groups', title: 'Groups', icon: 'book'},
-						{url: '/build/curves', title: 'Curves', icon: 'picture'},
-						{url: '/build/perfdatas', title: 'PerfDatas', icon: 'stats'},
-						{url: '/build/selectors', title: 'Selectors', icon: 'link'},
-						{url: '/build/consolidations', title: 'Consolidations', icon: 'compressed'},
-						{url: '/build/topologies', title: 'Topologies', icon: 'tree-conifer'},
-						{url: '/build/eventfilter', title: 'Filter Rules', icon: 'filter'}
-					]
-				},{
-					name: 'Run',
-					icon: 'play',
-					links: [
-						{url: '/run/userviews', title: 'Userviews', icon: 'dashboard'},
-						{url: '/userview/dashboard', title: 'Dashboard', icon: 'dashboard'}
-					]
-				}]
+				title: 'Canopsis'
 			};
 		}
 	});

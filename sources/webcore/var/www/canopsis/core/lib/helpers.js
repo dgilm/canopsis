@@ -1,4 +1,8 @@
-define(['moment', 'app/lib/ember'], function(moment, Ember) {
+define(['moment',
+	'app/lib/ember',
+	'app/application',
+	'app/view/menu'
+], function(moment, Ember, Application) {
 	Ember.Handlebars.helper('glyphicon', function(icon) {
 		return new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-' + icon + '"></span>');
 	});
@@ -105,5 +109,13 @@ define(['moment', 'app/lib/ember'], function(moment, Ember) {
 			editorName = "editors-defaultpropertyeditor";
 		}
 		return Ember.Handlebars.helpers.partial.call(context, editorName, options);
+	});
+
+	Ember.Handlebars.helper('auto_menu', Application.MenuView);
+
+	Ember.Handlebars.registerHelper('ifeq', function(a, b, options) {
+		return Ember.Handlebars.bind.call(options.contexts[0], a, options, true, function(result) {
+			return result === b;
+		});
 	});
 });

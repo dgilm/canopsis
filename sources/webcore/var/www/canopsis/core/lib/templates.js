@@ -11,7 +11,8 @@ var templates = [
 	'crecordform',
 	'editors/defaultpropertyeditor',
 	'editors/boolean',
-	'editors/mail'
+	'editors/mail',
+	'menu'
 ];
 
 var deps = ['app/lib/ember', 'app/lib/mmenu'];
