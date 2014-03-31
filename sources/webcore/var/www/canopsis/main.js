@@ -5,6 +5,7 @@ define([
 	'bootstrap',
 	'app/lib/helpers',
 	'app/lib/templates',
+	'app/lib/editors',
 	'app/controller/crecords',
 	'app/controller/crecordform',
 	'app/controller/crecord',

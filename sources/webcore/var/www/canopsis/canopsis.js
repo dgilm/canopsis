@@ -2,6 +2,7 @@ require.config({
 	baseUrl: '/static/',
 	paths: {
 		'app': 'canopsis/core',
+		'editors': 'canopsis/editors',
 		'etc': 'canopsis/etc',
 		'lib': 'webcore-libs/dev',
 		'text': 'webcore-libs/dev/text',
@@ -11,6 +12,7 @@ require.config({
 		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all',
 		'colorselector': 'webcore-libs/colorselector/js/bootstrap-colorselector',
 		'seeds': 'webcore-libs/seeds',
+		'jsonselect': 'webcore-libs/jsonselect/jsonselect',
 
 		'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
 		'jquery.md5': 'webcore-libs/jquery.md5',

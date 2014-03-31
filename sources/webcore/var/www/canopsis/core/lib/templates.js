@@ -9,9 +9,6 @@ var templates = [
 	'consolidations',
 	'userviews',
 	'crecordform',
-	'editors/defaultpropertyeditor',
-	'editors/boolean',
-	'editors/mail',
 	'menu'
 ];
 
@@ -24,7 +21,7 @@ for(var i = 0; i < templates.length; i++) {
 
 define(deps, function(Ember) {
 	for(var i = depsSize; i < arguments.length; i++) {
-		var templateName = templates[i - depsSize].replace("/", "-");
+		var templateName = templates[i - depsSize];
 		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
 	}
 });
