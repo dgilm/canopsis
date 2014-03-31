@@ -4,8 +4,14 @@ define([
 	'app/lib/ember-data',
 	'seeds/RoutesLoader',
 	'text!app/manifest.json',
+	'jsonselect'
 ], function($, Ember, DS, routesLoader, manifest) {
-	var Application = Ember.Application.create({"menus":{}});
+	manifest = JSON.parse(manifest);
+
+
+	var Application = Ember.Application.create({
+		manifest: manifest
+	});
 
 	Application.register("transform:array", DS.ArrayTransform);
 
@@ -41,7 +47,7 @@ define([
 	});
 
 	//TODO auto-require files -->	routesLoader.initializeFiles(JSON.parse(manifest), function());
-	routesLoader.initializeRoutes(Application, JSON.parse(manifest));
+	routesLoader.initializeRoutes(Application, manifest);
 
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
 		findAll: function(store, type) {

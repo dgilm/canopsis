@@ -8,6 +8,7 @@ var templates = [
 	'selectors',
 	'consolidations',
 	'userviews',
+	'userview',
 	'crecordform',
 	'menu'
 ];

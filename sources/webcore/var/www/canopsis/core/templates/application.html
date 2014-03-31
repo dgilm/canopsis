@@ -14,34 +14,8 @@
 			</a>
 		</div>
 		<div class="collapse navbar-collapse">
-			old menu commented
 			<ul class="nav navbar-nav">
-				{{auto_menu name="main_menu"}}
-				<!--{{#each menu}}
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							{{#if icon}}
-								{{glyphicon icon}}
-							{{/if}}
-
-							{{name}} <b class="caret"></b>
-						</a>
-
-						<ul class="dropdown-menu">
-							{{#each links}}
-								<li>
-									<a {{action openTab url}}>
-										{{#if icon}}
-											{{glyphicon icon}}
-										{{/if}}
-
-										{{title}}
-									</a>
-								</li>
-							{{/each}}
-						</ul>
-					</li>
-				{{/each}}-->
+				{{menu name="main_menu" selector=':has(.name:val("build")),:has(.name:val("run")),:has(.name:val("report"))'}}
 			</ul>
 
 			<ul class="nav navbar-nav pull-right">
@@ -68,4 +42,5 @@
 		</div>
 		{{outlet}}
 	</div>
+	{{render userview fixture_uv}}
 </div>

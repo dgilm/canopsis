@@ -10,7 +10,6 @@ define([
 
 		_id: DS.attr('string'),
 		name: DS.attr('string')
-
 	});
 
 	Application.Userview.reopenClass({

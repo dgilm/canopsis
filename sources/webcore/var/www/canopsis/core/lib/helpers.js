@@ -106,16 +106,17 @@ define(['moment',
 		var editorName = "editors-" + attr;
 
 		if(Ember.TEMPLATES[editorName] === undefined) {
-			editorName = "editors-defaultpropertyeditor";
+			editorName = "editor-defaultpropertyeditor";
 		}
 		return Ember.Handlebars.helpers.partial.call(context, editorName, options);
 	});
 
-	Ember.Handlebars.helper('auto_menu', Application.MenuView);
+	Ember.Handlebars.helper('menu', Application.MenuView);
 
 	Ember.Handlebars.registerHelper('ifeq', function(a, b, options) {
-		return Ember.Handlebars.bind.call(options.contexts[0], a, options, true, function(result) {
+		return Ember.Handlebars.helpers.bind.call(options.contexts[0], a, options, true, function(result) {
 			return result === b;
 		});
 	});
+
 });
