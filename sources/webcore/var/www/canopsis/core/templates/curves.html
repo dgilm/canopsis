@@ -14,6 +14,7 @@
 		<thead>
 			<tr>
 				<th>Check</th>
+				<th>Edit</th>
 				<th>Line Color</th>
 				<th>Area Color</th>
 				<th>Line Style</th>
@@ -29,6 +30,11 @@
 			{{#each curve in controller}}
 				<tr>
 					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
+					<td>
+						<button type="button" class="btn btn-small btn-default" {{action 'showEditForm'}}>
+							{{glyphicon "edit"}}
+						</button>
+					</td>
 					<td>{{colorview line_color}}</td>
 					<td>{{colorview area_color}}</td>
 					<td>{{line_style}}</td>

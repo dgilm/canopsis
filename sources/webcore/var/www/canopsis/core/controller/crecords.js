@@ -7,15 +7,22 @@ define([
 
 	Application.CrecordsRoute = Application.AuthenticatedRoute.extend({
 		actions: {
-			show_add_crecord_form: function(crecord_type){
-				crecordformController = Application.CrecordformController.create();
-				crecordformController.crecord_type = crecord_type;
+			show_add_crecord_form: function(crecord_type, model){
+				var crecordformController = Application.CrecordformController.create();
+				crecordformController.set("crecord_type", crecord_type);
+				crecordformController.set("editMode", "add");
 
 				this.render("crecordform", {
 					outlet: 'popup',
 					controller: crecordformController
 				});
 			},
+			showEditFormWithController: function(crecordformController) {
+				this.render("crecordform", {
+					outlet: 'popup',
+					controller: crecordformController
+				});
+			}
 		}
 	});
 
@@ -66,15 +73,20 @@ define([
 				});
 
 				var record = this.store.createRecord(crecord_type, raw_record);
+				console.log("addrecord record");
+				console.log(record);
 
 				//send the new item via the API
-				// record.save();
+				record.save();
 			},
 			showAddForm: function() {
 				this.send('show_add_crecord_form', this.get("content").type.typeKey);
 			},
 			remove: function(){
-				this.removeObjects(this.filterBy('isSelected', true));
+				var selected = this.filterBy('isSelected', true);
+				console.log("remove action", selected);
+				selected.invoke('remove');
+    			// selected.invoke('save');
 			}
 		}
 	});

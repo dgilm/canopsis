@@ -6,6 +6,7 @@ define([
 	'app/model/crecord'
 ], function($, Ember, DS, Application) {
 	Application.Group = Application.Crecord.extend({
+		crecord_type: "group",
 		name: DS.attr('string'),
 		description: DS.attr('string')
 	});

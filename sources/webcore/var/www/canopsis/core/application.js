@@ -52,6 +52,10 @@ define([
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
 		findAll: function(store, type) {
 			return type.findAll(store, localStorage.cps_authkey);
+		},
+		pathForType: function(type) {
+			console.log("pathForType", type);
+			return "rest/object/" + Ember.String.underscore(type);
 		}
 	});
 

@@ -10,7 +10,7 @@ define([
 		user: DS.attr('string', {description: "the user name"}),
 		firstname: DS.attr('string'),
 		lastname: DS.attr('string'),
-		mail: DS.attr('mail'),
+		mail: DS.attr('string'),
 		group: DS.attr('string'),
 		groups: DS.attr('array')
 	});

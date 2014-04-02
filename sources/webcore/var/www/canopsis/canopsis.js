@@ -3,6 +3,7 @@ require.config({
 	paths: {
 		'app': 'canopsis/core',
 		'editors': 'canopsis/editors',
+		'widgets': 'canopsis/widgets',
 		'etc': 'canopsis/etc',
 		'lib': 'webcore-libs/dev',
 		'text': 'webcore-libs/dev/text',

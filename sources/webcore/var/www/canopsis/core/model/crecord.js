@@ -5,6 +5,7 @@ define([
 	'app/application'
 ], function($, Ember, DS, Application) {
 	Application.Crecord = DS.Model.extend({
+		_id: DS.attr('string', { hiddenInForm: true }),
 		crecord_type: DS.attr('string', { hiddenInForm: true })
 	});
 

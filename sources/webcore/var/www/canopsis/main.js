@@ -6,9 +6,11 @@ define([
 	'app/lib/helpers',
 	'app/lib/templates',
 	'app/lib/editors',
+	'app/lib/widgets',
 	'app/controller/crecords',
 	'app/controller/crecordform',
 	'app/controller/crecord',
+	'app/controller/widget',
 	'app/controller/login',
 	'app/controller/application',
 	'app/controller/groups',
@@ -22,7 +24,12 @@ define([
 	'app/view/login',
 	'app/view/crecordform',
 	'app/view/application',
-	'app/view/accounts'
+	'app/view/accounts',
+	'app/view/editor',
+	'canopsis/widgets/timegraph/controller',
+	'canopsis/widgets/timegraph/model',
+	'canopsis/widgets/timegraph/view',
+	'app/view/widget'
 ], function(commit, $, Application) {
 	window.Canopsis = Application;
 	Canopsis.commit = commit;

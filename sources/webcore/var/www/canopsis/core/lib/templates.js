@@ -9,8 +9,10 @@ var templates = [
 	'consolidations',
 	'userviews',
 	'userview',
+	'widget',
 	'crecordform',
-	'menu'
+	'menu',
+	'widget-titlebar'
 ];
 
 var deps = ['app/lib/ember', 'app/lib/mmenu'];

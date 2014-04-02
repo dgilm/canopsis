@@ -7,10 +7,11 @@ define([
 	Application.CrecordformView = Ember.View.extend({
 		//Controller -> View Hooks
 		registerHooks: function() {
-			this.controller.on('addRecord', this, this.hidePopup);
+			this.get("controller").on('validate', this, this.hidePopup);
 		},
+
 		unregisterHooks: function() {
-			this.controller.off('addRecord', this, this.hidePopup);
+			this.get("controller").off('validate', this, this.hidePopup);
 		},
 
 		//Ember native events
@@ -23,8 +24,8 @@ define([
 				this.showPopup();
 			});
 		},
-		willClearRender: function()
-		{
+
+		willClearRender: function() {
 			this.unregisterHooks();
 		},
 
@@ -33,6 +34,7 @@ define([
 			$("#crecordform-modal").modal();
 		},
 		hidePopup: function() {
+			console.log("view hidePopup");
 			$("#crecordform-modal").modal("hide");
 		}
 	});
