@@ -76,17 +76,17 @@
 		"icon": "filter",
 		"description": "userviews",
 		"appears_on": ["main_menu"]
-	},{
-		"type": "route",
-		"name": "userview",
-		"icon": "filter",
-		"description": "userview",
-		"appears_on": ["main_menu"],
-		"path": "/view/:view_id"
 	}]
 },{
 	"type": "",
 	"name": "report",
 	"description": "users",
 	"appears_on": ["main_menu"]
+},{
+		"type": "route",
+		"name": "userview",
+		"icon": "filter",
+		"description": "userview",
+		"appears_on": ["main_menu"],
+		"path": "/userview/:userview_id"
 }]

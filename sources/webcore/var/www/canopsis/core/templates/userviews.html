@@ -14,7 +14,9 @@
 		<thead>
 			<tr>
 				<th>Check</th>
+				<th>preview</th>
 				<th>type</th>
+				<th>_id</th>
 				<th>name</th>
 			</tr>
 		</thead>
@@ -23,8 +25,14 @@
 			{{#each userview in controller}}
 				<tr>
 					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
+					<td>
+						<button type="button" class="btn btn-small btn-default" {{action 'showView'}}>
+							{{glyphicon "eye-open"}}
+						</button>
+					</td>
 					<td>{{crecord_type}}</td>
-					<td>{{name}}</td>
+					<td>{{_id}}</td>
+					<td>{{crecord_name}}</td>
 				</tr>
 			{{/each}}
 		</tbody>

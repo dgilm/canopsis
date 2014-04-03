@@ -24,7 +24,30 @@ define([
 	'app/model/userview'
 ], function($, Ember, Application, Userview) {
 
+	Application.UserviewIndexRoute = Application.AuthenticatedRoute.extend({
+		setupController: function(controller, model) {
+			console.log("UserviewIndexRoute setupController");
+			controller.set('content', model);
+			controller.set('toolitems', controller.toolbar);
+		},
+
+		model: function() {
+			console.log("model");
+			return this.store.findAll('userview');
+		}
+	});
+
 	Application.UserviewController = Ember.ObjectController.extend({
+		actions:{
+			showView: function() {
+				console.log("test");
+				console.log(this.get("name"));
+				this.transitionToRoute("/userview/" + this.get("_id"));
+			}
+		}
+	});
+
+	Application.UserviewIndexController = Ember.ObjectController.extend({
 	});
 
 	return Application.UserviewController;

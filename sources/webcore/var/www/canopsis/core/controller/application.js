@@ -20,10 +20,8 @@
 define(['app/lib/ember', 'app/application'], function(Ember, Application) {
 	Application.ApplicationRoute = Application.AuthenticatedRoute.extend({
 		model: function() {
-			var fixture_widget = this.store.createRecord("timegraph", { "name": "uv1"});
 			return {
-				title: 'Canopsis',
-				fixture_widget: fixture_widget
+				title: 'Canopsis'
 			};
 		}
 	});

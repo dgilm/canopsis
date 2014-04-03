@@ -16,23 +16,39 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord'
+	'app/model/crecord',
+	'app/model/widget'
 ], function($, Ember, DS, Application) {
+
 	Application.Userview = Application.Crecord.extend({
 		enable: DS.attr('boolean'),
 
 		_id: DS.attr('string'),
-		name: DS.attr('string')
+		name: DS.attr('string'),
+		crecord_name: DS.attr('string'),
+		internal: DS.attr('boolean')
 	});
 
 	Application.Userview.reopenClass({
+		find: function(store, authkey) {
+			console.log("Userview find");
+			return $.ajax({
+				url: '/rest/object/view',
+				method: 'GET',
+				contentType: 'application/json',
+				data: {
+					authkey: authkey
+				}
+			});
+		},
+
 		findAll: function(store, authkey) {
+			console.log("Userview findAll");
 			return $.ajax({
 				url: '/rest/object/view',
 				method: 'GET',
@@ -45,17 +61,31 @@ define([
 
 		extractFindAll: function(store, payload) {
 			var userviews = [];
+			console.log("Userview extractFindAll", payload);
 
 			for(var i = 0; i < payload.data.length; i++) {
 				var userview = payload.data[i];
 
-				userview.name = userview._id;
 				userviews.push(userview);
 			}
 
 			return userviews;
+		},
+
+		extractFind: function(store, payload) {
+			var userviews = [];
+			console.log("Userview extractFind", payload);
+
+			return userviews;
+		},
+
+		extractSingle: function(store, type, payload, id, requestType) {
+			var userview = payload.data;
+			console.log("Userview extractSingle", payload);
+			return userview;
 		}
 	});
+
 
 	return Application.Userview;
 });

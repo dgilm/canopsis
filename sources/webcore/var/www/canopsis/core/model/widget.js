@@ -16,27 +16,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
-
 define([
 	'jquery',
 	'app/lib/ember',
-	'app/application',
-	'app/model/userview'
-], function($, Ember, Application, Selector) {
-	Application.UserviewsRoute = Application.AuthenticatedRoute.extend({
-		setupController: function(controller, model) {
-			controller.set('content', model);
-			controller.set('toolitems', controller.toolbar);
-		},
+	'app/lib/ember-data',
+	'app/application'
+], function($, Ember, DS, Application) {
 
-		model: function() {
-			return this.store.findAll('userview');
-		}
+	Application.Widget = DS.Model.extend({
+		type: DS.attr('string')
 	});
 
-	Application.UserviewsController = Application.CrecordsController.extend({
-		itemController: "Userview"
-	});
-
-	return Application.UserviewsController;
+	return Application.Widget;
 });

@@ -2,6 +2,8 @@ define([
 	'canopsis/commit',
 	'jquery',
 	'app/application',
+	'text!app/manifest.json',
+	'seeds/RoutesLoader',
 	'bootstrap',
 	'app/lib/helpers',
 	'app/lib/templates',
@@ -30,7 +32,13 @@ define([
 	'canopsis/widgets/timegraph/model',
 	'canopsis/widgets/timegraph/view',
 	'app/view/widget'
-], function(commit, $, Application) {
+], function(commit, $, Application, manifest, routesLoader) {
+	manifest = JSON.parse(manifest);
+	Application.manifest = manifest;
+
+	//TODO auto-require files -->	routesLoader.initializeFiles(JSON.parse(manifest), function());
+	routesLoader.initializeRoutes(Application, manifest);
+
 	window.Canopsis = Application;
 	Canopsis.commit = commit;
 });

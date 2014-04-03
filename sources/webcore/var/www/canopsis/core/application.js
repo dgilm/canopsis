@@ -21,16 +21,12 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
-	'seeds/RoutesLoader',
-	'text!app/manifest.json',
 	'jsonselect'
-], function($, Ember, DS, routesLoader, manifest) {
-	manifest = JSON.parse(manifest);
+], function($, Ember, DS) {
 
+	var Application = Ember.Application.create({});
 
-	var Application = Ember.Application.create({
-		manifest: manifest
-	});
+	// Ember.applicationInstance = Application;
 
 	Application.register("transform:array", DS.ArrayTransform);
 
@@ -65,24 +61,37 @@ define([
 		}
 	});
 
-	//TODO auto-require files -->	routesLoader.initializeFiles(JSON.parse(manifest), function());
-	routesLoader.initializeRoutes(Application, manifest);
-
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
+
 		findAll: function(store, type) {
+			console.log("findAll", type);
 			return type.findAll(store, localStorage.cps_authkey);
 		},
+
+		find: function(store, type) {
+			console.log("find", type);
+			return type.find(store, localStorage.cps_authkey);
+		},
+
 		pathForType: function(type) {
 			console.log("pathForType", type);
+			if(type === "userview") {
+				type = "view";
+			}
 			return "rest/object/" + Ember.String.underscore(type);
 		}
 	});
 
 	Application.ApplicationSerializer = DS.RESTSerializer.extend({
 		extractFindAll: function(store, type, payload) {
-			return type.extractFindAll(store, payload);
+			var result = type.extractFindAll(store, payload)
+			return result;
+		},
+		extractFind: function(store, type, payload) {
+			var result = type.extractFind(store, payload)
+			return result;
 		}
-	})
+	});
 
 	return Application;
 });
