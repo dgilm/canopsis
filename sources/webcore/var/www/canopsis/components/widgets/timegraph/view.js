@@ -2,7 +2,7 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'canopsis/widgets/timegraph/controller'
+	'components/widgets/timegraph/controller'
 ], function($, Ember, Application, WidgetTimegraphController) {
 	Application.WidgetTimegraphView = Application.WidgetView.extend({
 		controller: WidgetTimegraphController

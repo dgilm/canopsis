@@ -2,8 +2,7 @@ require.config({
 	baseUrl: '/static/',
 	paths: {
 		'app': 'canopsis/core',
-		'editors': 'canopsis/editors',
-		'widgets': 'canopsis/widgets',
+		'components': 'canopsis/components',
 		'etc': 'canopsis/etc',
 		'lib': 'webcore-libs/dev',
 		'text': 'webcore-libs/dev/text',

@@ -27,7 +27,7 @@ var deps = ['app/lib/ember', 'app/lib/mmenu'];
 var depsSize = deps.length;
 
 for(var i = 0; i < widgetsTemplates.length; i++) {
-	deps.push('text!widgets/' + widgetsTemplates[i] + '/template.html');
+	deps.push('text!components/widgets/' + widgetsTemplates[i] + '/template.html');
 }
 
 define(deps, function(Ember) {

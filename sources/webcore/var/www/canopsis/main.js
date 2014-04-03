@@ -28,9 +28,6 @@ define([
 	'app/view/application',
 	'app/view/accounts',
 	'app/view/editor',
-	'canopsis/widgets/timegraph/controller',
-	'canopsis/widgets/timegraph/model',
-	'canopsis/widgets/timegraph/view',
 	'app/view/widget'
 ], function(commit, $, Application, manifest, routesLoader) {
 	manifest = JSON.parse(manifest);

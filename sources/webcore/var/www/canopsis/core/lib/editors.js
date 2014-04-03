@@ -30,7 +30,7 @@ var deps = ['app/lib/ember', 'app/lib/mmenu'];
 var depsSize = deps.length;
 
 for(var i = 0; i < editorsTemplates.length; i++) {
-	deps.push('text!editors/' + editorsTemplates[i] + "/" + editorsTemplates[i] + '.html');
+	deps.push('text!components/editors/' + editorsTemplates[i] + '/template.html');
 }
 
 define(deps, function(Ember) {
