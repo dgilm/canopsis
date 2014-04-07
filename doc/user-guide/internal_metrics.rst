@@ -12,7 +12,23 @@ List of internal metrics
 
 .. NOTE :: TODO
    Specify for which component/resource these metrics appears, their units, and their descriptions
+   Internal metrics are produced periodicaly. So their values are updated though time.
 
+Acknowlegement
+--------------
+
+* **cps_alerts_ack** Counts alerts beeing acknowleged. it is computed at global level and for each hostgroup.
+
+* **cps_alerts_not_ack** Counts alerts not yet acknowleged. it is computed at global level and for each hostgroup.
+
+* **cps_alerts_ack_by_host** Counts alerts witch is ack because it's related component has been acknowledged. it is computed at global level and for each hostgroup.
+
+* **ack_delay** Measures elapsed time between an alert date and it's acknowlegement's date.
+
+* **ack_solved_delay** Measures elapsed time between an acknowlegement date and the alert change state to OK (0) date.
+
+Alerting
+--------
 
 * **cps_statechange_hard** Counts every  state change for a given event witch is in **hard** state, hard state is an event's state_type key equal to 0
 
@@ -40,6 +56,9 @@ List of internal metrics
 
 * **cps_statechange_3** Counts every  state change for a given event witch state goes from 0, 1, 2 state to 3 state
 
+Information
+-----------
+
 * **cps_evt_per_sec** Counts how many events being  threaten each second by an engine. Resource of this metric is the engine name
 
 * **cps_sec_per_evt** Counts how long does an event last in each engine
@@ -49,12 +68,6 @@ List of internal metrics
 +-----------------------------------------+------+-------------+
 | Name                                    | Unit | Description |
 +=========================================+======+=============+
-| cps_state                               |      |             |
-+-----------------------------------------+------+-------------+
-+-----------------------------------------+------+-------------+
-
-
-+-----------------------------------------+------+-------------+
 | cps_statechange_service_from_component  |      |             |
 +-----------------------------------------+------+-------------+
 | cps_evt_per_sec                         |      |             |

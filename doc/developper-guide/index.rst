@@ -12,3 +12,4 @@ Contents:
    rest-api
    create-your-own-widgets
    packaging
+   canolibs/index
