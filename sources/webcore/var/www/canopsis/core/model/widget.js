@@ -24,7 +24,10 @@ define([
 ], function($, Ember, DS, Application) {
 
 	Application.Widget = DS.Model.extend({
-		type: DS.attr('string')
+        _id: DS.attr('string'),
+        title: DS.attr('string'),
+		type: DS.attr('string'),
+        connectionParameters:DS.attr('array')
 	});
 
 	return Application.Widget;

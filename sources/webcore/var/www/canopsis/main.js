@@ -13,6 +13,8 @@ define([
 	'app/controller/crecordform',
 	'app/controller/crecord',
 	'app/controller/widget',
+    'app/controller/item',
+    'app/controller/container',
 	'app/controller/login',
 	'app/controller/application',
 	'app/controller/groups',

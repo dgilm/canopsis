@@ -24,7 +24,7 @@ define([
 	'app/controller/crecord'
 ], function($, Ember, Application) {
 
-	Application.WidgetController = Application.CrecordController.extend({
+	Application.WidgetController = Application.ObjectController.extend({
 	});
 
 	return Application.WidgetController;

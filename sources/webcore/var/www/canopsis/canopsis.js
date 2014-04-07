@@ -9,11 +9,11 @@ require.config({
 
 		'moment': 'webcore-libs/moment.min',
 		'jquery': 'webcore-libs/dev/jquery-1.10.2',
+        'gridster': 'webcore-libs/dev/jquery.gridster',
 		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all',
 		'colorselector': 'webcore-libs/colorselector/js/bootstrap-colorselector',
 		'seeds': 'webcore-libs/seeds',
 		'jsonselect': 'webcore-libs/jsonselect/jsonselect',
-
 		'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
 		'jquery.md5': 'webcore-libs/jquery.md5',
 
