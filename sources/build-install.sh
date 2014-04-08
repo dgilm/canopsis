@@ -374,9 +374,9 @@ check_code $? "Impossible to move to externals"
 git submodule init && git submodule update
 check_code $? "Impossible to init externals submodules"
 cd $SRC_PATH/..
-	
-export_env
+
 detect_os
+export_env
 
 if [ $OPT_BUILD -eq 1 ]; then
 
