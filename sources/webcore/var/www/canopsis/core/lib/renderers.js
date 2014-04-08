@@ -24,7 +24,9 @@ var renderersTemplates = [
 	'default',
 	'mail',
 	'boolean',
-	'tags'
+	'tags',
+	'state',
+	'timestamp',
 ];
 
 var deps = ['app/lib/ember'];

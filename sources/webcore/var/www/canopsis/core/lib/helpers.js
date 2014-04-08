@@ -20,8 +20,31 @@
 define(['moment',
 	'app/lib/ember',
 	'app/application',
-	'app/view/menu'
-], function(moment, Ember, Application) {
+	'app/view/menu',
+	'app/lib/tools',
+], function(moment, Ember, Application, Tools) {
+
+	Ember.Handlebars.helper('timestamp', function(timestamp, options) {
+		function addZero(i)     {
+			if (i<10) {
+				i="0" + i;
+			}
+			return i + '';
+		}
+
+		var a = new Date(timestamp*1000);
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
+		var year = a.getFullYear();
+		var month = months[a.getMonth()];
+		var date = a.getDate();
+		var hour = a.getHours();
+		var min = a.getMinutes();
+		var sec = a.getSeconds();
+		var time = [addZero(date), month, addZero(year)].join(' ') + ' ' + [addZero(hour), addZero(min), addZero(sec)].join(':') ;
+
+		return new Ember.Handlebars.SafeString(time);
+	});
+
 	Ember.Handlebars.helper('glyphicon', function(icon) {
 		return new Ember.Handlebars.SafeString('<span class="glyphicon glyphicon-' + icon + '"></span>');
 	});
@@ -33,6 +56,7 @@ define(['moment',
 	Ember.Handlebars.helper('colorview', function(color) {
 		return new Ember.Handlebars.SafeString('<div style="width: 24px; height: 24px; margin: auto; background-color: ' + color + ';"></div>');
 	});
+
 
 	Ember.Handlebars.helper('stateview', function(state, options) {
 		var classNames = 'canopsis-state-unknown';

@@ -25,12 +25,12 @@ define([
 	'app/model/crecord'
 ], function($, Ember, DS, Application, Crecord) {
 	Application.Eventnavigation = Application.Crecord.extend({
-		timestamp	: DS.attr('number'),
+		timestamp	: DS.attr('number', {'role': 'timestamp'}),
 		component	: DS.attr('string'),
 		resource	: DS.attr('string'),
 		connector	: DS.attr('string'),
 		output		: DS.attr('string'),
-		state		: DS.attr('number')
+		state		: DS.attr('number', {'role': 'state'})
 	});
 
 	Application.Eventnavigation.reopenClass({
