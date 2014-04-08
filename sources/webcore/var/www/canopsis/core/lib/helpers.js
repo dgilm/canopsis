@@ -24,6 +24,27 @@ define(['moment',
 	'app/lib/tools',
 ], function(moment, Ember, Application, Tools) {
 
+	Ember.Handlebars.helper('color', function(color, options) {
+
+		var style = '';
+
+		if (color.toLowerCase() !== '#null') {
+			style = 'style="background-color:' + color + '"';
+		} else {
+			color = 'no color';
+		}
+
+		return new Ember.Handlebars.SafeString('<div class="color" ' + style + '>' + color + '</div>');
+
+	});
+
+	Ember.Handlebars.helper('percent', function(value, type, options) {
+
+		value = value + '%';
+		return new Ember.Handlebars.SafeString(value);
+
+	});
+
 	Ember.Handlebars.helper('timestamp', function(timestamp, options) {
 		function addZero(i)     {
 			if (i<10) {

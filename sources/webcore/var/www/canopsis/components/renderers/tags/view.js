@@ -23,8 +23,8 @@ define([
 	'app/application',
 ], function($, Ember, Application, Controller) {
 
-	Application.EditorBooleanView = Ember.View.extend({
+	Application.RendererTagsView = Ember.View.extend({
 	});
 
-	return Application.EditorBooleanView;
+	return Application.RendererTagsView;
 });

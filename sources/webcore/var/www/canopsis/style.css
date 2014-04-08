@@ -56,3 +56,9 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 .handle{
 	cursor:pointer;
 }
+
+.color{
+	color:#333;
+	border-radius:4px;
+	padding:4px;
+}

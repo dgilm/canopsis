@@ -25,10 +25,10 @@ define([
 	'app/model/crecord'
 ], function($, Ember, DS, Application) {
 	Application.Curve = Application.Crecord.extend({
-		line_color: DS.attr('string'),
+		line_color: DS.attr('string', {role: "color"}),
 		area_color: DS.attr('string', {role: "color"}),
 		line_style: DS.attr('string'),
-		area_opacity: DS.attr('number', {role: "percentage"}),
+		area_opacity: DS.attr('number', {role: "percent"}),
 		zindex: DS.attr('number'),
 		invert: DS.attr('boolean'),
 		metric: DS.attr('string'),
