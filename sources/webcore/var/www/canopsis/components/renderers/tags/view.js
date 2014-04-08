@@ -20,20 +20,11 @@
 define([
 	'jquery',
 	'app/lib/ember',
-	'app/application'
-], function($, Ember, Application) {
+	'app/application',
+], function($, Ember, Application, Controller) {
 
-	Application.WidgetController = Ember.ObjectController.extend({
-        action: {
-                    displayAction : function(){
-                        this.display();
-                    },
-
-                    refreshAction:function(){
-                        this.refresh();
-                    } 
-                }
+	Application.EditorBooleanView = Ember.View.extend({
 	});
 
-	return Application.WidgetController;
+	return Application.EditorBooleanView;
 });

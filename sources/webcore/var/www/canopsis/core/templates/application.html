@@ -15,12 +15,12 @@
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				{{menu name="main_menu" selector=':has(.name:val("build")),:has(.name:val("run")),:has(.name:val("report"))'}}
+				{{menu class="handle" name="main_menu" selector=':has(.name:val("build")),:has(.name:val("run")),:has(.name:val("report"))'}}
 			</ul>
 
 			<ul class="nav navbar-nav pull-right">
 				<li>
-					<a {{action 'logout'}}>
+					<a class="handle" {{action 'logout'}}>
 						{{glyphicon 'off'}}
 					</a>
 				</li>
