@@ -36,7 +36,7 @@ define([
 		last_value: DS.attr('number'),
 		min: DS.attr('number'),
 		max: DS.attr('number'),
-		tags: DS.attr('array')
+		tags: DS.attr('array', {role: "tags"})
 	});
 
 	Application.Perfdata.reopenClass({

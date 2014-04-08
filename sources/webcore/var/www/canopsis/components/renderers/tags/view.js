@@ -17,26 +17,14 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+define([
+	'jquery',
+	'app/lib/ember',
+	'app/application',
+], function($, Ember, Application, Controller) {
 
-//TODO implement auto check for mvct file existence and require them automatically
+	Application.EditorBooleanView = Ember.View.extend({
+	});
 
-var renderersTemplates = [
-	'default',
-	'mail',
-	'boolean',
-	'tags'
-];
-
-var deps = ['app/lib/ember'];
-var depsSize = deps.length;
-
-for(var i = 0; i < renderersTemplates.length; i++) {
-	deps.push('text!components/renderers/' + renderersTemplates[i] + '/template.html');
-}
-
-define(deps, function(Ember) {
-	for(var i = depsSize; i < arguments.length; i++) {
-		var templateName = "renderer-" + renderersTemplates[i - depsSize];
-		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
-	}
+	return Application.EditorBooleanView;
 });
