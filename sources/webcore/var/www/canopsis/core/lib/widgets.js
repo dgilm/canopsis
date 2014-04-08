@@ -23,7 +23,7 @@ var widgetsTemplates = [
 	'timegraph'
 ];
 
-var deps = ['app/lib/ember', 'app/lib/mmenu'];
+var deps = ['app/lib/ember'];
 var depsSize = deps.length;
 
 for(var i = 0; i < widgetsTemplates.length; i++) {

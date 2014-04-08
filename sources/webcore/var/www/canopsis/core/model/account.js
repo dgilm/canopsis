@@ -29,8 +29,8 @@ define([
 		user: DS.attr('string', {description: "the user name"}),
 		firstname: DS.attr('string'),
 		lastname: DS.attr('string'),
-		mail: DS.attr('string'),
-		group: DS.attr('string'),
+		mail: DS.attr('string', {role: "mail"}),
+		group: DS.attr('string', {role: "group"}),
 		groups: DS.attr('array')
 	});
 

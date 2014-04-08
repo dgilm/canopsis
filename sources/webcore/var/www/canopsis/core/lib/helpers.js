@@ -120,24 +120,94 @@ define(['moment',
 		}
 	});
 
-	// Ember.Handlebars.registerBoundHelper('editor', function(context, attr, value, options) {
-	// 	var typeName = attr;
-	// 	var editorName = "editors-" + attr;
+	Ember.Handlebars.registerBoundHelper('editor', function(attr, options) {
+		// var escaped = Handlebars.Utils.escapeExpression(value);
+		console.groupCollapsed("editor helper for", attr.field);
+		console.log(attr);
+		var typeName;
 
-	// 	if(Ember.TEMPLATES[editorName] === undefined) {
-	// 		editorName = "editor-defaultpropertyeditor";
-	// 	}
-	// 	return Ember.Handlebars.helpers.partial.call(context, editorName, options);
-	// });
+		if(attr.model.options.role !== undefined) {
+			typeName = attr.model.options.role;
+		} else {
+			// console.log("use type as role : ", attr.model.type);
+			typeName = attr.model.type;
+		}
+
+		var editorName = "editor-" + typeName;
+
+		console.log("evaluated editor name :", editorName);
+		if(Ember.TEMPLATES[editorName] === undefined) {
+			editorName = "editor-defaultpropertyeditor";
+		}
+
+		console.log("Using template :", editorName);
+		console.groupCollapsed("Checking for appropriate view and/or controller");
+		editorNameParts = editorName.split("-");
+
+		for (var i = 0; i < editorNameParts.length; i++) {
+			editorNameParts[i] = editorNameParts[i].capitalize();
+		};
+
+		var controllerName = editorNameParts.join("") + "Controller";
+		var viewName = editorNameParts.join("") + "View";
+
+		if(Application[controllerName] !== undefined)
+			console.log("controller :\t", controllerName);
+		else
+			console.log("controller : \t[default controller]");
+
+		if(Application[viewName] !== undefined)
+			console.log("view : \t\t\t", viewName);
+		else
+			console.log("view : \t\t\t[default view]");
+
+		console.groupEnd();
+		console.groupEnd();
+
+		return Ember.Handlebars.helpers.render.call(this, editorName, attr, options);
+	});
+
 
 	Ember.Handlebars.helper('menu', Application.MenuView);
-	Ember.Handlebars.helper('editor', Application.EditorView);
+	// Ember.Handlebars.helper('editor', Application.EditorView);
+
+	Ember.Handlebars.registerBoundHelper('renderer', function(crecord, attr, options) {
+		console.groupCollapsed("renderer helper for", attr.field);
+			console.log("attribute dict", attr);
+			console.log("found attr", crecord.content._data[attr.field]);
+			console.log('problem set attr', typeof attr, attr);
+			//adding value to attr field
+			Ember.set(attr, "value", crecord.content._data[attr.field]);
+
+
+			var typeName;
+
+			if(attr.options.role !== undefined) {
+				typeName = attr.options.role;
+			} else {
+				// console.log("use type as role : ", attr.model.type);
+				typeName = attr.type;
+			}
+
+			console.log('typeName', typeName);
+
+			var rendererName = "renderer-" + typeName;
+
+			console.log("evaluated renderer name :", rendererName);
+			if(Ember.TEMPLATES[rendererName] === undefined) {
+				rendererName = "renderer-default";
+			}
+		console.groupEnd();
+
+		return Ember.Handlebars.helpers.partial.call(this, rendererName, options);
+	});
 
 	Ember.Handlebars.registerHelper('ifeq', function(a, b, options) {
 		return Ember.Handlebars.helpers.bind.call(options.contexts[0], a, options, true, function(result) {
 			return result === b;
 		});
 	});
+
 	Ember.Handlebars.registerBoundHelper('log', function(message, options) {
 		console.log(message);
 		return '';

@@ -27,15 +27,12 @@ define([
 	Application.CrecordController = Ember.ObjectController.extend({
 		actions: {
 			showEditForm: function() {
-				console.log("CrecordController::showEditForm", this.get(this.dataAccessKey));
-				console.log("editors based on", this.get("model.constructor.typeKey"));
-				console.log("changedAttributes", this.get('model').changedAttributes());
+				var crecord_type = this.get("model.constructor.typeKey");
+				console.log("Form generation for", crecord_type);
 
 				crecordformController = Application.CrecordformController.create();
-				crecordformController.set("crecord_type", this.get("model.constructor.typeKey"));
+				crecordformController.set("crecord_type", crecord_type);
 				crecordformController.set("record_raw", this.get(this.dataAccessKey));
-				crecordformController.set("editMode", "edit");
-				crecordformController.set("editedRecordController", this);
 
 				this.send('showEditFormWithController', crecordformController);
 			},

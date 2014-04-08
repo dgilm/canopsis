@@ -15,22 +15,24 @@
 			<tr>
 				<th>Check</th>
 				<th>Edit</th>
-				<th>Name</th>
-				<th>Description</th>
+				{{#each attr in attributesKeys}}
+					<th>{{attr.field}}</th>
+				{{/each}}
 			</tr>
 		</thead>
-
 		<tbody>
-			{{#each group in controller}}
+			{{#each item in controller}}
 				<tr>
-					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</a></td>
+					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</td>
 					<td>
 						<button type="button" class="btn btn-small btn-default" {{action 'showEditForm'}}>
 							{{glyphicon "edit"}}
 						</button>
 					</td>
-					<td>{{name}}</td>
-					<td>{{description}}</td>
+					{{log controller.parentController.attributesKeys}}
+					{{#each attr in controller.parentController.attributesKeys}}
+						<td>{{renderer item attr}}</td>
+					{{/each}}
 				</tr>
 			{{/each}}
 		</tbody>
