@@ -21,11 +21,9 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/controller/accounts'
-], function($, Ember, Application, AccountsController) {
-	Application.AccountsView = Ember.View.extend({
-		controller: AccountsController
-	});
+	'app/view/crecords'
+], function($, Ember, Application) {
+	Application.AccountsView = Application.CrecordsView.extend({});
 
 	return Application.AccountsView;
 });

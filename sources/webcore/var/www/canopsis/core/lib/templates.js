@@ -20,12 +20,7 @@
 var templates = [
 	'login',
 	'application',
-	'accounts',
-	'groups',
-	'curves',
-	'perfdatas',
-	'selectors',
-	'consolidations',
+	'crecords',
 	'userviews',
 	'userview',
 	'widget',
@@ -36,7 +31,7 @@ var templates = [
 	'widget-titlebar'
 ];
 
-var deps = ['app/lib/ember', 'app/lib/mmenu'];
+var deps = ['app/lib/ember'];
 var depsSize = deps.length;
 
 for(var i = 0; i < templates.length; i++) {

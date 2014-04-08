@@ -20,20 +20,12 @@
 define([
 	'jquery',
 	'app/lib/ember',
-	'app/application'
-], function($, Ember, Application) {
+	'app/application',
+	'app/controller/editor'
+], function($, Ember, Application, editorController) {
 
 	Application.EditorView = Ember.View.extend({
-		templateName: function() {
-			if(Ember.TEMPLATES["editor-"+ this.get('content.model.type')] !== undefined )
-				return "editor-"+ this.get('content.model.type');
-			else
-				return "editor-defaultpropertyeditor";
-		}.property('content.template').cacheable(),
-
-		_templateChanged: function() {
-			this.rerender();
-		}.observes('templateName')
+		controller: editorController
 	});
 
 	return Application.EditorView;

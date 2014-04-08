@@ -20,23 +20,22 @@
 
 //TODO implement auto check for mvct file existence and require them automatically
 
-var editorsTemplates = [
-	'defaultpropertyeditor',
-	'boolean',
-	'group',
-	'mail'
+var renderersTemplates = [
+	'default',
+	'mail',
+	'boolean'
 ];
 
 var deps = ['app/lib/ember'];
 var depsSize = deps.length;
 
-for(var i = 0; i < editorsTemplates.length; i++) {
-	deps.push('text!components/editors/' + editorsTemplates[i] + '/template.html');
+for(var i = 0; i < renderersTemplates.length; i++) {
+	deps.push('text!components/renderers/' + renderersTemplates[i] + '/template.html');
 }
 
 define(deps, function(Ember) {
 	for(var i = depsSize; i < arguments.length; i++) {
-		var templateName = "editor-" + editorsTemplates[i - depsSize];
+		var templateName = "renderer-" + renderersTemplates[i - depsSize];
 		Ember.TEMPLATES[templateName] = Ember.Handlebars.compile(arguments[i]);
 	}
 });

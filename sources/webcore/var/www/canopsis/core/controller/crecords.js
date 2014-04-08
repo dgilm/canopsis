@@ -27,7 +27,7 @@ define([
 	Application.CrecordsRoute = Application.AuthenticatedRoute.extend({
 		actions: {
 			show_add_crecord_form: function(crecord_type, model){
-				var crecordformController = Application.CrecordformController.create();
+				var crecordformController = Application.CrecordformController.create({container: this.container});
 				crecordformController.set("crecord_type", crecord_type);
 				crecordformController.set("editMode", "add");
 
@@ -37,6 +37,7 @@ define([
 				});
 			},
 			showEditFormWithController: function(crecordformController) {
+				crecordformController.set("container", this.container);
 				this.render("crecordform", {
 					outlet: 'popup',
 					controller: crecordformController
@@ -107,7 +108,32 @@ define([
 				selected.invoke('remove');
     			// selected.invoke('save');
 			}
-		}
+		},
+
+		attributesKeys: function() {
+			var attributes = [];
+			var attributesDict = this.get('content.type.attributes.values');
+
+			for(key in attributesDict) {
+				var attr = attributesDict[key];
+				console.log('isAttrHidden? ', attr.name, attr.options.hiddenInLists, attr.options.hiddenInLists !== false);
+				if(attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
+					attributes.push({
+						field: attr.name,
+						type: attr.type,
+						options: attr.options
+					});
+					console.log("pushed attr", {
+						field: attr.name,
+						type: attr.type,
+						options: attr.options
+					});
+				}
+			};
+			console.log("computed attrs");
+			console.log(attributes);
+			return attributes;
+		}.property('content')
 	});
 
 	return Application.CrecordsController;
