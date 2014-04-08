@@ -3,8 +3,8 @@ define([
 'app/lib/ember',
 'app/application',
 'app/model/item'
-], function($, Ember, Application, Item ) {
-    Application.ItemController = Ember.ObjectController.extend({ 
+], function($, Ember, Application, Item ){
+    Application.ItemController = Ember.ObjectController.extend({
         needs:"widget",
         widget: Ember.computed.alias("controllers.widget"),
 
@@ -33,7 +33,9 @@ define([
         
         removeWidget : function(){
             this.set("widget",{});
-           
+            var item = this.store.find( 'item',this.get('_id'));
+            item.widget = {};
+            item.save()
         },
 
         modifyItemActivation : function( activation ){
@@ -54,3 +56,5 @@ define([
     } );
     return Application.ItemController;
   });
+
+

@@ -3,9 +3,10 @@ define([
 'app/lib/ember',
 'app/application',
 'app/model/container'
-], function($, Ember, Application, Container ) {
+], function($, Ember, Application, Container ){
 
-Application.ContainerController = Application.WidgetController.extend({
+    Application.ContainerController = Application.WidgetController.extend({
+
     needs:"item",
     item:Ember.computed.alias("controllers.item"),
 
@@ -24,6 +25,7 @@ Application.ContainerController = Application.WidgetController.extend({
 
         var container = this.store( 'container', { '_id':idContainer,
                                                    'title':title,
+                                                   'type': 'container',
                                                    'items': itemList,
                                                    'layout_type':layout_type,
                                                    'layout_rows':layout_rows,
@@ -32,7 +34,7 @@ Application.ContainerController = Application.WidgetController.extend({
         container.save();
 
     },
-
+ 
     action: { 
          addItem: function( idContainer ){
             var container = this.store.find( 'container',idContainer);
@@ -51,7 +53,6 @@ Application.ContainerController = Application.WidgetController.extend({
 
         }
     }
-
 });
 
 return Application.ContainerController;

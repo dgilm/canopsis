@@ -20,11 +20,19 @@
 define([
 	'jquery',
 	'app/lib/ember',
-	'app/application',
-	'app/controller/crecord'
+	'app/application'
 ], function($, Ember, Application) {
 
-	Application.WidgetController = Application.ObjectController.extend({
+	Application.WidgetController = Ember.ObjectController.extend({
+        action: {
+                    displayAction : function(){
+                        this.display();
+                    },
+
+                    refreshAction:function(){
+                        this.refresh();
+                    } 
+                }
 	});
 
 	return Application.WidgetController;
