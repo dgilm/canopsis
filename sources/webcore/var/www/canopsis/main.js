@@ -5,6 +5,7 @@ define([
 	'text!app/manifest.json',
 	'seeds/RoutesLoader',
 	'bootstrap',
+	'colorpicker',
 	'app/lib/helpers',
 	'app/lib/templates',
 	'app/lib/editors',
