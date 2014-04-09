@@ -21,10 +21,9 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-], function($, Ember, Application, Controller) {
+	'app/view/crecords'
+], function($, Ember, Application, CrecordsView) {
+	Application.EventnavigationView = CrecordsView.extend({});
 
-	Application.RendererTagsView = Ember.View.extend({
-	});
-
-	return Application.RendererTagsView;
+	return Application.EventnavigationView;
 });

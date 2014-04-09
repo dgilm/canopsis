@@ -1,1 +1,5 @@
-[bool renderer] {{attr.value}}
+{{#if attr.value}}
+	{{glyphicon 'ok'}}
+{{else}}
+	{{glyphicon 'remove'}}
+{{/if}}

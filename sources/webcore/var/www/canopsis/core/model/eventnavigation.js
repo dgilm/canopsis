@@ -23,22 +23,20 @@ define([
 	'app/lib/ember-data',
 	'app/application',
 	'app/model/crecord'
-], function($, Ember, DS, Application) {
-	Application.Curve = Application.Crecord.extend({
-		line_color: DS.attr('string', {role: "color"}),
-		area_color: DS.attr('string', {role: "color"}),
-		line_style: DS.attr('string'),
-		area_opacity: DS.attr('number', {role: "percent"}),
-		zindex: DS.attr('number'),
-		invert: DS.attr('boolean'),
-		metric: DS.attr('string'),
-		label: DS.attr('string')
+], function($, Ember, DS, Application, Crecord) {
+	Application.Eventnavigation = Application.Crecord.extend({
+		timestamp	: DS.attr('number', {'role': 'timestamp'}),
+		component	: DS.attr('string'),
+		resource	: DS.attr('string'),
+		connector	: DS.attr('string'),
+		output		: DS.attr('string'),
+		state		: DS.attr('number', {'role': 'state'})
 	});
 
-	Application.Curve.reopenClass({
+	Application.Eventnavigation.reopenClass({
 		findAll: function(store, authkey) {
 			return $.ajax({
-				url: '/rest/object/curve',
+				url: '/rest/events/event',
 				method: 'GET',
 				contentType: 'application/json',
 				data: {
@@ -48,25 +46,26 @@ define([
 		},
 
 		extractFindAll: function(store, payload) {
-			var curves = [];
+			var events = [];
 
 			for(var i = 0; i < payload.data.length; i++) {
-				var curve = payload.data[i];
+				var evt = payload.data[i],
+					key;
 
-				curve.line_color = '#' + curve.line_color;
-				curve.area_color = '#' + curve.area_color;
-				curve.line_style = curve.dashStyle;
-				curve.zindex = curve.zIndex;
-
-				delete curve.dashStyle;
-				delete curve.zIndex;
-
-				curves.push(curve);
+/*
+				for(key in evt) {
+					if (!evt[key]){
+						console.log(key)
+						delete evt[key];
+					}
+				}
+*/
+				events.push(evt);
 			}
 
-			return curves;
+			return events;
 		}
 	});
 
-	return Application.Curve;
+	return Application.Eventnavigation;
 });
