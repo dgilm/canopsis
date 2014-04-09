@@ -17,7 +17,9 @@ function detect_os(){
 	echo "Linux Distribution:"
 	DIST=`python -c "import platform; print platform.dist()[0].lower()"`
 	DIST_VERS=`python -c "import platform; print platform.dist()[1]"`
-	echo `Dist found $DIST $DIST_VERS`
+	echo "Dist found"
+	echo $DIST
+	echo $DIST_VERS
 }
 
 function launch_cmd() {
