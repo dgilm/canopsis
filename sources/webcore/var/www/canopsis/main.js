@@ -10,7 +10,7 @@ define([
 	'app/lib/templates',
 	'app/lib/editors',
 	'app/lib/widgets',
-	'components/editors/group/controller.js',
+	'components/editors/group/controller',
 	'app/controller/accounts',
 	'app/controller/application',
 	'app/controller/consolidations',

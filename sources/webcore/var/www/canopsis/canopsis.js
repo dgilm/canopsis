@@ -35,8 +35,20 @@ require.config({
 
 		'bootstrap': {
 			deps: ['jquery']
+		},
+
+		'colorpicker': {
+			deps: ['jquery']
 		}
 	}
 });
+/*
+pre_requirements = [
+	'canopsis/core/lib/console'
+];
 
+define(pre_requirements, function () {
+	require(['canopsis/main']);
+});
+*/
 require(['canopsis/main']);
