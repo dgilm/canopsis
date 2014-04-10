@@ -24,6 +24,7 @@ var editorsTemplates = [
 	'defaultpropertyeditor',
 	'boolean',
 	'group',
+	'color',
 	'mail'
 ];
 
