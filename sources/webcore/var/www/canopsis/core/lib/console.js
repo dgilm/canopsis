@@ -53,6 +53,15 @@ define([], function() {
 				}
 			},
 
+			group:function(){
+				baseConsole.group(arguments);
+			},
+			groupCollapsed: function(){
+				baseConsole.groupCollapsed(arguments);
+			},
+			groupEnd: function(){
+				baseConsole.groupEnd(arguments);
+			},
 			getVar: function (id) {
 				if (this.listenVariables[id]) {
 					baseConsole.log(this.listenVariables[id]);
@@ -89,7 +98,7 @@ define([], function() {
 
 	if(proxiedDefine == undefined) {
 		var proxiedDefine = define; // Preserving original function
-		define = function() {
+		cdefine = function() {
 			if(arguments.length === 2)
 			{
 				//add module to args
