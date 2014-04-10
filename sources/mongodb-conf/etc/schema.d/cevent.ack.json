@@ -1,0 +1,21 @@
+{
+	"type": "object",
+	"properties": {
+		"event_type": {
+			"enum": ["ack"],
+			"required": true
+		},
+		"ref_rk": {
+			"type": "string",
+			"required": true
+		},
+		"author": {
+			"type": "string",
+			"required": true
+		},
+		"output": {
+			"type": "string",
+			"required": true
+		}
+	}
+}
