@@ -21,8 +21,8 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/crecord'
-], function($, Ember, Application, Crecord) {
+	'app/lib/schema-manager'
+], function($, Ember, Application) {
 
 	Application.CrecordsRoute = Application.AuthenticatedRoute.extend({
 		actions: {
