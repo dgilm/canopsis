@@ -42,7 +42,7 @@ require.config({
 		}
 	}
 });
-/*
+
 pre_requirements = [
 	'canopsis/core/lib/console'
 ];
@@ -50,5 +50,5 @@ pre_requirements = [
 define(pre_requirements, function () {
 	require(['canopsis/main']);
 });
-*/
-require(['canopsis/main']);
+
+//require(['canopsis/main']);
