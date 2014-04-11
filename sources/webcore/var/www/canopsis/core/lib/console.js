@@ -16,41 +16,69 @@ define([], function() {
 			count: 0,
 			listenVariables: {},
 			grep: false,
+			collapsed: true,
+			verbose: true,
 			saveList:['listen', 'count', 'listenVariables', 'grep'],//property item list that has to be savec between page loads
 
 			help: function () {
 				baseConsole.log('canopsis console avialables methods:\n\t'+
 								' - console.setListen(boolean) to keep track of variables\n\t'+
-								' - console.grep("string") filters all output and anly display string output that contains the given string parameter');
+								' - console.grep("string") filters all output and anly display string output that contains the given string parameter'+
+								' - console.send_message("title", "message", "[info|warning|critical]") displays an alert message in the user interface');
 			},
 
 			setGrep: function(string) {
 				this.grep = string;
 			},
 
-			log: function(message) {
+			log: function() {
 
-				if (typeof message === 'string') {
-					if(baseConsole._filterAuthors === undefined || baseConsole._filterAuthors.contains(logAuthor)) {
-						if(this.grep) {
-							if(message.toLowerCase().indexOf(this.grep.toLowerCase()) !== -1) {
-								baseConsole.log("%c  %c[" + logAuthor + "]%c " + message, 'width:16px; height:16px; background: url(http://goossens-chocolatier.com/wp-content/themes/goossens/images/info_icon.png) no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
-							}
-						} else {
-							baseConsole.log("%c  %c[" + logAuthor + "]%c " + message, 'width:16px; height:16px; background: url(http://goossens-chocolatier.com/wp-content/themes/goossens/images/info_icon.png) no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
+				var args = Array.prototype.slice.call(arguments);
 
-						}
-					} else {
-						baseConsole.log(message);
+				//production mode
+				if (!this.verbose) {
+					return;
+				}
+
+				//gets call file
+				var file_split = new Error().stack.split('\n')[2].split('/'),
+					file_location = file_split[file_split.length - 1].replace(')',''),
+					dump_args = false,
+					message = '',
+					argument,
+					parsed_args = [],
+					printables = ['string', 'boolean', 'number'];
+
+				for (argument in args) {
+					if (typeof args[argument] === 'object'){
+						dump_args = true;
+						break;
+					}
+
+					if ($.inArray(typeof args[argument], printables) !== -1) {
+						parsed_args.push(args[argument]);
+					}
+
+				}
+
+				if (!dump_args) {
+					message = parsed_args.join();
+					if(!this.grep || message.toLowerCase().indexOf(this.grep.toLowerCase()) !== -1) {
+						baseConsole.log("%c  %c[" + file_location + "]%c " + message, 'width:16px; height:16px; no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
 					}
 				} else {
-					baseConsole.log(message);
+					baseConsole.log(args);
 				}
+
 				if (this.listen) {
 					this.count++;
 					this.listenVariables[this.count] = message;
 					baseConsole.log('listenVariables[' + this.count + '] = ' + message)
 				}
+			},
+
+			stack: function () {
+
 			},
 
 			getVar: function (id) {
@@ -78,7 +106,26 @@ define([], function() {
 				this.listen = listen;
 			},
 
+			send_message: function(message) {
+				Notify.message('title', message, 'info')
+			},
 
+			groupCollapsed:function () {
+				if (this.verbose && this.collapsed) {
+					var args = Array.prototype.slice.call(arguments);
+					var file_split = new Error().stack.split('\n')[2].split('/'),
+						file_location = file_split[file_split.length - 1];
+					args.unshift('[' + file_location.replace(')','') + ']');
+
+					baseConsole.groupCollapsed.apply(baseConsole, args);
+				}
+			},
+
+			groupEnd: function () {
+				if (this.verbose && this.collapsed) {
+					baseConsole.groupEnd()
+				}
+			}
 			//TODO grep
 			//TODO persistance
 			//TODO console debug mode with log id number displayed and stack trace included
@@ -86,38 +133,6 @@ define([], function() {
 
 		return newConsole;
 	}
+	console = initializeConsole('author');
 
-	if(proxiedDefine == undefined) {
-		var proxiedDefine = define; // Preserving original function
-		define = function() {
-			if(arguments.length === 2)
-			{
-				//add module to args
-				arguments[0].unshift("module");
-
-				var proxiedCallback = arguments[1];
-
-				arguments[1] = function() {
-					//console = initializeConsole(arguments[0].id);
-
-					console = initializeConsole(arguments[0].id);
-
-					var args;
-					if(typeof arguments == "object") {
-						//transform object into array
-						args = [];
-						for (key in arguments) {
-							args.push(arguments[key]);
-						};
-						args.shift();
-					}
-
-					return proxiedCallback.apply(this, args);
-				};
-			}
-			return proxiedDefine.apply(this, arguments);
-		}
-	}
-
-	// console.grep = function()
 });
