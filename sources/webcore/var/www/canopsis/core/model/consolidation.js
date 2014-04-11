@@ -23,8 +23,8 @@ define([
 	'app/lib/ember-data',
 	'app/application',
 	'app/model/crecord'
-], function($, Ember, DS, Application) {
-	Application.Consolidation = Application.Crecord.extend({
+], function($, Ember, DS, Application, Crecord) {
+	Application.Consolidation = Crecord.extend({
 		loaded: DS.attr('boolean', {defaultValue: false, hiddenInForm: true}),
 		enable: DS.attr('boolean'),
 

@@ -23,8 +23,8 @@ define([
 	'app/lib/ember-data',
 	'app/application',
 	'app/model/crecord'
-], function($, Ember, DS, Application) {
-	Application.Account = Application.Crecord.extend({
+], function($, Ember, DS, Application, Crecord) {
+	Application.Account = Crecord.extend({
 		enable: DS.attr('boolean'),
 		user: DS.attr('string', {description: "the user name"}),
 		firstname: DS.attr('string'),
