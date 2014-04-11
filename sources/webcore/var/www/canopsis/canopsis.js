@@ -50,4 +50,5 @@ pre_requirements = [
 
 define(pre_requirements, function () {
 	require(['canopsis/main']);
+
 });
