@@ -21,6 +21,9 @@
 import socket, time, logging
 import re
 
+from cstorage import get_storage
+from caccount import caccount
+
 logger = logging.getLogger('cevent')
 
 # Change default timeout from 1 to 3 , conflict with gunicorn
@@ -36,7 +39,7 @@ def forger(		connector,
 			event_type,
 			source_type='component',
 			component=None,
-			resource=None,	
+			resource=None,
 			timestamp=None,
 			state=0,
 			state_type=1,
@@ -50,7 +53,8 @@ def forger(		connector,
 			display_name=None,
 			tags=[],
 			ticket=None,
-			ref_rk=None
+			ref_rk=None,
+			component_problem=False
 		):
 
 	if not timestamp:
@@ -63,13 +67,13 @@ def forger(		connector,
 
 	if not state:
 		state = 0
-		
+
 	if not address:
 		if bool(regexp_ip.match(component)):
 			address = component
 			if reverse_lookup:
 				dns = None
-				
+
 				# get from cache
 				try:
 					(timestamp, dns) = dns_cache[address.replace('.', '-')]
@@ -80,7 +84,7 @@ def forger(		connector,
 						dns = None
 				except:
 					logger.info(" + '%s' not in cache" % address)
-					
+
 				# reverse lookup
 				if not dns:
 					try:
@@ -90,9 +94,9 @@ def forger(		connector,
 						dns_cache[address.replace('.', '-')] = (int(time.time()), dns)
 					except:
 						logger.info(" + Failed");
-						
+
 				# Dns ok
-				if dns:	
+				if dns:
 					# Split FQDN
 					fqdn = dns[0]
 					component = fqdn.split('.', 1)[0]
@@ -101,7 +105,7 @@ def forger(		connector,
 							domain = fqdn.split('.', 1)[1]
 						except:
 							pass
-				
+
 				if dns:
 					logger.info(" + Component: %s" % component);
 					logger.info(" + Address:   %s" % address);
@@ -114,29 +118,29 @@ def forger(		connector,
 		'event_type':		event_type,
 		'source_type':		source_type,
 		'component':		component,
-		'resource':			resource,	
+		'resource':			resource,
 		'timestamp':		timestamp,
 		'state':			state,
 		'state_type':		state_type,
 		'output':			output,
 		'long_output':		long_output,
 	}
-	
+
 	if perf_data:
 		dump["perf_data"] = perf_data
-	
+
 	if perf_data_array:
 		dump["perf_data_array"] = perf_data_array
-	
+
 	if address:
 		dump["address"] = address
-	
+
 	if domain:
 		dump["domain"] = domain
-	
+
 	if tags:
 		dump["tags"] = tags
-	
+
 	if display_name:
 		dump["display_name"] = display_name
 
@@ -146,12 +150,44 @@ def forger(		connector,
 	if ref_rk:
 		dump["ref_rk"] = ref_rk
 
+	if event_type == 'check' and source_type == 'resource':
+		dump['component_problem'] = component_problem
+
 	return dump
 
 def get_routingkey(event):
 	rk = "%s.%s.%s.%s.%s" % (event['connector'], event['connector_name'], event['event_type'], event['source_type'], event['component'])
 
-	if event['resource']:
+	if 'resource' in event and event['resource']:
 		rk += ".%s" % event['resource']
 
 	return rk
+
+def is_component_problem(event):
+	if event['source_type'] == 'resource' and event['state'] != 0:
+		storage = get_storage(namespace='entities', account=caccount(user='root', group='root')).get_backend()
+
+		component = storage.find_one({
+			'type': 'component',
+			'name': event['component']
+		})
+
+		if component and 'state' in component and component['state'] != 0:
+			return True
+
+	return False
+
+def is_host_acknowledged(event):
+	if is_component_problem(event):
+		storage = get_storage(namespace='entities', account=caccount(user='root', group='root')).get_backend()
+
+		ack = storage.find_one({
+			'type': 'ack',
+			'component': event['component'],
+			'resource': None
+		})
+
+		if ack:
+			return True
+
+	return False

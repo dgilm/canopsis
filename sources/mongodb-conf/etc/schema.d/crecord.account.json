@@ -1,0 +1,37 @@
+{
+	"type": "object",
+	"properties": {
+		"crecord_type": {
+			"enum": ["account"],
+			"required": true
+		},
+		"firstname": {
+			"type": "string"
+		},
+		"lastname": {
+			"type": "string"
+		},
+		"user": {
+			"type": "string",
+			"required": true
+		},
+		"mail": {
+			"type": "string"
+		},
+		"groups": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"required": true
+		},
+		"clock_type": {
+			"type": "string",
+			"default": "auto"
+		},
+		"external": {
+			"type": "boolean",
+			"default": false
+		}
+	}
+}
