@@ -4,12 +4,11 @@ define([], function() {
 		var baseConsole = console;
 		baseConsole.log('Type console.help() to get more information about canopsis features.');
 	}
-	initializeConsole= function(logAuthor)
+	initializeConsole= function()
 	{
 		if(baseConsole.registeredAuthors === undefined) {
 			baseConsole.registeredAuthors = [];
 		}
-		baseConsole.registeredAuthors.push(logAuthor);
 		var newConsole = {
 			old: baseConsole,
 			listen: false,
@@ -77,9 +76,6 @@ define([], function() {
 				}
 			},
 
-			stack: function () {
-
-			},
 
 			getVar: function (id) {
 				if (this.listenVariables[id]) {
@@ -88,14 +84,6 @@ define([], function() {
 					baseConsole.log('no variable matches');
 				}
 
-			},
-
-			filterAuthors: function(authors) {
-				baseConsole._filterAuthors = authors;
-			},
-
-			listAuthors: function() {
-				return baseConsole.registeredAuthors;
 			},
 
 			setListen: function(listen) {
@@ -126,13 +114,11 @@ define([], function() {
 					baseConsole.groupEnd()
 				}
 			}
-			//TODO grep
-			//TODO persistance
-			//TODO console debug mode with log id number displayed and stack trace included
+
 		};
 
 		return newConsole;
 	}
-	console = initializeConsole('author');
+	console = initializeConsole();
 
 });

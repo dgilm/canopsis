@@ -23,13 +23,20 @@ from ConfigParser import RawConfigParser, ConfigParser, ParsingError
 import importlib
 
 import unittest
-import time, json, logging
+import logging
+import inspect
+import socket
+import time
+import json
 
+from ctaskhandler import TaskHandler
+from cstorage import get_storage
+from caccount import caccount
 from cinit import cinit
 
 ## Engines path
 import sys, os
-sys.path.append(os.path.expanduser('~/opt/amqp2engines/engines/'))
+sys.path.insert(0, os.path.expanduser('~/opt/amqp2engines/engines/'))
 
 ## Configurations
 DAEMON_NAME="amqp2engines"
@@ -59,13 +66,21 @@ subprocess.call('rabbitmqadmin -H %s --vhost=%s --username=%s --password=%s dele
 
 ###### END of HACK ####
 
+LOGLEVELS = {
+	'info': logging.INFO,
+	'warning': logging.WARNING,
+	'error': logging.ERROR,
+	'debug': logging.DEBUG
+}
+
 CONFIG_PARAMS = {
 	'next': list,
 	'next_balanced': bool,
 	'name': basestring,
 	'beat_interval': int,
 	'exchange_name': basestring,
-	'routing_keys': list
+	'routing_keys': list,
+	'logging_level': lambda lvl: LOGLEVELS[lvl]
 }
 
 def start_engines():
@@ -110,13 +125,16 @@ def start_engines():
 		logger.info('Reading configuration for engine %s' % engine_name)
 
 		engine_conf = {}
+		engine_extra = {}
 
 		for item in config.items(section):
 			param = item[0]
 			value = item[1]
 
 			if param not in CONFIG_PARAMS:
-				logger.warning("Unknown parameter '%s', ignoring" % param)
+				logger.warning("Unknown parameter '%s', assuming it's a string" % param)
+
+				engine_extra[param] = value
 				continue
 
 			# If the parameter is a list, then parse the list in CSV format
@@ -139,6 +157,9 @@ def start_engines():
 			elif CONFIG_PARAMS[param] is float:
 				value = config.getfloat(section, param)
 
+			elif not inspect.isclass(CONFIG_PARAMS[param]) and callable(CONFIG_PARAMS[param]):
+				value = CONFIG_PARAMS[param](value)
+
 			# In all other case, we keep the original string value fetched via item[1]
 
 			engine_conf[param] = value
@@ -151,7 +172,38 @@ def start_engines():
 			engine_conf['next_amqp_queues'] = ['Engine_%s' % next for next in engine_conf['next']]
 			del engine_conf['next']
 
-		engines.append(engine.engine(**engine_conf))
+		# Create the engine and set the extra configuration
+		loaded_engine = engine.engine(**engine_conf)
+
+		for param in engine_extra:
+			setattr(loaded_engine, param, engine_extra[param])
+
+		engines.append(loaded_engine)
+
+	# Update engines collection
+
+	storage = get_storage('engines', account=caccount(user='root', group='root')).get_backend()
+	hostname = socket.getfqdn() or socket.gethostname()
+
+	storage.remove({
+		'host': hostname
+	})
+
+	for engine in engines:
+		document = {
+			'type': 'engine',
+			'name': engine.name,
+			'host': hostname
+		}
+
+		if engine.__class__.__base__ is TaskHandler:
+			document['type'] = 'taskhandler'
+
+		# avoid duplicates
+		if storage.find(document).count() == 0:
+			storage.insert(document)
+
+	del storage
 
 	##################
 	# Start engines
@@ -197,4 +249,3 @@ def main():
 	
 if __name__ == "__main__":
 	main()
-

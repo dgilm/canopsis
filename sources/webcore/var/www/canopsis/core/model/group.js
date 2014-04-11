@@ -23,8 +23,8 @@ define([
 	'app/lib/ember-data',
 	'app/application',
 	'app/model/crecord'
-], function($, Ember, DS, Application) {
-	Application.Group = Application.Crecord.extend({
+], function($, Ember, DS, Application, Crecord) {
+	Application.Group = Crecord.extend({
 		crecord_type: "group",
 		name: DS.attr('string'),
 		description: DS.attr('string')

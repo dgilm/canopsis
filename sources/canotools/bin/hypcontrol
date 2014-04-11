@@ -5,8 +5,6 @@ function start(){
 	service mongodb start
 	service redis-server start
 	service amqp2engines start
-	service celeryd start
-	service apsd start
 	service websocket start
 	service webserver start
 	service collectd start
@@ -21,8 +19,6 @@ function stop(){
 	service collectd stop
 	service websocket stop
 	service webserver stop
-	service apsd stop
-	service celeryd stop
 	service amqp2engines stop
 	service redis-server stop
 	service mongodb stop

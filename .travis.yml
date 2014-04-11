@@ -14,4 +14,3 @@ install:
 # command to run tests
 script: 
  - "sudo su - canopsis -c \"./opt/canotools/functional-test.py\""
-
