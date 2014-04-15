@@ -31,6 +31,8 @@ Ext.define('widgets.text.text' , {
 
 	useLastRefresh: false,
 
+	date_format: '',
+
 	initComponent: function() {
 		//get special values by parsing
 		function replaceAll(find, replace, str) {
@@ -108,7 +110,9 @@ Ext.define('widgets.text.text' , {
 			Ext.Object.each(this.perfdataMetricList, function(key, value) {
 				void(key);
 				var metric = value.metric;
-				metrics.push(metric);
+				if (! (metric in metrics)) {
+					metrics.push(metric);
+				}
 			});
 
 			//TODO component resource filter here ask what eric have done and what should be done on the client side
@@ -196,7 +200,7 @@ Ext.define('widgets.text.text' , {
 
 									data[tpl_name] = value;
 								}
-							});
+							}, this);
 
 							this.fillData(data, from, to);
 							this.computeMathOperations();
@@ -225,11 +229,11 @@ Ext.define('widgets.text.text' , {
 
 		try {
 			if(from) {
-				data.from = rdr_tstodate(parseInt(from / 1000));
+				data.from = rdr_tstodate(parseInt(from / 1000), this.date_format);
 			}
 
 			if(to) {
-				data.to = rdr_tstodate(parseInt(to / 1000));
+				data.to = rdr_tstodate(parseInt(to / 1000), this.date_format);
 			}
 
 			this.HTML = this.myTemplate.apply(data);
