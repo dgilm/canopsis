@@ -23,8 +23,8 @@ define([
 	'app/lib/ember-data',
 	'app/application',
 	'app/model/crecord'
-], function($, Ember, DS, Application, Crecord) {
-	Application.Curve = Crecord.extend({
+], function($, Ember, DS, Application) {
+	Application.Curve = Application.Crecord.extend({
 		line_color: DS.attr('string', {role: "color"}),
 		area_color: DS.attr('string', {role: "color"}),
 		line_style: DS.attr('string'),

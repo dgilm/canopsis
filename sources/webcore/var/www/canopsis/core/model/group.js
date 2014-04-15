@@ -22,13 +22,9 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord'
-], function($, Ember, DS, Application, Crecord) {
-	Application.Group = Crecord.extend({
-		crecord_type: "group",
-		name: DS.attr('string'),
-		description: DS.attr('string')
-	});
+	'app/model/crecord',
+	'app/lib/schema-manager'
+], function($, Ember, DS, Application) {
 
 	Application.Group.reopenClass({
 		findAll: function(store, authkey) {

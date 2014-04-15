@@ -21,7 +21,7 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord',
+	'app/lib/schema-manager',
 	'app/model/widget'
 ], function($, Ember, DS, Application) {
 

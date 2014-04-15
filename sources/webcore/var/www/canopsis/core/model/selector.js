@@ -22,26 +22,8 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord'
-], function($, Ember, DS, Application, Crecord) {
-	Application.Selector = Crecord.extend({
-		rk: DS.attr('string'),
-		enable: DS.attr('boolean'),
-		loaded: DS.attr('boolean'),
-		dostate: DS.attr('boolean'),
-		dosla: DS.attr('boolean'),
-		sla_state: DS.attr('number'),
-		sla_timewindow: DS.attr('number'),
-		sla_pf_0: DS.attr('string'),
-		sla_pf_1: DS.attr('string'),
-		sla_pf_2: DS.attr('string'),
-		sla_pf_3: DS.attr('string'),
-		name: DS.attr('string'),
-		display_name: DS.attr('string'),
-		description: DS.attr('string'),
-		owner: DS.attr('string'),
-		group: DS.attr('string')
-	});
+	'app/lib/schema-manager'
+], function($, Ember, DS, Application) {
 
 	Application.Selector.reopenClass({
 		findAll: function(store, authkey) {

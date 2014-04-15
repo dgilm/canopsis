@@ -24,7 +24,7 @@ define([
 	'app/application',
 	'app/model/crecord'
 ], function($, Ember, DS, Application, Crecord) {
-	Application.Eventnavigation = Crecord.extend({
+	Application.Eventnavigation = Application.Crecord.extend({
 		timestamp	: DS.attr('number', {'role': 'timestamp'}),
 		component	: DS.attr('string'),
 		resource	: DS.attr('string'),

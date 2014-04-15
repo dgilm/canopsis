@@ -23,8 +23,8 @@ define([
 	'app/lib/ember-data',
 	'app/application',
 	'app/model/crecord'
-], function($, Ember, DS, Application, Crecord) {
-	Application.Perfdata = Crecord.extend({
+], function($, Ember, DS, Application) {
+	Application.Perfdata = Application.Crecord.extend({
 		component: DS.attr('string'),
 		resource: DS.attr('string'),
 		metric: DS.attr('string'),
