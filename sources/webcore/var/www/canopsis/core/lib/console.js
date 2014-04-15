@@ -75,6 +75,7 @@ define([], function() {
 						baseConsole.log("%c  %c[" + file_location + "]%c " + message, 'width:16px; height:16px; no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
 					}
 				} else {
+					baseConsole.log('dump from ' + file_location);
 					baseConsole.log(args);
 				}
 
