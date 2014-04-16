@@ -7,48 +7,30 @@ define([
 
     Application.ContainerController = Application.WidgetController.extend({
 
-    needs:"item",
-    item:Ember.computed.alias("controllers.item"),
+    needs:["item"],
 
-    createContainer : function( idContainer, title,layout_type, layout_rows, layout_cols ){
-        var itemList = {};
-        var n = 0;
-        var idItem ="";
+    createLayout:function(){
+        console.log("createLayout");
 
-        for(var row=0; row < layout_rows; row++){
-            for (var col=0; col < layout_cols ;col++){
-                n=(row+1)*(col+1);
-                idItem = this.get("id")+'_'+ n.toString();
-                itemList[ idItem ] = item.createItem( idItem,row,col );
-            }
+        var layout = "<ul>";
+
+        for( var item_ID in this.get("items") ){
+          var item = this.store.find('item',{'_id':item_ID});
+          layout = layout + '<li data-row="'+ item.row.toString()+'"';
+          layout = layout +' data_col="'+ item.col.toString()+'"';
+          layout = layout +' data-sizex="'+ item.rowspan.toString()+'"';
+          layout = layout +' data-sizey="'+ item.colspan.toString()+'">'+item._id+'</li>';
         }
-
-        var container = this.store( 'container', { '_id':idContainer,
-                                                   'title':title,
-                                                   'type': 'container',
-                                                   'items': itemList,
-                                                   'layout_type':layout_type,
-                                                   'layout_rows':layout_rows,
-                                                   'layout_cols':layout_cols
-                                                      });
-        container.save();
-
-    },
- 
+        layout = layout + '</ul>';
+        console.log(layout);
+        return layout;
+      },
+      
     action: { 
-         addItem: function( idContainer ){
-            var container = this.store.find( 'container',idContainer);
-            
-            itemList[item.get('id')] = item ;
-        },
 
-        displayItems : function (idContainer){
-            var container = this.store.find('container',idContainer);
-            var itemList = container.items;
-            $.each( this.get("items"),function( item ){ item});  
-        },
 
-        resizeItem: function( itemId ){
+
+      resizeItem: function( itemId ){
             var itemList = this.get("items");
 
         }

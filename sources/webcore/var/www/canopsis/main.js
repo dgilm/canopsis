@@ -6,6 +6,7 @@ define([
 	'seeds/RoutesLoader',
 	'bootstrap',
 	'colorpicker',
+	'gridster',
 	'app/lib/helpers',
 	'app/lib/templates',
 	'app/lib/editors',
