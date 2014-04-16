@@ -1,10 +1,12 @@
+.. include:: ../link.rst
+
 Upgrade from packages
 =====================
 
 Introduction
 ------------
 
-Before upgrade, it's recommended to make a snapshot or backup your Canopsis with this: :doc:`Howto Backup </capensis/canopsis/wiki/Backup>`
+Before upgrade, it's recommended to make a snapshot or backup your Canopsis with this: |howToBackUp|
 
 Upgrade Ubik
 ------------
@@ -28,7 +30,7 @@ Log in as Canopsis:
 	su - canopsis
 
 Stop Canopsis
--------------
+~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -36,7 +38,7 @@ Stop Canopsis
 
 
 Upgrade Python and Python-libs
-------------------------------
+~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -45,7 +47,7 @@ Upgrade Python and Python-libs
 
 
 Upgrade Canopsis
-----------------
+~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -53,7 +55,7 @@ Upgrade Canopsis
 	ubik upgrade
 
 Start Canopsis
---------------
+~~~~~~~~~~~~
 
 .. code-block:: bash
 

@@ -1,5 +1,8 @@
+.. _overview:
 Project overview
 ================
+
+.. include:: link.rst
 
 |ImageLink|_
 
@@ -10,11 +13,11 @@ What is Canopsis ?
 ------------------
 
 
-`Canopsis <http://canopsis.org>`_ is an open-source `hypervisor <http://www.capensis.fr/solutions/hypervision/>`_ whose goal is to :doc:`aggregate/consolidate <consolidation>` information and events (containing :doc:`metrics <metrics>` of different types such as performance, availability, etc.) coming from multiple sources to create a global solution for :doc:`monitoring <Dashboard>` and :doc:`administrating <engines>` resources.
+`Canopsis <http://canopsis.org>`_ is an open-source `hypervisor <http://www.capensis.fr/solutions/hypervision/>`_ whose goal is to |aconsolidation| information and events (containing |metricsPage| of different types such as performance, availability, etc.) coming from multiple sources to create a global solution for |monitoring| and |administrating| resources.
 
 Built to last on top of `proven Open Source technologies by and for all IT professionals <http://www.capensis.fr/solutions/supervision/>`_. It is an event based architecture and it is modular by design. Plug your infrastructure tools like `Syslog`, `Nagios`, `Shinken <https://github.com/naparuba/shinken>`_, `...` to `Canopsis <http://canopsis.org>`_ and you're ready to go.
 
-A :doc:`glossary <glossary>` page is also given for better descriptions about canopsis concepts.
+A |glossary| page is also given for better descriptions about canopsis concepts.
 
 How to try ?
 ------------
@@ -49,7 +52,7 @@ https://github.com/capensis/canopsis/wiki/Shinken
 How to use ?
 ------------
 
-A :doc:`dashboard <Dashboard>` containing :doc:`views <Views>` and :doc:`widgets <user-guide/widgets/index>` is provided in order to monitor and to :doc:`administer <Engines>` resources.
+A |Dashboard| containing |Views| and |Widgets| is provided in order to monitor and to |administer| resources.
 
 .. image:: images/dashboard.png
 
@@ -59,4 +62,4 @@ Links
 * Wiki: https://github.com/capensis/canopsis/wiki/_pages
 * Community: http://www.canopsis.org
 * Forum (french): http://forums.monitoring-fr.org/index.php/board,127.0.html
-* :doc:`glossary`
+* |glossary|

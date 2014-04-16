@@ -12,6 +12,7 @@ Build menu
    :maxdepth: 2
 
    Accounts
+   dashboard
    Groups
    Curves
    Perfdata
@@ -29,7 +30,7 @@ Run menu
 .. toctree::
    :maxdepth: 2
 
-   Dashboard
+   dashboard
    Components
    Resources
    Views-Manager

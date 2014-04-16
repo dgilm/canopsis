@@ -2,6 +2,7 @@ Widgets
 =======
 .. TODO list here widgets role, how to insert widgets, wizards, etc...
 
+.. _widgets:
 Built-in widgets
 ----------------
 

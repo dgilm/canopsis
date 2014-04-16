@@ -6,6 +6,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   Accounts
+   dashboard
    internal_metrics
-   menus/index
+   metrics
+   views
    widgets/index
+   

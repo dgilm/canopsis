@@ -4,11 +4,11 @@ Create your own widgets
 Introduction
 ------------
 
-Making a widget for canopsis is quite simple. First of all you can find a sample in `/opt/canopsis/var/www/webcore-libs/samples/widget/sample/ <https://github.com/capensis/canopsis-externals/tree/master/webcore-libs/samples/widget/sample>`_ to help you.
+Making a widget for canopsis is quite simple. First of all you can find a sample in ``/opt/canopsis/var/www/webcore-libs/samples/widget/sample/`` to help you.
 
 This require some basic Javascript and Object Oriented Programming (OOP) knowledge.
 
-Third party widgets goes in `/opt/canopsis/var/www/widgets/myWidgetFolder`
+Third party widgets goes in ``/opt/canopsis/var/www/widgets/myWidgetFolder``
 
 Files
 -----
