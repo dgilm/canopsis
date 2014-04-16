@@ -1,4 +1,4 @@
-define([], function() {
+define(['jquery'], function() {
 	//TODO annotations
 	if(baseConsole === undefined) {
 		var baseConsole = console;
@@ -20,6 +20,7 @@ define([], function() {
 			grep: false,
 			collapsed: true,
 			verbose: true,
+			sourceFiles: {},
 
 			help: function () {
 				baseConsole.log('canopsis console avialables methods:\n\t'+
@@ -28,7 +29,9 @@ define([], function() {
 								' - console.send_message("title", "message", "[info|warning|critical]") displays an alert message in the user interface');
 			},
 
-
+			oldLog: function (arg) {
+				baseConsole.log(arg);
+			},
 
 			log: function() {
 
@@ -42,42 +45,36 @@ define([], function() {
 				//gets call file
 				var file_split = new Error().stack.split('\n')[2].split('/'),
 					file_location = file_split[file_split.length - 1].replace(')',''),
+					filename = file_location.split(':')[0],
 					dump_args = false,
 					message = '',
 					argument,
 					parsed_args = [],
-					printables = ['string', 'boolean', 'number'];
+					printables = ['string', 'boolean', 'number', 'undefined', 'null'];
 
+
+				if (this.sourceFiles[filename]) {
+					this.sourceFiles[filename].calls += 1;
+				} else {
+					this.sourceFiles[filename] = {calls : 1,};
+				}
+
+				var greppable = false,
+					pass = true;
 				for (argument in args) {
-					if (typeof args[argument] === 'object'){
-						dump_args = true;
-						break;
-					}
-
-					var i = printables.length,
-						in_array = false;
-
-					while (i--) {
-						if (printables[i] === typeof args[argument]) {
-							in_array = true;
+					if (this.grep && typeof args[argument] === 'string') {
+						greppable = true;
+						if(args[argument].toLowerCase().indexOf(this.grep.toLowerCase()) !== -1) {
+							pass = false;
 						}
 					}
-
-					if (in_array) {
-						parsed_args.push(args[argument]);
-					}
-
+				}
+				if (greppable && pass) {
+					return;
 				}
 
-				if (!dump_args) {
-					message = parsed_args.join();
-					if(!this.grep || message.toLowerCase().indexOf(this.grep.toLowerCase()) !== -1) {
-						baseConsole.log("%c  %c[" + file_location + "]%c " + message, 'width:16px; height:16px; no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
-					}
-				} else {
-					baseConsole.log('dump from ' + file_location);
-					baseConsole.log(args);
-				}
+				args.unshift(file_location);
+				baseConsole.log.apply(baseConsole, args);
 
 				if (this.listen) {
 					this.count++;
@@ -164,7 +161,7 @@ define([], function() {
 				if (this.verbose && this.collapsed) {
 					baseConsole.groupEnd()
 				}
-			}
+			},
 
 		};
 
