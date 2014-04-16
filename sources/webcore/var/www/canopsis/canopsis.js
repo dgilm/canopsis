@@ -20,7 +20,7 @@ require.config({
 		'ember': 'webcore-libs/dev/ember',
 		'ember-data': 'webcore-libs/dev/ember-data',
 		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
-		'gridster': 'webcore-libs/dev/jquery.gridster'
+		'gridster': 'webcore-libs/gridster/jquery.gridster'
 	},
 
 	shim: {

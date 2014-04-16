@@ -71,6 +71,17 @@
 		"appears_on": ["main_menu"]
 	}]
 },{
+	"type": "route",
+	"name": "item",
+	"description": "item",
+	"path":"/item/:item_id"
+},{
+	"type": "route",
+	"name": "container",
+	"description": "container",
+	"path":"/container/:container_id"
+	},
+{
 	"type": "",
 	"name": "run",
 	"icon": "play",
