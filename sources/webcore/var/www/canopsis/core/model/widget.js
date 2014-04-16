@@ -27,7 +27,7 @@ define([
         _id: DS.attr('string'),
         title: DS.attr('string'),
 		type: DS.attr('string'),
-        connectionParameters:DS.attr('array')
+        connectionParameters:{}
 	});
 
 	return Application.Widget;

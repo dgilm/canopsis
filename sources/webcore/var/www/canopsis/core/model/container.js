@@ -14,23 +14,25 @@ define([
 
 	Application.Container.reopenClass({
 
-		find: function(store) {
+		find: function(store, authkey) {
 			console.log("Container find");
 			return $.ajax({
 				url: '/rest/object/widget',
 				method: 'GET',
 				contentType: 'application/json',
-				data: { "widget_type":"container" }
+				data: { widget_type:"container",
+						authkey: authkey }
 			});
 		},
 
-		findAll: function(store) {
+		findAll: function(store, authkey) {
 			console.log("Container findAll");
 			return $.ajax({
 				url: '/rest/object/widget',
 				method: 'GET',
 				contentType: 'application/json',
-				data: {"widget_type":"container"}
+				data: { widget_type:"container",
+				        authkey: authkey}
 			});
 		},
 

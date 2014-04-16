@@ -34,15 +34,7 @@ define([
 		model: function() {
 			console.log("model");
 			return this.store.findAll('userview');
-		},
-    	
-    	renderTemplate: function() {
-       		var itemController = this.controllerFor('container/:'+this.get("container_id"));
-        	this.render('container', {
-          	outlet: 'container',
-          	controller: containerController 
-          		});
-      		}
+		}
 	});
 
 	Application.UserviewController = Ember.ObjectController.extend({
@@ -50,9 +42,8 @@ define([
 		actions:{
 			showView: function() {
 				console.log("test");
-				console.log(this.get("crecord_name:"));
+				console.log(this.get("crecord_name"));
 				this.transitionToRoute("/userview/" + this.get("_id"));
-				var container = this.store.find('widget',{'_id':this.get("container_id")});
 
 			}
 		}
