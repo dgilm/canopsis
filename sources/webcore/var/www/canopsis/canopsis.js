@@ -7,10 +7,8 @@ require.config({
 		'etc': 'canopsis/etc',
 		'lib': 'webcore-libs/dev',
 		'text': 'webcore-libs/dev/text',
-
 		'moment': 'webcore-libs/moment.min',
 		'jquery': 'webcore-libs/dev/jquery-1.10.2',
-		'gridster': 'webcore-libs/dev/jquery.gridster',
 		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all',
 		'colorpicker': 'webcore-libs/colorpicker/js/spectrum',
 		'colorselector': 'webcore-libs/colorselector/js/bootstrap-colorselector',
@@ -18,11 +16,11 @@ require.config({
 		'jsonselect': 'webcore-libs/jsonselect/jsonselect',
 		'jquery.encoding.digests.sha1': 'webcore-libs/jQuery.encoding.digests.sha1',
 		'jquery.md5': 'webcore-libs/jquery.md5',
-
 		'handlebars': 'webcore-libs/dev/handlebars-1.0.0',
 		'ember': 'webcore-libs/dev/ember',
 		'ember-data': 'webcore-libs/dev/ember-data',
-		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min'
+		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
+		'gridster': 'webcore-libs/dev/jquery.gridster'
 	},
 
 	shim: {
@@ -39,6 +37,10 @@ require.config({
 		},
 
 		'colorpicker': {
+			deps: ['jquery']
+		},
+
+		'gridster': {
 			deps: ['jquery']
 		}
 	}

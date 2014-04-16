@@ -27,14 +27,14 @@ define([
 
 	Application.Userview = Application.Crecord.extend({
 		enable: DS.attr('boolean'),
-
 		_id: DS.attr('string'),
-		name: DS.attr('string'),
 		crecord_name: DS.attr('string'),
+		container_id: DS.attr('string'),
 		internal: DS.attr('boolean')
 	});
 
 	Application.Userview.reopenClass({
+
 		find: function(store, authkey) {
 			console.log("Userview find");
 			return $.ajax({
@@ -65,10 +65,8 @@ define([
 
 			for(var i = 0; i < payload.data.length; i++) {
 				var userview = payload.data[i];
-
 				userviews.push(userview);
 			}
-
 			return userviews;
 		},
 
