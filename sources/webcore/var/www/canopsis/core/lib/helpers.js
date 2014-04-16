@@ -167,8 +167,6 @@ define(['moment',
 
 	Ember.Handlebars.registerBoundHelper('editor', function(attr, options) {
 		// var escaped = Handlebars.Utils.escapeExpression(value);
-		console.groupCollapsed("editor helper for", attr.field);
-		console.log(attr);
 		var typeName;
 
 		if(attr.model.options.role !== undefined) {
@@ -185,8 +183,6 @@ define(['moment',
 			editorName = "editor-defaultpropertyeditor";
 		}
 
-		console.log("Using template :", editorName);
-		console.groupCollapsed("Checking for appropriate view and/or controller");
 		editorNameParts = editorName.split("-");
 
 		for (var i = 0; i < editorNameParts.length; i++) {
@@ -217,10 +213,6 @@ define(['moment',
 	// Ember.Handlebars.helper('editor', Application.EditorView);
 
 	Ember.Handlebars.registerBoundHelper('renderer', function(crecord, attr, options) {
-		console.groupCollapsed("renderer helper for", attr.field);
-			console.log("attribute dict", attr);
-			console.log("found attr", crecord.content._data[attr.field]);
-			console.log('problem set attr', typeof attr, attr);
 			//adding value to attr field
 			Ember.set(attr, "value", crecord.content._data[attr.field]);
 
@@ -234,15 +226,12 @@ define(['moment',
 				typeName = attr.type;
 			}
 
-			console.log('typeName', typeName);
 
 			var rendererName = "renderer-" + typeName;
 
-			console.log("evaluated renderer name :", rendererName);
 			if(Ember.TEMPLATES[rendererName] === undefined) {
 				rendererName = "renderer-default";
 			}
-		console.groupEnd();
 
 		return Ember.Handlebars.helpers.partial.call(this, rendererName, options);
 	});

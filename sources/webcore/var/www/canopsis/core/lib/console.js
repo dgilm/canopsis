@@ -6,18 +6,20 @@ define([], function() {
 	}
 	initializeConsole= function()
 	{
+
 		if(baseConsole.registeredAuthors === undefined) {
 			baseConsole.registeredAuthors = [];
 		}
 		var newConsole = {
+
+			local_storage_keys: ['grep', 'verbose', 'listen', 'collapsed'],
 			old: baseConsole,
-			listen: false,
 			count: 0,
 			listenVariables: {},
+			listen: false,
 			grep: false,
 			collapsed: true,
 			verbose: true,
-			saveList:['listen', 'count', 'listenVariables', 'grep'],//property item list that has to be savec between page loads
 
 			help: function () {
 				baseConsole.log('canopsis console avialables methods:\n\t'+
@@ -26,9 +28,7 @@ define([], function() {
 								' - console.send_message("title", "message", "[info|warning|critical]") displays an alert message in the user interface');
 			},
 
-			setGrep: function(string) {
-				this.grep = string;
-			},
+
 
 			log: function() {
 
@@ -54,7 +54,16 @@ define([], function() {
 						break;
 					}
 
-					if ($.inArray(typeof args[argument], printables) !== -1) {
+					var i = printables.length,
+						in_array = false;
+
+					while (i--) {
+						if (printables[i] === typeof args[argument]) {
+							in_array = true;
+						}
+					}
+
+					if (in_array) {
 						parsed_args.push(args[argument]);
 					}
 
@@ -66,6 +75,7 @@ define([], function() {
 						baseConsole.log("%c  %c[" + file_location + "]%c " + message, 'width:16px; height:16px; no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
 					}
 				} else {
+					baseConsole.log('dump from ' + file_location);
 					baseConsole.log(args);
 				}
 
@@ -92,7 +102,48 @@ define([], function() {
 					this.count = 0;
 				}
 				this.listen = listen;
+				sessionStorage.setItem("console_listen",listen);
 			},
+
+			set: function(property, value) {
+				this[property] = value;
+				this.save_to_local_storage();
+			},
+
+			load_local_storage: function() {
+
+				//loads local storage stored values and set console with these values if they exists
+				var key, params;
+
+				//try {
+					params = JSON.parse(sessionStorage.getItem('console'));
+					this.log('params');
+					this.log(params);
+					for (key in params){
+						this[key] = params[key];
+					}
+				/*
+				} catch (e) {
+					this.log('unable to load informations from local storage -> local storage is not reachable');
+				}*/
+
+			},
+
+			save_to_local_storage: function(property) {
+				//dumps console params to local storage
+				var key, params = {};
+
+				//try {
+					for (key in this.local_storage_keys){
+						params[key] = this[key];
+					}
+					localStorage.setItem('console', JSON.stringify(params));
+				/*} catch (e) {
+					this.log('unable to load informations from local storage -> local storage is not reachable');
+				}*/
+			},
+
+
 
 			send_message: function(message) {
 				Notify.message('title', message, 'info')
@@ -120,5 +171,6 @@ define([], function() {
 		return newConsole;
 	}
 	console = initializeConsole();
+	console.load_local_storage();
 
 });
