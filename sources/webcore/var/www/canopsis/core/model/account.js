@@ -22,17 +22,22 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord'
+	'app/model/crecord',
+	'app/lib/schema-manager'
 ], function($, Ember, DS, Application) {
-	Application.Account = Application.Crecord.extend({
-		enable: DS.attr('boolean'),
-		user: DS.attr('string', {description: "the user name"}),
-		firstname: DS.attr('string'),
-		lastname: DS.attr('string'),
-		mail: DS.attr('string', {role: "mail"}),
-		group: DS.attr('string', {role: "group"}),
-		groups: DS.attr('array')
-	});
+	// var accountModelDict = {
+	// 	enable: DS.attr('boolean'),
+	// 	user: DS.attr('string', {description: "the user name"}),
+	// 	firstname: DS.attr('string'),
+	// 	lastname: DS.attr('string'),
+	// 	mail: DS.attr('string', {role: "mail"}),
+	// 	group: DS.attr('string', {role: "group"}),
+	// 	groups: DS.attr('array')
+	// };
+	// console.log("accounts crecord model ", Application.Crecord)
+	// Application.Account = Application.Crecord.extend(accountModelDict);
+
+	// console.log("account model", accountModelDict);
 
 	Application.Account.reopenClass({
 		findAll: function(store, authkey) {

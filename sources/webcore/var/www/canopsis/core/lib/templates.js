@@ -23,7 +23,6 @@ var templates = [
 	'crecords',
 	'userviews',
 	'userview',
-	'widget',
     'item',
     'container',
 	'crecordform',

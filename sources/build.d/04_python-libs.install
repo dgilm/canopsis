@@ -21,7 +21,6 @@ function install(){
 	easy_install_pylib xmlrpclib
 	easy_install_pylib pyparsing
 	easy_install_pylib gunicorn
-	easy_install_pylib apscheduler
 	easy_install_pylib msgpack-python
 	easy_install_pylib supervisor
 	easy_install_pylib isit
@@ -32,6 +31,9 @@ function install(){
 	easy_install_pylib redis
 	easy_install_pylib python-ldap
 	easy_install_pylib psutil==1.0.1
+	easy_install_pylib validictory
+	easy_install_pylib pybars
+	easy_install_pylib PyMeta
 
 	# Todo: Very dirty patch, see https://github.com/Supervisor/supervisor/issues/141
 	sed -i "156i\            if isinstance(value, bool):\n                value = xmlrpclib.boolean(value)" $PREFIX/lib/python2.7/site-packages/supervisor-3.0a12-py2.7.egg/supervisor/xmlrpc.py

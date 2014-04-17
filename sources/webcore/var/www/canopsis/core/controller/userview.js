@@ -38,11 +38,13 @@ define([
 	});
 
 	Application.UserviewController = Ember.ObjectController.extend({
+		needs:['container'],
 		actions:{
 			showView: function() {
 				console.log("test");
-				console.log(this.get("name"));
+				console.log(this.get("crecord_name"));
 				this.transitionToRoute("/userview/" + this.get("_id"));
+
 			}
 		}
 	});

@@ -1,0 +1,57 @@
+{
+	"type": "object",
+	"properties": {
+		"crecord_type": {"type": "string", "required": true},
+		"crecord_write_time": {"type": "integer", "required": true},
+		"crecord_creation_time": {"type": "integer", "required": true},
+		"crecord_name": {"type": "string", "required": true},
+
+		"aaa_owner": {"type": "string", "required": true},
+		"aaa_group": {"type": "string", "required": true},
+		"aaa_admin_group": {"type": "string", "required": true},
+		"aaa_access_owner": {
+			"type": "array",
+			"items": {
+				"enum": ["r", "w"]
+			},
+			"required": true
+		},
+		"aaa_access_group": {
+			"type": "array",
+			"items": {
+				"enum": ["r", "w"]
+			},
+			"required": true
+		},
+		"aaa_access_other": {
+			"type": "array",
+			"items": {
+				"enum": ["r", "w"]
+			},
+			"required": true
+		},
+		"aaa_access_unauth": {
+			"type": "array",
+			"items": {
+				"enum": ["r", "w"]
+			},
+			"required": true
+		},
+
+		"enable": {"type": "boolean", "required": true},
+		"parent": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"required": true
+		},
+		"children": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"required": true
+		}
+	}
+}

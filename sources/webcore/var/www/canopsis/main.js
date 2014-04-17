@@ -6,6 +6,7 @@ define([
 	'seeds/RoutesLoader',
 	'bootstrap',
 	'colorpicker',
+	'gridster',
 	'app/lib/helpers',
 	'app/lib/templates',
 	'app/lib/editors',
@@ -13,6 +14,7 @@ define([
 	'components/editors/group/controller',
 	'app/controller/accounts',
 	'app/controller/application',
+	'app/controller/notifications',
 	'app/controller/consolidations',
 	'app/controller/crecord',
 	'app/controller/crecordform',
@@ -36,6 +38,7 @@ define([
 	'app/lib/templates',
 	'app/lib/widgets',
 	'app/view/application',
+	'app/view/notifications',
 	'app/view/accounts',
 	'app/view/groups',
 	'app/view/perfdatas',
@@ -53,7 +56,8 @@ define([
 	manifest = JSON.parse(manifest);
 	Application.manifest = manifest;
 
-	routesLoader.initializeRoutes(Application, manifest);
+	routesLoader.initializeRoutes(Application, manifest, function (){
+	});
 
 	window.Canopsis = Application;
 	Canopsis.commit = commit;

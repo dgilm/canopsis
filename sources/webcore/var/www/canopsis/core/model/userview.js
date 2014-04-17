@@ -21,20 +21,19 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord',
-	'app/model/widget'
+	'app/lib/schema-manager'
 ], function($, Ember, DS, Application) {
 
 	Application.Userview = Application.Crecord.extend({
-		enable: DS.attr('boolean'),
-
 		_id: DS.attr('string'),
-		name: DS.attr('string'),
 		crecord_name: DS.attr('string'),
-		internal: DS.attr('boolean')
+		container_id: DS.attr('string'),
+		internal: DS.attr('boolean'),
+		enable: DS.attr('boolean')
 	});
 
 	Application.Userview.reopenClass({
+
 		find: function(store, authkey) {
 			console.log("Userview find");
 			return $.ajax({
@@ -65,10 +64,8 @@ define([
 
 			for(var i = 0; i < payload.data.length; i++) {
 				var userview = payload.data[i];
-
 				userviews.push(userview);
 			}
-
 			return userviews;
 		},
 

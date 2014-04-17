@@ -1,0 +1,16 @@
+{
+	"type": "object",
+	"properties": {
+		"crecord_type": {
+			"enum": ["group"],
+			"required": true
+		},
+		"internal": {
+			"type": "boolean",
+			"default": false
+		},
+		"description": {
+			"type": "string"
+		}
+	}
+}

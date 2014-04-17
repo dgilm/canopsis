@@ -22,23 +22,8 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord'
+	'app/lib/schema-manager'
 ], function($, Ember, DS, Application) {
-	Application.Consolidation = Application.Crecord.extend({
-		loaded: DS.attr('boolean', {defaultValue: false, hiddenInForm: true}),
-		enable: DS.attr('boolean'),
-
-		name: DS.attr('string'),
-		component: DS.attr('string'),
-		resource: DS.attr('string'),
-
-		aggregation_interval: DS.attr('number'),
-		aggregation_method: DS.attr('string'),
-		consolidation_method: DS.attr('string'),
-
-		message: DS.attr('string'),
-		nb_items: DS.attr('number')
-	});
 
 	Application.Consolidation.reopenClass({
 		findAll: function(store, authkey) {

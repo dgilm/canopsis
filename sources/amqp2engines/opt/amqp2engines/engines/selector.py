@@ -28,28 +28,33 @@ import logging
 NAME="selector"
 
 class engine(cengine):
+	"""
+		This engine's goal is to compute an aggregated information from an event selection.
+		The event selection is done thanks to a filter whitch can include event, exclude events or select them from a cfilter.
+		The worst state is then computed on the selected event set and a new event holding this information is produced.
+		This computation is triggered each time the crecord dispatcher emit a crecord event of selector type.
+	"""
+
 	def __init__(self, *args, **kargs):
 		cengine.__init__(self, name=NAME, *args, **kargs)
 		self.selectors = []
 		self.nb_beat = 0
 		self.thd_warn_sec_per_evt = 1.5
 		self.thd_crit_sec_per_evt = 2
-		
+
 	def pre_run(self):
 		#load selectors
 		self.storage = get_storage(namespace='object', account=caccount(user="root", group="root"))
 
-		
 	def beat(self):
 		self.logger.debug('entered in selector BEAT')
-		# Refresh selectors for work method
-		
-	
+
 	def consume_dispatcher(self,  event, *args, **kargs):
 		self.logger.debug('entered in selector consume dispatcher')
 		# Gets crecord from amqp distribution
-	
+
 		selector = self.get_ready_record(event)
+
 		if selector:
 
 			event_id = event['_id']
@@ -68,27 +73,22 @@ class engine(cengine):
 				except Exception as e:
 					self.logger.error('Unable to select all event matching this selector in order to publish worst state one form them. Exception : ' + str(e))
 					event = None
-				
+
 				# Publish Sla information when available
 				publishSla = selector.data.get('sla_rk', None)
 				if publishSla:
 					selector_event['sla_rk'] = publishSla
-										
+
 				# Ok then i have to update selector statement
 				self.storage.update(event_id, {'state': selector_event['state']})
 				self.amqp.publish(selector_event, rk, self.amqp.exchange_name_events)
 				self.logger.debug("%s published event" % (selector.name))
-					
+
 			else:
 				self.logger.debug('Nothing to do with this selector')
-			
-			#Update crecords informations	
+
+			#Update crecords informations
 			self.crecord_task_complete(event_id)
-			
+
 		self.nb_beat +=1
 		#set record free for dispatcher engine
-
-
-		
-		
-

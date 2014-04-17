@@ -27,65 +27,114 @@ logger = None
 root = caccount(user="root", group="root")
 storage = get_storage(account=root, namespace='object')
 
+
 def init():
-	logger.info(" + Create index of 'perfdata2'")
-	storage.get_backend('perfdata2').ensure_index([
-		('co',	1)
-	])
-	storage.get_backend('perfdata2').ensure_index([
-		('re',	1)
-	])
-	storage.get_backend('perfdata2').ensure_index([
-		('me',	1)
-	])
-	storage.get_backend('perfdata2').ensure_index([
-		('tg',	1)
-	])
-	storage.get_backend('perfdata2').ensure_index([
-		('co',	1),
-		('re',	1),
-		('me',	1)
-	])
+    logger.info(" + Create index of 'perfdata2'")
+    storage.get_backend('perfdata2').ensure_index([
+        ('co', 1),
+        ('re', 1),
+        ('me', 1)
+    ])
+    storage.get_backend('perfdata2').ensure_index([
+        ('re', 1),
+        ('me', 1)
+    ])
+    storage.get_backend('perfdata2').ensure_index([
+        ('me', 1)
+    ])
+    storage.get_backend('perfdata2').ensure_index([
+        ('tg',    1)
+    ])
 
-	logger.info(" + Create index of 'events'")
-	storage.get_backend('events').ensure_index([
-		('connector_name',	1),
-		('resource',		1),
-		('component',		1),
-		('state',			1),
-		('state_type',		1),
-		('event_type',		1),
-	])
-	storage.get_backend('events').ensure_index([
-		('tags', 			1),
-		('source_type',		1),
-	])
-	storage.get_backend('events').ensure_index([
-		('component',		1),
+    logger.info(" + Create index of 'events'")
+    storage.get_backend('events').ensure_index([
+        ('connector_name', 1),
+        ('resource', 1),
+        ('component', 1),
+        ('state', 1),
+        ('state_type', 1),
+        ('event_type', 1)
+    ])
+    storage.get_backend('events').ensure_index([
+        ('tags', 1),
+        ('source_type', 1)
+    ])
+    storage.get_backend('events').ensure_index([
+        ('component', 1),
+        ('resource', 1),
+        ('event_type', 1)
+    ])
+    storage.get_backend('events').ensure_index([
+        ('resource', 1),
+        ('event_type', 1)
+    ])
+    storage.get_backend('events').ensure_index([
+        ('event_type', 1)
+    ])
 
-	])
-	
-	logger.info(" + Create index of 'events_log'")
-	storage.get_backend('events_log').ensure_index([
-		('connector_name',	1),
-		('resource',		1),
-		('component',		1),
-		('state',			1),
-		('event_type',		1),
-		
-	])
-	storage.get_backend('events_log').ensure_index([
-		('state_type',		1),
-	])
-	storage.get_backend('events_log').ensure_index([
-		('tags',			1)
-	])
-	storage.get_backend('events_log').ensure_index([
-		('referer',			1)
-	])
-	storage.get_backend('events_log').ensure_index([
-		('timestamp',		1)
-	])
+    logger.info(" + Create index of 'events_log'")
+    storage.get_backend('events_log').ensure_index([
+        ('connector_name',    1),
+        ('resource',        1),
+        ('component',        1),
+        ('state',            1),
+        ('event_type',        1)
+    ])
+    storage.get_backend('events_log').ensure_index([
+        ('component', 1),
+        ('resource', 1),
+        ('event_type', 1)
+    ])
+    storage.get_backend('events_log').ensure_index([
+        ('resource', 1),
+        ('event_type', 1)
+    ])
+    storage.get_backend('events_log').ensure_index([
+        ('event_type', 1)
+    ])
+    storage.get_backend('events_log').ensure_index([
+        ('state_type', 1)
+    ])
+    storage.get_backend('events_log').ensure_index([
+        ('tags', 1)
+    ])
+    storage.get_backend('events_log').ensure_index([
+        ('referer', 1)
+    ])
+    storage.get_backend('events_log').ensure_index([
+        ('timestamp', 1)
+    ])
+
+    logger.info(" + Create index of 'entities'")
+    #Entities indexes
+    storage.get_backend('entities').ensure_index([
+        ('type', 1),
+        ('name',1)
+    ])
+    storage.get_backend('entities').ensure_index([
+        ('type', 1),
+        ('timestamp',1)
+    ])
+    storage.get_backend('entities').ensure_index([
+        ('type', 1),
+        ('component',1),
+        ('resource',1),
+        ('id', 1)
+    ])
+    storage.get_backend('entities').ensure_index([
+        ('type', 1),
+        ('timestamp', 1),
+        ('component', 1),
+        ('resource', 1)
+    ])
+    storage.get_backend('entities').ensure_index([
+        ('type', 1),
+        ('nodeid', 1)
+    ])
+    storage.get_backend('entities').ensure_index([
+        ('crecord_type', 1),
+        ('objclass', 1)
+    ])
 
 def update():
-	init()
+    init()

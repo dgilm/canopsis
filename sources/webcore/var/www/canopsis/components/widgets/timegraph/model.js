@@ -3,7 +3,7 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord'
+	'app/lib/schema-manager'
 ], function($, Ember, DS, Application) {
 	Application.Timegraph = Application.Crecord.extend({
 		name: DS.attr('string'),

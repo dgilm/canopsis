@@ -21,8 +21,8 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/crecord'
-], function($, Ember, Application, Crecord) {
+	'app/lib/schema-manager'
+], function($, Ember, Application) {
 
 	Application.CrecordsRoute = Application.AuthenticatedRoute.extend({
 		actions: {
@@ -93,8 +93,6 @@ define([
 				});
 
 				var record = this.store.createRecord(crecord_type, raw_record);
-				console.log("addrecord record");
-				console.log(record);
 
 				//send the new item via the API
 				record.save();
@@ -130,8 +128,6 @@ define([
 					});
 				}
 			};
-			console.log("computed attrs");
-			console.log(attributes);
 			return attributes;
 		}.property('content')
 	});

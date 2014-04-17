@@ -33,6 +33,8 @@ import time
 import json
 import logging
 
+from cdowntime import Cdowntime
+
 
 class cselector(crecord):
 	def __init__(self, storage, _id=None, name=None, namespace='events', use_cache=True, record=None, cache_time=60, logging_level=None):
@@ -47,6 +49,7 @@ class cselector(crecord):
 
 		self.dostate = True
 		self.state_algorithm = 0
+		self.downtimes_as_ok = False
 
 		self.mfilter = {}
 		self.include_ids = []
@@ -69,8 +72,8 @@ class cselector(crecord):
 		self.sel_metric_name = self.sel_metric_prefix + "state_%s"
 
 		self._ids = None
-
 		self.logger = logging.getLogger('cselector')
+		self.cdowntime = Cdowntime(self.storage)
 		if logging_level:
 			self.logger.setLevel(logging.INFO)#logging_level)
 
@@ -97,6 +100,7 @@ class cselector(crecord):
 		self.data['output_tpl']		= self.output_tpl
 		self.data['dostate']		= self.dostate
 		self.data['state_algorithm']= self.state_algorithm
+		self.data['downtimes_as_ok']= self.downtimes_as_ok
 
 		return crecord.dump(self)
 
@@ -113,6 +117,7 @@ class cselector(crecord):
 		self.exclude_ids	= self.data.get('exclude_ids',self.exclude_ids)
 		self.dostate		= self.data.get('dostate', self.dostate)
 		self.state_algorithm= self.data.get('state_algorithm ', self.state_algorithm )
+		self.downtimes_as_ok= self.data.get('downtimes_as_ok ', self.downtimes_as_ok )
 		output_tpl			= self.data.get('output_tpl', None)
 
 		if output_tpl and output_tpl != "":
@@ -158,27 +163,54 @@ class cselector(crecord):
 		self.logger.debug(" + efilter: %s" % efilter)
 		self.logger.debug(" + mfilter: %s" % mfilter)
 
+
+		#Adds downtime elements to ignore in query
+		downtime = self.cdowntime.get_filter()
+		if downtime:
+			self.logger.debug(' + Selector downtime exclusion %s' % (str(downtime)))
+
+
 		## Tweaks
 		if not mfilter and not ifilter and not efilter:
 			self.logger.warning("%s: Invalid filter" % self.name)
 			return None
 
 		if mfilter and not ifilter and not efilter:
-			return mfilter
+			if downtime:
+				return {'$and': [downtime, mfilter]}
+			else:
+				return mfilter
 
 		if not mfilter and ifilter and not efilter:
-			return ifilter
+			if downtime:
+				return {'$and': [downtime, ifilter]}
+			else:
+				return ifilter
 
 		if not mfilter and not ifilter and efilter:
 			return None
 
 		if mfilter and ifilter and not efilter:
-			return {"$or": [mfilter, ifilter]}
+			filters = {"$or": [mfilter, ifilter]}
+			if downtime:
+				return {'$and': [downtime, filters]}
+			else:
+				return filters
 
 		if mfilter and not ifilter and efilter:
-			return {"$and": [mfilter, efilter]}
+			filters = [mfilter, efilter]
 
-		return {"$and": [{"$or": [mfilter, ifilter]}, efilter]}
+			if downtime:
+				filters = [downtime] + filters
+			return {'$and': filters}
+
+
+		and_clause = [{"$or": [mfilter, ifilter]}, efilter]
+
+		if downtime:
+			and_clause = dowtime + and_clause
+
+		return {"$and": and_clause}
 
 
 	def resolv(self):
@@ -193,7 +225,7 @@ class cselector(crecord):
 			self.logger.debug("do_resolv:")
 			ids = []
 			mfilter = self.makeMfilter()
-			self.logger.debug(" + filter: %s" % mfilter)
+			self.logger.error(" + filter: %s" % mfilter)
 			if not mfilter:
 				self.logger.debug("  + Invalid mfilter" )
 				return []

@@ -47,7 +47,6 @@ ctype_to_group_access = {
 						}
 
 #########################################################################
-from restextend import ha
 #### GET Media
 @get('/rest/media/:namespace/:_id')
 def rest_get_media(namespace, _id):
@@ -88,7 +87,7 @@ def rest_trees_get(rk=None):
 	"""
 
 	account = get_account()
-	storage = get_storage(logging_level=logging.DEBUG, namespace='events_trees', account=account)
+	storage = get_storage(logging_level=logging.INFO, namespace='events_trees', account=account)
 
 
 	if not rk:
@@ -187,7 +186,6 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 			logger.error("Impossible to decode filter: %s: %s" % (filter, err))
 			filter = None
 
-
 	msort = []
 	if sort:
 		#[{"property":"timestamp","direction":"DESC"}]
@@ -224,10 +222,8 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 
 	mfilter = {}
 	if isinstance(filter, list):
-		if len(filter) > 0:
-			mfilter = filter[0]
-		else:
-			logger.error(" + Invalid filter format")
+		for item in filter:
+			mfilter[item['property']] = item['value']
 
 	elif isinstance(filter, dict):
 		mfilter = filter
@@ -275,8 +271,7 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 		#clean mfilter
 		mfilter = clean_mfilter(mfilter)
 
-		records =  storage.find(mfilter, sort=msort, limit=limit, offset=start, account=account)
-		total =	storage.count(mfilter, account=account)
+		records, total = storage.find(mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True)
 
 	output = []
 

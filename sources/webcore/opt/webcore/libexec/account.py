@@ -44,7 +44,7 @@ from libexec.auth import get_account, delete_session, reload_account, check_grou
 
 
 logger = logging.getLogger('Account')
-#logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 #group who have right to access 
 group_managing_access = ['group.CPS_account_admin']
@@ -231,8 +231,7 @@ def account_get(_id=None):
 			return HTTPError(404, _id+" Not Found")
 		
 	else:
-		records =  storage.find(mfilter, limit=limit, offset=start, account=account)
-		total =	   storage.count(mfilter, account=account)
+		records, total =  storage.find(mfilter, limit=limit, offset=start, account=account, with_total=True)
 
 	output = []
 	for record in records:

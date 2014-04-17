@@ -1,57 +1,88 @@
-define([], function() {
+define(['jquery'], function() {
 	//TODO annotations
 	if(baseConsole === undefined) {
 		var baseConsole = console;
 		baseConsole.log('Type console.help() to get more information about canopsis features.');
 	}
-	initializeConsole= function(logAuthor)
+	initializeConsole= function()
 	{
+
 		if(baseConsole.registeredAuthors === undefined) {
 			baseConsole.registeredAuthors = [];
 		}
-		baseConsole.registeredAuthors.push(logAuthor);
 		var newConsole = {
+
+			local_storage_keys: ['grep', 'verbose', 'listen', 'collapsed'],
 			old: baseConsole,
-			listen: false,
 			count: 0,
 			listenVariables: {},
+			listen: false,
 			grep: false,
-			saveList:['listen', 'count', 'listenVariables', 'grep'],//property item list that has to be savec between page loads
+			collapsed: true,
+			verbose: true,
+			sourceFiles: {},
 
 			help: function () {
 				baseConsole.log('canopsis console avialables methods:\n\t'+
 								' - console.setListen(boolean) to keep track of variables\n\t'+
-								' - console.grep("string") filters all output and anly display string output that contains the given string parameter');
+								' - console.grep("string") filters all output and anly display string output that contains the given string parameter'+
+								' - console.send_message("title", "message", "[info|warning|critical]") displays an alert message in the user interface');
 			},
 
-			setGrep: function(string) {
-				this.grep = string;
+			oldLog: function (arg) {
+				baseConsole.log(arg);
 			},
 
-			log: function(message) {
+			log: function() {
 
-				if (typeof message === 'string') {
-					if(baseConsole._filterAuthors === undefined || baseConsole._filterAuthors.contains(logAuthor)) {
-						if(this.grep) {
-							if(message.toLowerCase().indexOf(this.grep.toLowerCase()) !== -1) {
-								baseConsole.log("%c  %c[" + logAuthor + "]%c " + message, 'width:16px; height:16px; background: url(http://goossens-chocolatier.com/wp-content/themes/goossens/images/info_icon.png) no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
-							}
-						} else {
-							baseConsole.log("%c  %c[" + logAuthor + "]%c " + message, 'width:16px; height:16px; background: url(http://goossens-chocolatier.com/wp-content/themes/goossens/images/info_icon.png) no-repeat;','background: #fcfcfc; color: #555', 'background: white; color: black');
+				var args = Array.prototype.slice.call(arguments);
 
-						}
-					} else {
-						baseConsole.log(message);
-					}
-				} else {
-					baseConsole.log(message);
+				//production mode
+				if (!this.verbose) {
+					return;
 				}
+
+				//gets call file
+				var file_split = new Error().stack.split('\n')[2].split('/'),
+					file_location = file_split[file_split.length - 1].replace(')',''),
+					filename = file_location.split(':')[0],
+					dump_args = false,
+					message = '',
+					argument,
+					parsed_args = [],
+					printables = ['string', 'boolean', 'number', 'undefined', 'null'];
+
+
+				if (this.sourceFiles[filename]) {
+					this.sourceFiles[filename].calls += 1;
+				} else {
+					this.sourceFiles[filename] = {calls : 1,};
+				}
+
+				var greppable = false,
+					pass = true;
+				for (argument in args) {
+					if (this.grep && typeof args[argument] === 'string') {
+						greppable = true;
+						if(args[argument].toLowerCase().indexOf(this.grep.toLowerCase()) !== -1) {
+							pass = false;
+						}
+					}
+				}
+				if (greppable && pass) {
+					return;
+				}
+
+				args.unshift(file_location);
+				baseConsole.log.apply(baseConsole, args);
+
 				if (this.listen) {
 					this.count++;
 					this.listenVariables[this.count] = message;
 					baseConsole.log('listenVariables[' + this.count + '] = ' + message)
 				}
 			},
+
 
 			getVar: function (id) {
 				if (this.listenVariables[id]) {
@@ -62,62 +93,81 @@ define([], function() {
 
 			},
 
-			filterAuthors: function(authors) {
-				baseConsole._filterAuthors = authors;
-			},
-
-			listAuthors: function() {
-				return baseConsole.registeredAuthors;
-			},
-
 			setListen: function(listen) {
 				if (listen === false) {
 					this.listenVariables = {}
 					this.count = 0;
 				}
 				this.listen = listen;
+				sessionStorage.setItem("console_listen",listen);
+			},
+
+			set: function(property, value) {
+				this[property] = value;
+				this.save_to_local_storage();
+			},
+
+			load_local_storage: function() {
+
+				//loads local storage stored values and set console with these values if they exists
+				var key, params;
+
+				//try {
+					params = JSON.parse(sessionStorage.getItem('console'));
+					this.log('params');
+					this.log(params);
+					for (key in params){
+						this[key] = params[key];
+					}
+				/*
+				} catch (e) {
+					this.log('unable to load informations from local storage -> local storage is not reachable');
+				}*/
+
+			},
+
+			save_to_local_storage: function(property) {
+				//dumps console params to local storage
+				var key, params = {};
+
+				//try {
+					for (key in this.local_storage_keys){
+						params[key] = this[key];
+					}
+					localStorage.setItem('console', JSON.stringify(params));
+				/*} catch (e) {
+					this.log('unable to load informations from local storage -> local storage is not reachable');
+				}*/
 			},
 
 
-			//TODO grep
-			//TODO persistance
-			//TODO console debug mode with log id number displayed and stack trace included
+
+			send_message: function(message) {
+				Notify.message('title', message, 'info')
+			},
+
+			groupCollapsed:function () {
+				if (this.verbose && this.collapsed) {
+					var args = Array.prototype.slice.call(arguments);
+					var file_split = new Error().stack.split('\n')[2].split('/'),
+						file_location = file_split[file_split.length - 1];
+					args.unshift('[' + file_location.replace(')','') + ']');
+
+					baseConsole.groupCollapsed.apply(baseConsole, args);
+				}
+			},
+
+			groupEnd: function () {
+				if (this.verbose && this.collapsed) {
+					baseConsole.groupEnd()
+				}
+			},
+
 		};
 
 		return newConsole;
 	}
+	console = initializeConsole();
+	console.load_local_storage();
 
-	if(proxiedDefine == undefined) {
-		var proxiedDefine = define; // Preserving original function
-		define = function() {
-			if(arguments.length === 2)
-			{
-				//add module to args
-				arguments[0].unshift("module");
-
-				var proxiedCallback = arguments[1];
-
-				arguments[1] = function() {
-					//console = initializeConsole(arguments[0].id);
-
-					console = initializeConsole(arguments[0].id);
-
-					var args;
-					if(typeof arguments == "object") {
-						//transform object into array
-						args = [];
-						for (key in arguments) {
-							args.push(arguments[key]);
-						};
-						args.shift();
-					}
-
-					return proxiedCallback.apply(this, args);
-				};
-			}
-			return proxiedDefine.apply(this, arguments);
-		}
-	}
-
-	// console.grep = function()
 });

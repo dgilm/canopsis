@@ -21,7 +21,7 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/crecord'
+	'app/lib/schema-manager'
 ], function($, Ember, Application, Account) {
 
 	Application.CrecordController = Ember.ObjectController.extend({

@@ -32,6 +32,7 @@ define([
 		model: function() {
 			return this.store.findAll('userview');
 		}
+
 	});
 
 	Application.UserviewsController = Application.CrecordsController.extend({

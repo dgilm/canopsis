@@ -1,0 +1,12 @@
+{
+	"type": "object",
+	"properties": {
+		"last_execution": {"type": "integer", "required": true},
+		"rrule": {"type": "string", "required": true},
+		"start": {"type": "integer", "required": true},
+		"params": {
+			"type": "object",
+			"required": true
+		}
+	}
+}
