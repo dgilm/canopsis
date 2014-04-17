@@ -35,10 +35,6 @@ Ext.define('widgets.text.text' , {
 
 	initComponent: function() {
 		//get special values by parsing
-		function replaceAll(find, replace, str) {
-			return str.replace(new RegExp(find, 'g'), replace);
-		}
-
 		var raw_vars = this.extractVariables(this.text);
 
 		if(raw_vars.length !== 0) {
@@ -60,7 +56,8 @@ Ext.define('widgets.text.text' , {
 					log.debug('attribute' + attribut);
 
 					var tpl_name = var_name + Math.ceil(Math.random() * 1000);
-					this.text = replaceAll(key, '{' + tpl_name + '}', this.text);
+
+					this.text = this.text.replace(new RegExp(key), '{' + tpl_name + '}');
 
 					this.perfdataMetricList[tpl_name] = {
 						metric: metric,
@@ -92,9 +89,7 @@ Ext.define('widgets.text.text' , {
 	* The first time, input data is event.
 	* The second time, input data is event perfstore values.
 	*/
-	onRefresh: function(data, from, to, advancedFilters) {
-		console.log("text onRefresh");
-		console.log(advancedFilters);
+	onRefresh: function(data, from, to) {
 
 		if(data && this.perfdataMetricList) { // if an event is selected, add metrics property to perf_data
 
@@ -114,8 +109,6 @@ Ext.define('widgets.text.text' , {
 					metrics.push(metric);
 				}
 			});
-
-			//TODO component resource filter here ask what eric have done and what should be done on the client side
 
 			// prepare parameters for ajax request
 			var filter = {'$and': [{'co': data['component']}, {'re': data['resource']}, {'me': {'$in': metrics}}]};
@@ -203,7 +196,6 @@ Ext.define('widgets.text.text' , {
 							}, this);
 
 							this.fillData(data, from, to);
-							this.computeMathOperations();
 						},
 						failure: function(result, request) {
 							void(result);
@@ -247,42 +239,21 @@ Ext.define('widgets.text.text' , {
 
 	extractVariables: function(text) {
 		log.debug("extractVariables:", this.logAuthor);
+		var var_array  = text.replace(/^[^{]*\{/, "")	// trim everything before first accolade
+				.replace(/\}[^{]*$/, "")				// trim everything after last accolade
+				.split(/\}[^{]*\{/);					// split between accolades
 
-		//search specific value
-		var loop = true;
-		var _string = text;
-		var var_array = [];
+		for (var i = var_array.length - 1; i >= 0; i--) {
+			var_array[i] = "{" + var_array[i] + "}";
+		};
 
-		while(loop) {
-			//search for val
-			var begin = _string.search(/{(.+:)+.+}/);
-
-			if(begin !== -1) {
-
-				//search end of val
-				var end = begin;
-
-				while(_string.charAt(end) !== '}' && end <= _string.length) {
-					end = end + 1;
-				}
-
-				var_array.push(_string.slice(begin, end + 1));
-				_string = _string.slice(end, _string.length);
-			}
-			else {
-				loop = false;
-			}
-		}
-
-		console.log("var_array");
-		log.dump(var_array);
 		return var_array;
 	},
 
-	getNodeInfo: function(from, to, advancedFilters) {
+	getNodeInfo: function(from, to) {
 		if(this.nodeId && this.nodeId.length>0) {
 
-			var nodeInfoParams = this.getNodeInfoParams(from, to, advancedFilters);
+			var nodeInfoParams = this.getNodeInfoParams(from, to);
 
 			Ext.Ajax.request({
 				url: this.baseUrl + '/event' + (this.nodeId && this.nodeId.length? ('/' + this.nodeId) : ''),
@@ -299,7 +270,7 @@ Ext.define('widgets.text.text' , {
 						data = data.data[0];
 					}
 
-					this._onRefresh(data, from, to, advancedFilters);
+					this._onRefresh(data, from, to);
 				},
 				failure: function(result, request) {
 					void(result);
@@ -323,22 +294,12 @@ Ext.define('widgets.text.text' , {
 		return output;
 	},
 
-	getNodeInfoParams: function(from, to, advancedFilters) {
+	getNodeInfoParams: function(from, to) {
 		void(from);
 		void(to);
 		var result = this.callParent(arguments);
 		result['noInternal'] = false;
-		result['limit'] = 0;
+		result['limit'] = 1;
 		return result;
-	},
-
-	computeMathOperations: function() {
-		var math = mathjs();
-
-		console.log("math expressions");
-		console.log($("#" + this.id)[0]);
-		$("#"+ this.id + " .mathexpression").each(function(){
-			$(this).html(math.eval($(this).html()));
-		});
 	}
 });
