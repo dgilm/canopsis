@@ -21,7 +21,8 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/lib/schema-manager'
+	'app/lib/schema-manager',
+	'app/model/container'
 ], function($, Ember, DS, Application) {
 
 	Application.Userview = Application.Crecord.extend({

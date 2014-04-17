@@ -4,6 +4,7 @@ define([
 'app/application',
 'app/model/item'
 ], function($, Ember, Application, Item ){
+    
     Application.ItemController = Ember.ObjectController.extend({
         needs:"widget",
         widget: Ember.computed.alias("controllers.widget"),

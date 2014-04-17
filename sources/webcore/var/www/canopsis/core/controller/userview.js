@@ -44,6 +44,9 @@ define([
 				console.log("test");
 				console.log(this.get("crecord_name"));
 				this.transitionToRoute("/userview/" + this.get("_id"));
+				console.log(this.store.findAll('container') );
+				
+
 
 			}
 		}
