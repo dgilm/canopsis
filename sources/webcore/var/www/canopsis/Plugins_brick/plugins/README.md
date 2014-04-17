@@ -6,7 +6,7 @@ How to add and configure plugins
 
 ### enabled.json
 
-_Must be located at the root of the directory `plugins/` _
+_Must be located at the root of the directory `plugins/`_
 
 Simple list of enabled plugins
 No specific order needed
@@ -35,7 +35,7 @@ The order of the routes and files is kept.
 If a plugin defines a same route as an other,
 only the one from the plugin to be loaded first is kept.
 
-_ For more informations see [EmberJS doc.](http://emberjs.com/guides/routing/)_
+_For more informations see [EmberJS doc.](http://emberjs.com/guides/routing/)_
 
 ### files.json
 
