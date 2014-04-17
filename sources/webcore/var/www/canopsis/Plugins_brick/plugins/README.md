@@ -14,6 +14,7 @@ No specific order needed
 ### manifest.json
 
 _Must be located in the directory `files/` at the root of every plugin directory_
+
 _All `.json` files must be in the same directory_
 
 * name: Name of the plugin ot be usen
