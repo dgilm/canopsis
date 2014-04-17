@@ -1,0 +1,6 @@
+{ "name": "perf",
+   "version": "fake",
+   "routes": "routes.json",
+   "files":  "DIS_IZ_A_FILE_I_ASSURE_YOU.json",
+   "dependancies": ["ha", "core"]
+}
