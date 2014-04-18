@@ -26,7 +26,7 @@ define([
 	Application.Widget = DS.Model.extend({
         _id: DS.attr('string'),
         title: DS.attr('string'),
-		type: DS.attr('string'),
+		widget_type: DS.attr('string'),
         connectionParameters:{}
 	});
 

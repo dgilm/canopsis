@@ -3,13 +3,12 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-    'app/model/widget'
+    'app/model/container'
 ], function($, Ember, DS, Application){
 
-	Application.Container = Application.Widget.extend({
-        items : DS.hasMany('Application.Item'),
-        layout_cols : DS.attr('number'),
-        layout_rows : DS.attr('number')
+	Application.TabContainer = Application.Container.extend({
+		filter: {}
+
 	});
 
 	Application.Container.reopenClass({
@@ -20,7 +19,7 @@ define([
 				url: '/rest/object/widget',
 				method: 'GET',
 				contentType: 'application/json',
-				data: { widget_type:"container",
+				data: { widget_type:"tabcontainer",
 						authkey: authkey }
 			});
 		},
@@ -31,7 +30,7 @@ define([
 				url: '/rest/object/widget',
 				method: 'GET',
 				contentType: 'application/json',
-				data: { widget_type:"container",
+				data: { widget_type:"tabcontainer",
 				        authkey: authkey}
 			});
 		},
@@ -67,17 +66,8 @@ define([
 		}
 	});
 
-	Application.Container.FIXTURES = [ { "_id" : "test_view_vertical_container",
-										 "title" : "", 
-										 "widget_type" : "container", 
-										 "connectionParameters" : { }, 
-										 "items" : [ "test_view_vertical_container_item_1", 	
-										             "test_view_vertical_container_item_2", 
-										             "test_view_vertical_container_item_3", 
-										             "test_view_vertical_container_item_4", 
-										             "test_view_vertical_container_item_5" ], 
-										 "layout_rows" : 5, 
-										 "layout_cols" : 5 } ];
+	return Application.TabContainer;		
 
-	return Application.Container;
-});
+	});
+
+

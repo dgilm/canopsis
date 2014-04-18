@@ -78,11 +78,7 @@ define([
 			if(type === "userview") {
 				type = "view";
 			}
-
-			if( type === "widget"){
-				type="container";
-				console.log(type);
-			}
+			
 			return "rest/object/" + Ember.String.underscore(type);
 		}
 	});
