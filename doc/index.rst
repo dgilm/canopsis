@@ -11,7 +11,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   overview
    user-guide/index
    administrator-guide/index
    developper-guide/index

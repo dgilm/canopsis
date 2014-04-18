@@ -10,6 +10,7 @@ Contents:
    dashboard
    internal_metrics
    metrics
+   overview
    views
    widgets/index
    
