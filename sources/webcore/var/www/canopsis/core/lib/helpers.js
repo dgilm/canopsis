@@ -243,7 +243,7 @@ define(['moment',
 	});
 
 	Ember.Handlebars.registerBoundHelper('log', function(message, options) {
-		console.log(message);
+		console.oldLog(message);
 		return '';
 	});
 });

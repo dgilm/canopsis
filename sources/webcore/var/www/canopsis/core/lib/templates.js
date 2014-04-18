@@ -24,6 +24,7 @@ var templates = [
 	'userviews',
 	'userview',
     'item',
+    'notifications',
     'container',
 	'crecordform',
 	'menu',

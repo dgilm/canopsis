@@ -24,7 +24,8 @@ define([
 	'app/controller/application'
 ], function($, Ember, Application, ApplicationController) {
 	Application.ApplicationView = Ember.View.extend({
-		controller: ApplicationController
+		controller: ApplicationController,
+		app: Application
 	});
 
 	return Application.ApplicationView;

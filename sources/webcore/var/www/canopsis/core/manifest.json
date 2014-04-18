@@ -69,6 +69,12 @@
 		"icon": "globe",
 		"description": "eventnavigation",
 		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "notifications",
+		"icon": "globe",
+		"description": "notifications",
+		"appears_on": ["main_menu"]
 	}]
 },{
 	"type": "route",
