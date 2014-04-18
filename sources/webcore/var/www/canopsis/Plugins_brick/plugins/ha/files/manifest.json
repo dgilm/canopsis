@@ -1,0 +1,5 @@
+{ "name": "ha",
+   "version": "beta",
+   "routes": "routes.json",
+   "dependancies": ["core"]
+}

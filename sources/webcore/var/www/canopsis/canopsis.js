@@ -18,9 +18,9 @@ require.config({
 		'jquery.md5': 'webcore-libs/jquery.md5',
 		'handlebars': 'webcore-libs/dev/handlebars-1.0.0',
 		'ember': 'webcore-libs/dev/ember',
+		'gridster': 'webcore-libs/dev/gridster/jquery.gridster',
 		'ember-data': 'webcore-libs/dev/ember-data',
 		'bootstrap': 'webcore-libs/bootstrap/current/js/bootstrap.min',
-		'gridster': 'webcore-libs/gridster/jquery.gridster'
 	},
 
 	shim: {

@@ -1,0 +1,56 @@
+[{
+	"type": "dir",
+	"name": "template",
+	"files": [{"name": "account.js"},
+		  {"name": "users.js"},
+		  {"name": "perfdatas.js"},
+		  {"name": "topologies.js"},
+		  {"name": "consolidations.js"},
+		  {"name": "eventnavigation.js"},
+		  {"name": "selectors.js"},
+		  {"name": "curves.js"},
+		  {"name": "groups.js"}]
+	},{
+	"type": "dir",
+	"name": "model",
+	"files": [{"name": "account.js"},
+		  {"name": "users.js"},
+		  {"name": "perfdatas.js"},
+		  {"name": "topologies.js"},
+		  {"name": "consolidations.js"},
+		  {"name": "eventnavigation.js"},
+		  {"name": "selectors.js"},
+		  {"name": "curves.js"},
+		  {"name": "groups.js"}]
+	},{
+	"type": "dir",
+	"name": "view",
+	"files": [{"name": "account.js"},
+		  {"name": "users.js"},
+		  {"name": "perfdatas.js"},
+		  {"name": "topologies.js"},
+		  {"name": "consolidations.js"},
+		  {"name": "eventnavigation.js"},
+		  {"name": "selectors.js"},
+		  {"name": "curves.js"},
+		  {"name": "groups.js"}]
+	},{
+	"type": "dir",
+	"name": "controller",
+	"files": [{"name": "account.js"},
+		  {"name": "users.js"},
+		  {"name": "perfdatas.js"},
+		  {"name": "topologies.js"},
+		  {"name": "consolidations.js"},
+		  {"name": "eventnavigation.js"},
+		  {"name": "selectors.js"},
+		  {"name": "curves.js"},
+		  {"name": "groups.js"},
+		  {"type": "dir",
+		   "name": "toto",
+		   "files": [{"name": "TOTO.js"},
+		   	    {"name": "titi.js"},
+			    {"name": "PIPI.js"},
+			    {"name": "CACA.js"}]
+			    }]
+}]
