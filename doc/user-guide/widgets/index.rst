@@ -9,11 +9,11 @@ Built-in widgets
 .. toctree::
    :maxdepth: 2
 
-   bar_graph
+   categorygraph
    diagram
    eventcalendar
    gauge
-   line_graph
+   timegraph
    list
    mini_chart
    perftop
