@@ -17,12 +17,31 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
-define(['app/lib/ember', 'app/application'], function(Ember, Application) {
+define(['app/lib/ember',
+	'app/application',
+	'app/model/notifications'
+	], function(Ember, Application) {
 	Application.ApplicationRoute = Application.AuthenticatedRoute.extend({
 		model: function() {
 			return {
 				title: 'Canopsis'
 			};
+		},
+
+		renderTemplate: function() {
+			this.render();
+
+			//getting the generated controller
+			var notificationsController = this.controllerFor('notifications');
+
+			//assigning the model
+			notificationsController.set('content', this.store.find("notification"));
+
+			this.render('notifications', {
+			    outlet: 'notifications',
+			    into: 'application',
+			    controller: notificationsController
+			});
 		}
 	});
 

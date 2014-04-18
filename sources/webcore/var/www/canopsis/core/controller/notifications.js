@@ -21,6 +21,7 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
+	'app/model/notifications'
 ], function($, Ember, Application) {
 	console.log(Application)
 	console.log("Application")
@@ -31,6 +32,7 @@ define([
 	});
 
 	Application.NotificationsController = Ember.ArrayController.extend({
+
 		actions: {
 			createNotification: function (message, level) {
 
@@ -48,7 +50,7 @@ define([
 				});
 
 				notification.save();
-			},
+			}
 		},
 	});
 
