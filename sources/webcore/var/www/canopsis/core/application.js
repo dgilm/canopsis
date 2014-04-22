@@ -29,8 +29,19 @@ define([
 	// Ember.applicationInstance = Application;
 
 	Application.register("transform:array", DS.ArrayTransform);
-
 	Application.AuthenticatedRoute = Ember.Route.extend({
+
+		afterRender: function () {
+/*
+			var alertsController = Application.AlertsController.create();
+			this.render("alerts", {
+				outlet: 'alerts',
+				controller: alertsController
+			});
+*/
+
+		},
+
 		beforeModel: function(transition) {
 			if(!this.controllerFor('login').get('authkey')) {
 				this.loginRequired(transition);

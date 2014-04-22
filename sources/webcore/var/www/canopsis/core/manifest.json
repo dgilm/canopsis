@@ -69,6 +69,12 @@
 		"icon": "globe",
 		"description": "eventnavigation",
 		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "notifications",
+		"icon": "globe",
+		"description": "notifications",
+		"appears_on": ["main_menu"]
 	}]
 },{
 	"type": "",
@@ -98,11 +104,13 @@
 },{
 	"type": "route",
 	"name": "item",
-	"description": "item"
+	"description": "item",
+	"appears_on": ["main_menu"],
 	"path":"/item/:item_id"
 },{
 	"type": "route",
 	"name": "container",
 	"description": "container",
+	"appears_on": ["main_menu"],
 	"path":"/container/:container_id"
 	}]

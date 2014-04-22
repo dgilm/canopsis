@@ -38,7 +38,6 @@ define([
 	'app/lib/templates',
 	'app/lib/widgets',
 	'app/view/application',
-	'app/view/notifications',
 	'app/view/accounts',
 	'app/view/groups',
 	'app/view/perfdatas',

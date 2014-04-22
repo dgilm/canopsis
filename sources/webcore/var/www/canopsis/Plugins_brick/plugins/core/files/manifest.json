@@ -1,4 +1,0 @@
-{ "name": "core",
-   "version": "UIv2",
-   "routes": "routes.json",
-   "files": "available_files.json"}

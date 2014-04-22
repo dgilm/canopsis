@@ -28,16 +28,17 @@ define([
 	Application.Userview = Application.Crecord.extend({
 		_id: DS.attr('string'),
 		crecord_name: DS.attr('string'),
-		container_id: DS.belongsTo('Application.Container'),
+		container_id:DS.attr('string') ,
 		internal: DS.attr('boolean'),
 		enable: DS.attr('boolean')
 	});
+
 	Application.Userview.FIXTURES = [{ "_id" : "test_view_vertical", 
 									   "crecord_name" : "Vue Verticale", 
 									   "container_id" : "test_view_vertical_container", 
 									   "internal" : true,
 									   "enable" : true }];
-									   
+
 	Application.Userview.reopenClass({
 
 		find: function(store, authkey) {

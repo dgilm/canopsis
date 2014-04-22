@@ -21,39 +21,37 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/userview'
-], function($, Ember, Application, Userview) {
-
-	Application.UserviewIndexRoute = Application.AuthenticatedRoute.extend({
-		setupController: function(controller, model) {
-			console.log("UserviewIndexRoute setupController");
-			controller.set('content', model);
-			controller.set('toolitems', controller.toolbar);
-		},
-
+], function($, Ember, Application) {
+	console.log(Application)
+	console.log("Application")
+	Application.NotificationsRoute = Ember.Route.extend({
 		model: function() {
-			console.log("model");
-			return this.store.findAll('userview');
+			return this.store.find('notification');
 		}
 	});
 
-	Application.UserviewController = Ember.ObjectController.extend({
-		needs:['container'],
-		actions:{
-			showView: function() {
-				console.log("test");
-				console.log(this.get("crecord_name"));
-				this.transitionToRoute("/userview/" + this.get("_id"));
+	Application.NotificationsController = Ember.ArrayController.extend({
+		actions: {
+			createNotification: function (message, level) {
 
-				
+				if (message === undefined) {
+					message = 'default message';
+				}
+				if (level === undefined) {
+					level = 'warning';
+				}
+				var notification = this.store.createRecord('notification',{
+					level: level,
+					message: message,
+					timestamp: new Date().getTime(),
+					alertLevel: 'alert-' + level
+				});
 
-
-			}
-		}
+				notification.save();
+			},
+		},
 	});
 
-	Application.UserviewIndexController = Ember.ObjectController.extend({
-	});
 
-	return Application.UserviewController;
+	return Application.NotificationsController;
 });

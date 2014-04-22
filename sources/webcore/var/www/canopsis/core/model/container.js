@@ -12,6 +12,19 @@ define([
         layout_rows : DS.attr('number')
 	});
 
+	Application.Container.FIXTURES = [ { "_id" : "test_view_vertical_container",
+										 "title" : "", 
+										 "widget_type" : "container", 
+										 "connectionParameters" : { }, 
+										 "items" : [ "test_view_vertical_container_item_1", 	
+										             "test_view_vertical_container_item_2", 
+										             "test_view_vertical_container_item_3", 
+										             "test_view_vertical_container_item_4", 
+										             "test_view_vertical_container_item_5" ], 
+										 "layout_rows" : 5, 
+										 "layout_cols" : 5 } ];
+
+
 	Application.Container.reopenClass({
 
 		find: function(store, authkey) {
@@ -66,18 +79,6 @@ define([
 			return container;
 		}
 	});
-
-	Application.Container.FIXTURES = [ { "_id" : "test_view_vertical_container",
-										 "title" : "", 
-										 "widget_type" : "container", 
-										 "connectionParameters" : { }, 
-										 "items" : [ "test_view_vertical_container_item_1", 	
-										             "test_view_vertical_container_item_2", 
-										             "test_view_vertical_container_item_3", 
-										             "test_view_vertical_container_item_4", 
-										             "test_view_vertical_container_item_5" ], 
-										 "layout_rows" : 5, 
-										 "layout_cols" : 5 } ];
 
 	return Application.Container;
 });

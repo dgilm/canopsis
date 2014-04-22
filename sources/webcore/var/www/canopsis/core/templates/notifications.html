@@ -1,0 +1,8 @@
+<div class="alertBox">
+	{{#each}}
+		<div {{bind-attr class=":alert alertLevel"}}>
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>{{level}}</strong> {{message}}
+		</div>
+	{{/each}}
+</div>

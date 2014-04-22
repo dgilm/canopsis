@@ -52,14 +52,6 @@ define([
 				var evt = payload.data[i],
 					key;
 
-/*
-				for(key in evt) {
-					if (!evt[key]){
-						console.log(key)
-						delete evt[key];
-					}
-				}
-*/
 				events.push(evt);
 			}
 

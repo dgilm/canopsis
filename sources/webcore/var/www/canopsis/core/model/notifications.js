@@ -17,14 +17,35 @@
 # along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
 */
 
+define([
+	'jquery',
+	'app/lib/ember',
+	'app/lib/ember-data',
+	'app/application'
+], function($, Ember, DS, Application) {
 
-Array.prototype.flatten = function() {
-    return (this.reduce(function(a, b) { return a.concat(b); }));
-}
+	Application.NotificationAdapter = DS.FixtureAdapter.extend();
 
-Array.prototype.findIndex = function (to_find) {
-    for (var i in this)
-	if (this[i].name == to_find) return (i);
-    return (-1);
-}
+	Application.Notification = DS.Model.extend({
+		timestamp	: DS.attr('number'),
+		level		: DS.attr('string'),
+		message		: DS.attr('string'),
+		alertLevel	: DS.attr('string', {defaultValue:'alert-success'})
+	});
 
+	Application.Notification.FIXTURES = [
+		{
+			id: 1,
+			timestamp: 1397740506,
+			level: 'warning',
+			message: 'mon super message',
+		},{
+			id: 2,
+			timestamp: 1397740510,
+			level: 'info',
+			message: 'mon super message le retour'
+		},
+	];
+
+	return Application.Notification;
+});
