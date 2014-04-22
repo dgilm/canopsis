@@ -36,6 +36,12 @@ from ctools import internal_metrics
 import pyperfstore2
 import pyperfstore2.utils
 
+from cstorage import get_storage
+from caccount import caccount
+
+storage = get_storage(namespace='object', account=caccount(user="root", group="root"))
+
+
 manager = None
 
 logger = logging.getLogger("perfstore")
@@ -146,7 +152,6 @@ def perfstore_nodes_get_values(start=None, stop=None):
 @get('/perfstore')
 @get('/perfstore/get_all_metrics')
 def perstore_get_all_metrics():
-
 	logger.debug("perstore_get_all_metrics:")
 	
 	limit		= int(request.params.get('limit', default=20))
@@ -217,20 +222,29 @@ def perstore_get_all_metrics():
 					mor.append({field: {'$regex': '.*%s.*' % word, '$options': 'i'}})	
 				mfilter['$and'].append({'$or': mor})
 	
+	use_hint = False
 	if not show_internals:
 		if mfilter:
 			mfilter = {'$and': [mfilter, {'me': {'$nin':internal_metrics  }}]}
+			use_hint = True
 		else:
 			mfilter = {'me': {'$nin': internal_metrics  }}
 		
 	logger.debug(" + mfilter:  %s" % mfilter)
 	
 	mfilter = clean_mfilter(mfilter)
-
 	data  = manager.find(limit=limit, skip=start, mfilter=mfilter, data=False, sort=msort)
 
-	total = data.count()
+	if use_hint:
+		data.hint([('co',1),('re',1),('me',1)])
+
 	data  = list(data)
+
+	result = storage.get_backend('object').find_one({'crecord_name':'perfdata2_count_no_internal'})
+	if result and 'count' in result:
+		total = result['count']
+	else:
+		total = len(data)
 	
 	return {'success': True, 'data' : data, 'total' : total}
 
