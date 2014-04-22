@@ -55,9 +55,7 @@ define(schemasDeps, function(Ember, DS, Application) {
 
 		console.log(schemaFiles[schemaIndex].split("."));
 
-		var modelDict = {};
-
-		// console.log("loaded argument", schema, schemaFiles[schemaIndex]);
+		var modelDict = { "categories": schema.categories };
 
 		for(name in schema.properties) {
 			var property = schema.properties[name];

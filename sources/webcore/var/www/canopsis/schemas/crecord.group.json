@@ -1,5 +1,12 @@
 {
 	"type": "object",
+	"categories": [{
+		"title": "general",
+		"keys":["internal","description"]
+	},{
+		"title": "Permissions",
+		"keys": []
+	}],
 	"properties": {
 		"crecord_type": {
 			"enum": ["group"],
