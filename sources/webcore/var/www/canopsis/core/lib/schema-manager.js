@@ -25,7 +25,8 @@ var schemaFiles = [
 	'crecord.account',
 	'crecord.group',
 	'crecord.consolidation',
-	'crecord.selector'
+	'crecord.selector',
+	'crecord.curve'
 ];
 
 var schemasDeps = ['app/lib/ember', 'app/lib/ember-data', 'app/application'];

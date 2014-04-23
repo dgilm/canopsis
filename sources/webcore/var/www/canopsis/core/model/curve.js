@@ -22,18 +22,19 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord'
+	'app/model/crecord',
+	'app/lib/schema-manager'
 ], function($, Ember, DS, Application) {
-	Application.Curve = Application.Crecord.extend({
-		line_color: DS.attr('string', {role: "color"}),
-		area_color: DS.attr('string', {role: "color"}),
-		line_style: DS.attr('string'),
-		area_opacity: DS.attr('number', {role: "percent"}),
-		zindex: DS.attr('number'),
-		invert: DS.attr('boolean'),
-		metric: DS.attr('string'),
-		label: DS.attr('string')
-	});
+	// Application.Curve = Application.Crecord.extend({
+	// 	line_color: DS.attr('string', {role: "color"}),
+	// 	area_color: DS.attr('string', {role: "color"}),
+	// 	line_style: DS.attr('string'),
+	// 	area_opacity: DS.attr('number', {role: "percent"}),
+	// 	zindex: DS.attr('number'),
+	// 	invert: DS.attr('boolean'),
+	// 	metric: DS.attr('string'),
+	// 	label: DS.attr('string')
+	// });
 
 	Application.Curve.reopenClass({
 		findAll: function(store, authkey) {
