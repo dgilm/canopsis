@@ -1,5 +1,12 @@
 {
 	"type": "object",
+	"categories": [{
+		"title": "general",
+		"keys":["firstname","lastname", "user", "mail"]
+	},{
+		"title": "Permissions",
+		"keys": ["groups"]
+	}],
 	"properties": {
 		"crecord_type": {
 			"enum": ["account"],
@@ -16,7 +23,8 @@
 			"required": true
 		},
 		"mail": {
-			"type": "string"
+			"type": "string",
+			"role": "mail"
 		},
 		"groups": {
 			"type": "array",
@@ -24,14 +32,6 @@
 				"type": "string"
 			},
 			"required": true
-		},
-		"clock_type": {
-			"type": "string",
-			"default": "auto"
-		},
-		"external": {
-			"type": "boolean",
-			"default": false
 		}
 	}
 }

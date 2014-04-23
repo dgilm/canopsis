@@ -82,6 +82,54 @@ define([
 			else {
 				return undefined;
 			}
+		}.property("record_raw"),
+
+		//getting attributes (keys and values as seen on the form)
+		categorized_attributes: function() {
+			var crecord_type = this.crecord_type;
+			var record_raw = this.record_raw;
+
+			function getValueForField(field) {
+				if(record_raw !== undefined) {
+					return record_raw[field];
+				}
+
+				return undefined;
+			};
+
+			if(crecord_type !== undefined) {
+				var referenceModel = Application[crecord_type.capitalize()];
+
+				var categories = Ember.copy(referenceModel.proto().categories);
+				var modelAttributes = Ember.get(referenceModel, 'attributes');
+
+				var attributes = [];
+
+				for (var i = 0; i < categories.length; i++) {
+					var category = categories[i];
+
+					for (var j = 0; j < category.keys.length; j++) {
+						var key = category.keys[j];
+
+						if(typeof key === "object") {
+							key = key.field;
+						}
+						category.keys[j] = {field: key, model: modelAttributes.get(key), value: getValueForField(key)};
+					}
+				};
+
+				modelAttributes.forEach(function(field, attrModel) {
+					if(attrModel.options.category === undefined)
+						attrModel.options.category = "General";
+
+					categories.push({field: field, model: attrModel, value: getValueForField(field)});
+				});
+
+				return categories;
+			}
+			else {
+				return undefined;
+			}
 		}.property("record_raw")
 	});
 

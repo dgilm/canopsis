@@ -34,6 +34,7 @@ define([
 	});
 
 	Application.Notification.FIXTURES = [
+/*
 		{
 			id: 1,
 			timestamp: 1397740506,
@@ -45,6 +46,7 @@ define([
 			level: 'info',
 			message: 'mon super message le retour'
 		},
+*/
 	];
 
 	return Application.Notification;
