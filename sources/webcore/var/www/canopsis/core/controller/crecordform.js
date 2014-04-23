@@ -95,9 +95,13 @@ define([
 
 						createdCategory.keys[j] = {
 							field: key,
-							model: modelAttributes.get(key),
-							value: me.editedRecordController.get(key)
+							model: modelAttributes.get(key)
 						};
+
+						if(me.editedRecordController !== undefined)
+							createdCategory.keys[j].value = me.editedRecordController.get(key)
+						else
+							createdCategory.keys[j].value = undefined;
 
 						console.log("category key", category.keys[j].value);
 					}
