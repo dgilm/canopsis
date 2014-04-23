@@ -30,6 +30,7 @@ define([
 			saveRecord: function() {
 				console.log("addRecord from CrecordformController, editMode:", this.editMode);
 				console.log(this);
+				console.log("saveRecord edited crecord controller", this.editedRecordController);
 
 				if(this.editMode === "add") {
 					var mainCrecordController = Application.Router.router.currentHandlerInfos[2].handler.controller;
@@ -37,15 +38,19 @@ define([
 				}
 				else if(this.editMode === "edit") {
 					var newRecord = {};
-					for (var i = 0; i < this.get("attributes").length; i++) {
-						var attr = this.get("attributes")[i];
-						newRecord[attr.field] = attr.value;
+					var categories = this.get("categorized_attributes");
+					for (var i = 0; i < categories.length; i++) {
+						var category = categories[i];
+						for (var i = 0; i < category.keys.length; i++) {
+							var attr = category.keys[i];
+							newRecord[attr.field] = attr.value;
+						};
 					}
 
 					this.editedRecordController.send("editRecord", newRecord);
 				}
 				else {
-					console.error("bad record form mode");
+					console.log("bad record form mode");
 				}
 
 				//reset editmode to avoid unpredictable behaviour later
@@ -55,43 +60,14 @@ define([
 		},
 
 		//getting attributes (keys and values as seen on the form)
-		attributes: function() {
-			var crecord_type = this.crecord_type;
-			var record_raw = this.record_raw;
-
-			function getValueForField(field) {
-				if(record_raw !== undefined) {
-					return record_raw[field];
-				}
-
-				return undefined;
-			};
-
-			if(crecord_type !== undefined) {
-				var referenceModel = Application[crecord_type.capitalize()];
-
-				var modelAttributes = Ember.get(referenceModel, 'attributes');
-
-				var attributes = [];
-				modelAttributes.forEach(function(field, attrModel) {
-					attributes.push({field: field, model: attrModel, value: getValueForField(field)});
-				});
-
-				return attributes;
-			}
-			else {
-				return undefined;
-			}
-		}.property("record_raw"),
-
-		//getting attributes (keys and values as seen on the form)
 		categorized_attributes: function() {
 			var crecord_type = this.crecord_type;
-			var record_raw = this.record_raw;
 
+			var me = this;
 			function getValueForField(field) {
-				if(record_raw !== undefined) {
-					return record_raw[field];
+				console.log("me.editedRecordController", me.editedRecordController.get(field));
+				if(this.editedRecordController !== undefined) {
+					return me.editedRecordController.get(field);
 				}
 
 				return undefined;
@@ -100,13 +76,15 @@ define([
 			if(crecord_type !== undefined) {
 				var referenceModel = Application[crecord_type.capitalize()];
 
-				var categories = Ember.copy(referenceModel.proto().categories);
+				this.categories = [];
+
 				var modelAttributes = Ember.get(referenceModel, 'attributes');
 
-				var attributes = [];
-
-				for (var i = 0; i < categories.length; i++) {
-					var category = categories[i];
+				for (var i = 0; i < referenceModel.proto().categories.length; i++) {
+					var category = referenceModel.proto().categories[i];
+					var createdCategory = [];
+					createdCategory.title = category.title;
+					createdCategory.keys = [];
 
 					for (var j = 0; j < category.keys.length; j++) {
 						var key = category.keys[j];
@@ -114,23 +92,25 @@ define([
 						if(typeof key === "object") {
 							key = key.field;
 						}
-						category.keys[j] = {field: key, model: modelAttributes.get(key), value: getValueForField(key)};
+
+						createdCategory.keys[j] = {
+							field: key,
+							model: modelAttributes.get(key),
+							value: me.editedRecordController.get(key)
+						};
+
+						console.log("category key", category.keys[j].value);
 					}
+
+					this.categories.push(createdCategory);
 				};
 
-				modelAttributes.forEach(function(field, attrModel) {
-					if(attrModel.options.category === undefined)
-						attrModel.options.category = "General";
-
-					categories.push({field: field, model: attrModel, value: getValueForField(field)});
-				});
-
-				return categories;
+				return this.categories;
 			}
 			else {
 				return undefined;
 			}
-		}.property("record_raw")
+		}.property("editedRecordController")
 	});
 
 	return Application.CrecordformController;
