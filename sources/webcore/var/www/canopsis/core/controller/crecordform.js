@@ -34,7 +34,18 @@ define([
 
 				if(this.editMode === "add") {
 					var mainCrecordController = Application.Router.router.currentHandlerInfos[2].handler.controller;
-					mainCrecordController.send('addRecord', this.crecord_type, this.get("attributes"));
+
+					var newRecord = {};
+					var categories = this.get("categorized_attributes");
+					for (var i = 0; i < categories.length; i++) {
+						var category = categories[i];
+						for (var i = 0; i < category.keys.length; i++) {
+							var attr = category.keys[i];
+							newRecord[attr.field] = attr.value;
+						};
+					}
+
+					mainCrecordController.send('addRecord', this.crecord_type, newRecord);
 				}
 				else if(this.editMode === "edit") {
 					var newRecord = {};
