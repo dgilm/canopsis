@@ -28,7 +28,8 @@ define([
 		setupController: function(controller, model) {
 			console.log("UserviewIndexRoute setupController");
 			controller.set('content', model);
-			controller.set('toolitems', controller.toolbar);
+			console.log("coucou1");
+			controller.set('toolitems', controller.toolbar);console.log("coucou2");
 		},
 
 		model: function() {

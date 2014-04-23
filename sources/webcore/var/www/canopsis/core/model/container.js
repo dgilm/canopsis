@@ -7,7 +7,7 @@ define([
 ], function($, Ember, DS, Application){
 
 	Application.Container = Application.Widget.extend({
-        items : DS.hasMany('Application.Item'),
+        items : [],
         layout_cols : DS.attr('number'),
         layout_rows : DS.attr('number')
 	});

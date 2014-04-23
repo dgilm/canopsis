@@ -6,7 +6,7 @@ define([
 ], function($, Ember, DS, Application) {
 	Application.Item = DS.Model.extend({
         _id : DS.attr("string",{ hiddenInForm: true }),
-        container: DS.belongsTo("Application.Container"),
+        container: DS.attr('string'),
         widget : DS.attr(),
         row : DS.attr("number",{ defaultValue:0 }),
         col : DS.attr("number",{ defaultValue:0 }),
