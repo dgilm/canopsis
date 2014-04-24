@@ -25,7 +25,8 @@ var schemaFiles = [
 	'crecord.account',
 	'crecord.group',
 	'crecord.consolidation',
-	'crecord.selector'
+	'crecord.selector',
+	'crecord.curve'
 ];
 
 var schemasDeps = ['app/lib/ember', 'app/lib/ember-data', 'app/application'];
@@ -55,9 +56,7 @@ define(schemasDeps, function(Ember, DS, Application) {
 
 		console.log(schemaFiles[schemaIndex].split("."));
 
-		var modelDict = {};
-
-		// console.log("loaded argument", schema, schemaFiles[schemaIndex]);
+		var modelDict = { "categories": schema.categories };
 
 		for(name in schema.properties) {
 			var property = schema.properties[name];
