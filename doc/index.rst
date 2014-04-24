@@ -14,6 +14,7 @@ Contents:
    user-guide/index
    administrator-guide/index
    developper-guide/index
+   connectors/index
    draft-uiv2/index
    changelogs
    glossary
