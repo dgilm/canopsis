@@ -47,5 +47,53 @@ List of internal metrics
 	"**Information**", "This section contains metric information related to Canopsis system"
 	"cps_evt_per_sec", "Average events count being threaten each second by an engine. Resource of this metric is the engine name"
 	"cps_sec_per_evt", "Counts how long does an event last in each engine"
+	"cps_queue_size", "This is the size of the Canopsis queue"
 
 
+View metric values
+------------------
+
+Metric values can be viewed in |widgets| or in the
+dedicated view accessible through the Canopsis menu: Build > Perfdata.
+
+|image1|
+
+The view perfdata shows an array of metric values.
+
+|image2|
+
+The array is organized by metric fields depending on the last processed
+event.
+
+Just above the array, from left to right, there are reload, delete and
+display internals buttons and a research bar surrounded by cancel and
+search buttons.
+
+The reload button refresh the view whereas the delete button delete
+selected metrics.
+
+The display internals permits to display/hide internal
+metrics in the view.
+
+Finally, the research bar waits for simple string values separated by
+spaces. Research values are of two types. If they are preceded by the
+'#' character, research value concern tag research with same name,
+otherwise research value is applied on all metric fields where the value
+contains research value.
+
+If several research values are given, then only metrics which match with
+all research values will be displayed in the perfdata view.
+
+Here are examples of Research:
+
+-  "cps\_ state" > display all metrics where fields contain "cps\_" and
+   "state" values. Some internal metrics match with this filter, but the
+   display internal metrics button has to be selected in order to
+   display them.
+-  "#engine" > display all metrics which contain the tag "engine".
+-  "#engine #filter" > display all metrics which contain the tags
+   "engine" and "filter". In other word, it's a solution to get all
+   metrics from the filter engine .
+
+.. |image1| image:: ../_static/metrics/perfdata_menu.png
+.. |image2| image:: ../_static/metrics/perfdata_view.png
