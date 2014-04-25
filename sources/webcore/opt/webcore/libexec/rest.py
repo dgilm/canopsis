@@ -155,7 +155,6 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 	account = get_account()
 
 	limit		= int(params.get('limit', default=20))
-	page		= int(params.get('page', default=0))
 	start		= int(params.get('start', default=0))
 	groups		= params.get('groups', default=None)
 	search		= params.get('search', default=None)
@@ -206,7 +205,6 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 	logger.debug(" + _id: "+str(_id))
 	logger.debug(" + ids: "+str(ids))
 	logger.debug(" + Limit: "+str(limit))
-	logger.debug(" + Page: "+str(page))
 	logger.debug(" + Start: "+str(start))
 	logger.debug(" + Groups: "+str(groups))
 	logger.debug(" + onlyWritable: "+str(onlyWritable))
