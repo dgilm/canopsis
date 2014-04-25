@@ -215,6 +215,7 @@ define(['moment',
 	Ember.Handlebars.registerBoundHelper('renderer', function(crecord, attr, options) {
 			//adding value to attr field
 			Ember.set(attr, "value", crecord.content._data[attr.field]);
+			Ember.set(attr, "crecord", crecord);
 
 
 			var typeName;

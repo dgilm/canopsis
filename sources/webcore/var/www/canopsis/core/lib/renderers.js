@@ -29,6 +29,7 @@ var renderersTemplates = [
 	'state',
 	'timestamp',
 	'percent',
+	'ack'
 ];
 
 var deps = ['app/lib/ember'];

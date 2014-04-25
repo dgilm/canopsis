@@ -55,8 +55,61 @@ define([
 
 		actions: {
 			refresh: function() {
-				controller.set('content', this.store.findAll('event'));
+				this.set('model', this.store.findAll('eventnavigation'));
+			},
+
+			updateAcknowlegement: function(crecord) {
+				console.log({crecord: crecord, _id: crecord.get('_id')});
+
+/*
+				console.log({controllerinstance : this.controllerFor("login").get("currentRouteName")});
+				console.log({controllerinstance : this.get('controllers.login.username')});
+				console.log({controller : Application.__container__.lookup('controller:login')});
+*/
+				$.post(
+					'/event/',
+					{
+						"ref_rk"	: "cengine.engine.check.resource.Sphinx.Engine_topology",
+						"connector"		: "canopsis_ui",
+						"connector_name": "canopsis_ui",
+						"event_type"	: "ack",
+						"source_type"	: "ack",
+						"component"		: 'event_ack',
+						"state"			: 0,
+						"state_type"	: 1,
+						"output"		: "comment",
+						"author"		: "author",
+
+					}, function (data) {
+						console.log(data);
+						crecord.set('ack', true);
+					}
+				);
+
+			},
+
+			cancelAlert: function(store, authkey) {
+
+				$.post(
+					'/event/',
+					{
+						"referer_rk"	: "",
+						"connector"		: "canopsis_ui",
+						"connector_name": "canopsis_ui",
+						"event_type"	: "ack",
+						"source_type"	: "ack",
+						"component"		: 'event_ack',
+						"state"			: 0,
+						"state_type"	: 1,
+						"output"		: "plop",
+						"author"		: "plop",
+
+					}, function (data) {
+						console.log(data);
+					}
+				);
 			}
+
 		}
 	});
 

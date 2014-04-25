@@ -25,22 +25,25 @@ define([
 	'app/model/crecord'
 ], function($, Ember, DS, Application, Crecord) {
 	Application.Eventnavigation = Application.Crecord.extend({
+		ack			: DS.attr('boolean', {defaultValue: false, 'role': 'ack'}),
 		timestamp	: DS.attr('number', {'role': 'timestamp'}),
 		component	: DS.attr('string'),
 		resource	: DS.attr('string'),
 		connector	: DS.attr('string'),
 		output		: DS.attr('string'),
-		state		: DS.attr('number', {'role': 'state'})
+		state		: DS.attr('number', {'role': 'state'}),
 	});
 
 	Application.Eventnavigation.reopenClass({
 		findAll: function(store, authkey) {
 			return $.ajax({
-				url: '/rest/events/event',
+				url: '/rest/events_log/event',
 				method: 'GET',
 				contentType: 'application/json',
 				data: {
-					authkey: authkey
+					authkey: authkey,
+					start: 0,
+					limit: 5
 				}
 			});
 		},
