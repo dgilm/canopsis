@@ -28,7 +28,7 @@ define([
 	Application.Userview = Application.Crecord.extend({
 		_id: DS.attr('string'),
 		crecord_name: DS.attr('string'),
-		container:{} ,
+		container: DS.attr('object'),
 		internal: DS.attr('boolean'),
 		enable: DS.attr('boolean')
 	});

@@ -28,7 +28,47 @@ define([
 
 	// Ember.applicationInstance = Application;
 
-	Application.register("transform:array", DS.ArrayTransform);
+	//Definition of two new data-types :
+
+	Application.ObjectTransform = DS.Transform.extend({
+
+		deserialize: function(serialized){
+			console.log(deserialized);
+			alert(serialized);
+			if( Ember.typeOf(serialized) === 'object'){
+				return serialized;
+			}
+
+			return {};
+		},
+
+		serialize: function(deserialized){
+			console.log(deserialized);
+			alert(deserialized);
+			var type = Ember.typeOf(deserialized);
+
+			if(type === 'object') {
+				return deserialized;
+
+			}else if(type === 'string') {
+				console.log("bad format");
+			}
+
+			return {};
+		}
+
+	});
+
+	Application.initializer({
+		name:"object-transform",
+		after: "transforms",
+		initialize:function(container,application){
+			alert("Application : init transform:object");
+			application.register('transform:object',Application.ObjectTransform);
+		}
+	});
+
+
 	Application.AuthenticatedRoute = Ember.Route.extend({
 
 		beforeModel: function(transition) {

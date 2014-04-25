@@ -28,8 +28,7 @@ define([
 		setupController: function(controller, model) {
 			console.log("UserviewIndexRoute setupController");
 			controller.set('content', model);
-			console.log("coucou1");
-			controller.set('toolitems', controller.toolbar);console.log("coucou2");
+			controller.set('toolitems', controller.toolbar);
 		},
 
 		model: function() {
@@ -44,6 +43,9 @@ define([
 			showView: function() {
 				console.log("test");
 				console.log(this.get("crecord_name"));
+				console.log(" container of view :");
+				var container = this.get("container");
+				console.log(container);
 				this.transitionToRoute("/userview/" + this.get("_id"));
 
 				
