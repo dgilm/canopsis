@@ -1,0 +1,115 @@
+[{
+	"type": "route",
+	"name": "login",
+	"description": "Login",
+	"appears_on": ["login_menu"]
+},{
+	"type": "",
+	"name": "build",
+	"icon": "cog",
+	"description": "Build",
+	"appears_on": ["main_menu"],
+	"children": [{
+		"type": "route",
+		"name": "accounts",
+		"icon": "user",
+		"description": "accounts",
+		"appears_on": ["main_menu"],
+		"children": [{
+			"type": "route",
+			"name": "AddAccounts",
+			"description": "AddAccounts",
+			"appears_on": ["main_menu"]
+		}]
+	},{
+		"type": "route",
+		"name": "groups",
+		"icon": "book",
+		"description": "groups",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "curves",
+		"icon": "picture",
+		"description": "curves",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "perfdatas",
+		"icon": "stats",
+		"description": "perfdatas",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "selectors",
+		"icon": "link",
+		"description": "selectors",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "consolidations",
+		"icon": "compressed",
+		"description": "consolidations",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "topologies",
+		"icon": "tree-conifer",
+		"description": "topologies",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "eventfilter",
+		"icon": "filter",
+		"description": "eventfilter",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "eventnavigation",
+		"icon": "globe",
+		"description": "eventnavigation",
+		"appears_on": ["main_menu"]
+	},{
+		"type": "route",
+		"name": "notifications",
+		"icon": "globe",
+		"description": "notifications",
+		"appears_on": ["main_menu"]
+	}]
+},{
+	"type": "route",
+	"name": "item",
+	"description": "item",
+	"path":"/item/:item_id"
+},{
+	"type": "route",
+	"name": "container",
+	"description": "container",
+	"path":"/container/:container_id"
+	},
+{
+	"type": "",
+	"name": "run",
+	"icon": "play",
+	"description": "show mmenu",
+	"appears_on": ["main_menu"],
+	"children": [{
+		"type": "route",
+		"name": "userviews",
+		"icon": "filter",
+		"description": "userviews",
+		"appears_on": ["main_menu"]
+	}]
+},{
+	"type": "",
+	"name": "report",
+	"description": "users",
+	"appears_on": ["main_menu"]
+},{
+		"type": "route",
+		"name": "userview",
+		"icon": "filter",
+		"description": "userview",
+		"appears_on": ["main_menu"],
+		"path": "/userview/:userview_id"
+}]

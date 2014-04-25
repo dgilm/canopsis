@@ -9,6 +9,7 @@ require.config({
 		'text': 'webcore-libs/dev/text',
 		'moment': 'webcore-libs/moment.min',
 		'jquery': 'webcore-libs/dev/jquery-1.10.2',
+		'plugins': 'webcore-libs/plugins/plugin',
 		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all',
 		'colorpicker': 'webcore-libs/colorpicker/js/spectrum',
 		'colorselector': 'webcore-libs/colorselector/js/bootstrap-colorselector',
