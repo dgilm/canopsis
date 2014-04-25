@@ -112,7 +112,12 @@ class carchiver(object):
 		if new_event:
 			self.store_new_event(_id, event)
 		else:
+
 			change = {}
+			# resets ack status for this alert if already set to true
+			if devent.get('ack', False):
+				change['ack'] = False
+
 			for key in change_fields:
 				if key in event and key in devent and devent[key] != event[key]:
 					change[key] = event[key]
