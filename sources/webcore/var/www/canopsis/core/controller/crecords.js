@@ -81,16 +81,8 @@ define([
 			},
 
 			//add record to the crecord array
-			addRecord: function(crecord_type, model) {
-				var raw_record = {};
-
+			addRecord: function(crecord_type, raw_record) {
 				raw_record[crecord_type] = crecord_type;
-
-				model.forEach(function(attr) {
-					if(attr.value !== undefined) {
-						raw_record[attr.field] = attr.value;
-					}
-				});
 
 				var record = this.store.createRecord(crecord_type, raw_record);
 
@@ -104,7 +96,6 @@ define([
 				var selected = this.filterBy('isSelected', true);
 				console.log("remove action", selected);
 				selected.invoke('remove');
-    			// selected.invoke('save');
 			}
 		},
 

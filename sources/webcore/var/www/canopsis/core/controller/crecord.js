@@ -32,14 +32,14 @@ define([
 
 				crecordformController = Application.CrecordformController.create();
 				crecordformController.set("crecord_type", crecord_type);
-				crecordformController.set("record_raw", this.get(this.dataAccessKey));
+				crecordformController.set("editMode", "edit");
+				crecordformController.set("editedRecordController", this);
 
 				this.send('showEditFormWithController', crecordformController);
 			},
 
 			editRecord: function(record_raw){
 				console.log("editRecord", record_raw);
-				//TODO the rest api doesn't handle well this case
 				this.get("model").setProperties(record_raw);
 				this.get("model").save();
 			}
@@ -49,7 +49,8 @@ define([
 			this.get("model").deleteRecord();
 			this.get("model").save();
 		},
-		//key to access data that was put on the model
+
+		//This is where to get data from the crecord. It should not be changed, and is for internal use only
 		dataAccessKey: "content._data"
 	});
 

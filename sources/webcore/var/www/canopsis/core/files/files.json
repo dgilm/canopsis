@@ -1,0 +1,96 @@
+[{
+	"type": "dir",
+	"name": "lib",
+	"files": [{"name": "helpers"},
+		{"name": "templates"},
+		{"name": "editors"},
+		{"name": "widgets"}]
+	},{
+
+	"type": "dir",
+	"name": "controller",
+	"files": [
+{"name": "accounts"},
+{"name": "application"},
+{"name": "notifications"},
+{"name": "consolidations"},
+{"name": "crecord"},
+{"name": "crecordform"},
+{"name": "crecords"},
+{"name": "curves"},
+{"name": "eventnavigation"},
+{"name": "editor"},
+{"name": "groups"},
+{"name": "login"},
+{"name": "perfdatas"},
+{"name": "selectors"},
+{"name": "userview"},
+{"name": "userviews"},
+{"name": "widget"},
+{"name": "item"},
+{"name": "container"},
+{"name": "login"}]
+},{
+	"type": "dir",
+	"name": "lib",
+	"files": [
+{"name": "editors"},
+{"name": "helpers"},
+{"name": "renderers"},
+{"name": "templates"},
+{"name": "widgets"}]
+},{
+
+	"type": "dir",
+	"name": "view",
+	"files": [
+{"name": "application"},
+{"name": "accounts"},
+{"name": "groups"},
+{"name": "perfdatas"},
+{"name": "consolidations"},
+{"name": "selectors"}]
+},{
+
+	"type": "dir",
+	"name": "controller",
+	"files": [
+{"name": "userview"},
+{"name": "userviews"},
+{"name": "widget"},
+{"name": "item"},
+{"name": "container"},
+{"name": "login"}]
+},{
+
+	"type": "dir",
+	"name": "lib",
+	"files": [
+{"name": "editors"},
+{"name": "helpers"},
+{"name": "renderers"},
+{"name": "templates"},
+{"name": "widgets"}]
+},{
+
+	"type": "dir",
+	"name": "view",
+	"files": [
+{"name": "application"},
+{"name": "accounts"},
+{"name": "groups"},
+{"name": "perfdatas"},
+{"name": "consolidations"},
+{"name": "selectors"},
+{"name": "curves"},
+{"name": "eventnavigation"},
+{"name": "crecords"},
+{"name": "crecordform"},
+{"name": "editor"},
+{"name": "login"},
+{"name": "widget"}]
+},{
+	"type": "dir",
+	"name": "lib",
+	"files": [{"name": "mmenu"}]
+}]
