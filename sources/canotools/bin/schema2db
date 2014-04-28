@@ -99,9 +99,11 @@ class Schema2MongoDB(object):
 							raise ModelRecursionError(schema_id)
 
 						else:
+							""" #world is not yet ready for this
 							model = self.schemas.get(subschema['type'])
 							subschema.update(model)
 							updated = True
+							"""
 
 			for key in subschema:
 				if key != 'type' and isinstance(subschema[key], dict):
