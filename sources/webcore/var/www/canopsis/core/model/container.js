@@ -7,64 +7,36 @@ define([
 ], function($, Ember, DS, Application){
 
 	Application.Container = Application.Widget.extend({
-        items : DS.hasMany('Application.Item'),
+		//items: DS.attr(),
         layout_cols : DS.attr('number'),
-        layout_rows : DS.attr('number')
+        layout_rows : DS.attr('number'),
+        /*
+        grid:function(){
+      		var items = this.get("items");
+     	 	console.log("create grid");
+
+     		var layout = "<ul>";
+
+      		for( var item in this.get("items") ){
+        		var item = this.store.find('item',{'_id':item_ID});
+        		layout = layout + '<li data-row="'+ item.row.toString()+'"';
+       		 	layout = layout +' data_col="'+ item.col.toString()+'"';
+        		layout = layout +' data-sizex="'+ item.rowspan.toString()+'"';
+        		layout = layout +' data-sizey="'+ item.colspan.toString()+'">'+item._id+'</li>';
+      		}
+      
+      		layout = layout + '</ul>';
+      		console.log(layout);
+    
+      		return layout;
+
+   		}.property("items")
+		*/
 	});
+
 
 	Application.Container.reopenClass({
 
-		find: function(store, authkey) {
-			console.log("Container find");
-			return $.ajax({
-				url: '/rest/object/widget',
-				method: 'GET',
-				contentType: 'application/json',
-				data: { widget_type:"container",
-						authkey: authkey }
-			});
-		},
-
-		findAll: function(store, authkey) {
-			console.log("Container findAll");
-			return $.ajax({
-				url: '/rest/object/widget',
-				method: 'GET',
-				contentType: 'application/json',
-				data: { widget_type:"container",
-				        authkey: authkey}
-			});
-		},
-
-		extractFindAll: function(store, payload) {
-			var containers = [];
-			console.log("Container extractFindAll", payload);
-
-			for(var i = 0; i < payload.data.length; i++) {
-				var container = payload.data[i];
-
-				containers.push( container );
-			}
-
-			return containers;
-		},
-
-		extractFind: function(store, payload) {
-			var containers = [];
-			console.log("Container extractFind", payload);
-			for(var i = 0; i < payload.data.length; i++) {
-				var container = payload.data[i];
-
-				containers.push( container );
-			}
-			return containers;
-		},
-
-		extractSingle: function(store, type, payload, id, requestType) {
-			var container = payload.data;
-			console.log("Container extractSingle", payload);
-			return container;
-		}
 	});
 
 	return Application.Container;

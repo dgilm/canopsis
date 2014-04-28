@@ -21,16 +21,23 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/lib/schema-manager'
+	'app/lib/schema-manager',
+	'app/model/container'
 ], function($, Ember, DS, Application) {
 
 	Application.Userview = Application.Crecord.extend({
 		_id: DS.attr('string'),
 		crecord_name: DS.attr('string'),
-		container_id: DS.attr('string'),
+		container: DS.attr('object'),
 		internal: DS.attr('boolean'),
 		enable: DS.attr('boolean')
 	});
+
+	Application.Userview.FIXTURES = [{ "_id" : "test_view_vertical", 
+									   "crecord_name" : "Vue Verticale", 
+									   "container" : "test_view_vertical_container", 
+									   "internal" : true,
+									   "enable" : true }];
 
 	Application.Userview.reopenClass({
 
