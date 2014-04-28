@@ -166,50 +166,6 @@ define(['moment',
 		}
 	});
 
-	Ember.Handlebars.registerBoundHelper('editor', function(attr, options) {
-		// var escaped = Handlebars.Utils.escapeExpression(value);
-		var typeName;
-
-		if(attr.model.options.role !== undefined) {
-			typeName = attr.model.options.role;
-		} else {
-			// console.log("use type as role : ", attr.model.type);
-			typeName = attr.model.type;
-		}
-
-		var editorName = "editor-" + typeName;
-
-		console.log("evaluated editor name :", editorName);
-		if(Ember.TEMPLATES[editorName] === undefined) {
-			editorName = "editor-defaultpropertyeditor";
-		}
-
-		editorNameParts = editorName.split("-");
-
-		for (var i = 0; i < editorNameParts.length; i++) {
-			editorNameParts[i] = editorNameParts[i].capitalize();
-		};
-
-		var controllerName = editorNameParts.join("") + "Controller";
-		var viewName = editorNameParts.join("") + "View";
-
-		if(Application[controllerName] !== undefined)
-			console.log("controller :\t", controllerName);
-		else
-			console.log("controller : \t[default controller]");
-
-		if(Application[viewName] !== undefined)
-			console.log("view : \t\t\t", viewName);
-		else
-			console.log("view : \t\t\t[default view]");
-
-		console.groupEnd();
-		console.groupEnd();
-
-		return Ember.Handlebars.helpers.render.call(this, editorName, attr, options);
-	});
-
-
 	Ember.Handlebars.helper('menu', Application.MenuView);
 
 	Ember.Handlebars.registerHelper('ifeq', function(a, b, options) {
