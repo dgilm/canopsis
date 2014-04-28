@@ -22,6 +22,7 @@ define(['moment',
 	'app/application',
 	'app/view/menu',
 	'app/lib/tools',
+	'app/lib/renderers',
 ], function(moment, Ember, Application, Tools) {
 
 	Ember.Handlebars.helper('color', function(color, options) {
@@ -210,31 +211,6 @@ define(['moment',
 
 
 	Ember.Handlebars.helper('menu', Application.MenuView);
-	// Ember.Handlebars.helper('editor', Application.EditorView);
-
-	Ember.Handlebars.registerBoundHelper('renderer', function(crecord, attr, options) {
-			//adding value to attr field
-			Ember.set(attr, "value", crecord.content._data[attr.field]);
-
-
-			var typeName;
-
-			if(attr.options.role !== undefined) {
-				typeName = attr.options.role;
-			} else {
-				// console.log("use type as role : ", attr.model.type);
-				typeName = attr.type;
-			}
-
-
-			var rendererName = "renderer-" + typeName;
-
-			if(Ember.TEMPLATES[rendererName] === undefined) {
-				rendererName = "renderer-default";
-			}
-
-		return Ember.Handlebars.helpers.partial.call(this, rendererName, options);
-	});
 
 	Ember.Handlebars.registerHelper('ifeq', function(a, b, options) {
 		return Ember.Handlebars.helpers.bind.call(options.contexts[0], a, options, true, function(result) {

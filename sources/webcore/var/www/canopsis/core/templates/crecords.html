@@ -21,7 +21,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{{#each item in controller}}
+			{{#each crecord in controller}}
 				<tr>
 					<td>{{input type="checkbox" checked=isSelected class="toggle"}}</td>
 					<td>
@@ -29,12 +29,12 @@
 							{{glyphicon "edit"}}
 						</button>
 					</td>
-					{{log controller.parentController.attributesKeys}}
-					{{#each attr in controller.parentController.attributesKeys}}
-						<td>{{renderer item attr}}</td>
+					{{#each attr in crecord.attributes}}
+						<td>{{partial attr.renderer}}</td>
 					{{/each}}
 				</tr>
 			{{/each}}
 		</tbody>
+
 	</table>
 </div>

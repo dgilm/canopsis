@@ -51,7 +51,43 @@ define([
 		},
 
 		//This is where to get data from the crecord. It should not be changed, and is for internal use only
-		dataAccessKey: "content._data"
+		dataAccessKey: "content._data",
+
+		attributes: function() {
+			var attributes = [];
+			var attributesDict = this.parentController.get("attributesKeys");
+
+			for(key in attributesDict) {
+				if(attributesDict[key] !== undefined) {
+					var attr = attributesDict[key];
+					if(attr.options !== undefined && (attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined)) {
+
+						var rendererName;
+
+						if(attr.options !== undefined && attr.options.role !== undefined){
+							rendererName = "renderer-" + attr.options.role;
+						} else {
+							rendererName = "renderer-" + attr.type;
+						}
+
+						if(Ember.TEMPLATES[rendererName] === undefined) {
+							rendererName = "renderer-default";
+						}
+
+						attributes.push({
+							field: attr.field,
+							type: attr.type,
+							options: attr.options,
+							renderer: attr.options.role,
+							value: this.content.get(attr.field),
+							renderer: rendererName
+						});
+					}
+				}
+			};
+			return attributes;
+
+		}.property('content')
 	});
 
 	return Application.CrecordController;
