@@ -101,8 +101,23 @@ Trouble shooting
 
 During some occasions, you could encounter some funny error messages such as :
 
+* Supervisord still running
+
 .. code-block:: bash
 
     unix:///opt/canopsis/tmp/supervisor.sock no such file
 
-    This error occurs when ``supervisord`` failed to start during the installation. Simply start it in a ``canopsis`` environement.
+This error occurs when ``supervisord`` failed to start during the installation. Simply start it in a ``canopsis`` environement.
+
+* Erlang refuses to work and crashes
+
+.. code-block:: bash
+
+    Crash dump was written to: erl_crash.dump
+    Kernel pid terminated (application_controller) ({application_start_failure,kernel,{shutdown,{kernel,start,[normal,[]]}}})
+    + Declare Admin user ...
+    {error_logger,{{2014,4,28},{9,20,0}},"Error when reading /opt/canopsis/.erlang.cookie: eacces",[]}
+    [...]
+
+This error occurs when rabbit-ms configuration is not properly set next to a system crash or equivalent. It is possible to fix this issue by removing the erlang cookie in canopsis root folder ``rm /opt/canopsis/.erlang.cookie``. this may have no side effect when canopsis is in single instance mode (no HA)
+
