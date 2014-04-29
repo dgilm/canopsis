@@ -29,7 +29,7 @@ define([
 	// Ember.applicationInstance = Application;
 
 	//Definition of two new data-types :
-
+	/*
 	Application.ObjectTransform = DS.Transform.extend({
 
 		deserialize: function(serialized){
@@ -59,15 +59,41 @@ define([
 
 	});
 
+	Application.ArrayTransform = DS.Transform.extend({
+		deserialize: function(serialized) {
+			if(Ember.typeOf(serialized) === 'array') {
+				return serialized;
+			}
+
+			return [];
+		},
+
+		serialize: function(deserialized) {
+			var type = Ember.typeOf(deserialized);
+
+			if(type === 'array') {
+				return deserialized;
+			}
+			else if(type === 'string') {
+				return deserialized.split(',').map(function(item) {
+					return jQuery.trim(item);
+				});
+			}
+
+			return [];
+		}
+
+	});
+	*/
 	Application.initializer({
-		name:"object-transform",
+		name:"RESTAdaptertransforms",
 		after: "transforms",
 		initialize:function(container,application){
-			alert("Application : init transform:object");
-			application.register('transform:object',Application.ObjectTransform);
+			//alert("Application : init transform:object and transform:array");
+			application.register('transform:array',DS.ArrayTransform);
+			application.register('transform:object',DS.ObjectTransform);
 		}
 	});
-
 
 	Application.AuthenticatedRoute = Ember.Route.extend({
 
@@ -123,7 +149,8 @@ define([
 		}
 	});
 
-	Application.ApplicationSerializer = DS.RESTSerializer.extend({
+	Application.ApplicationSerializer = DS.RESTSerializer.extend({    
+
 		extractFindAll: function(store, type, payload) {
 			var result = type.extractFindAll(store, payload)
 			return result;
@@ -133,6 +160,37 @@ define([
 			return result;
 		}
 	});
+    /*
+	Application.ApplicationSerializer.reopen({
+		serializeHasMany: function(record, json, relationship) {
+        	var key = relationship.key,
+            hasManyRecords = Ember.get(record, key);
+         
+        	// Embed hasMany relationship if records exist
+        	if (hasManyRecords && relationship.options.embedded == 'always') {
+            	json[key] = [];
+            	hasManyRecords.forEach(function(item, index){
+                	json[key].push(item.serialize());
+            	});
+        	}
+        	// Fallback to default serialization behavior
+        	else {
+            	return this._super(record, json, relationship);
+        	}
+    	},
 
+    	serializeBelongsTo: function(record, json, relationship) {
+    		var key = relationship.key,
+        	belongsToRecord = Ember.get(record, key);
+     
+    		if (relationship.options.embedded === 'always') {
+        		json[key] = belongsToRecord.serialize();
+    		}else{
+        		return this._super(record, json, relationship);
+    		}
+		}
+
+	});
+	*/
 	return Application;
 });
