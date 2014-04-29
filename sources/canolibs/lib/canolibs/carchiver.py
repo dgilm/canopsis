@@ -82,6 +82,10 @@ class carchiver(object):
 			self.logger.debug("   - State:\t\t'%s'" % legend[old_state])
 			self.logger.debug("   - State type:\t'%s'" % legend_type[old_state_type])
 
+			# Event annulation
+			if 'cancel' in event and event['cancel'] == False:
+				event['state'] = old_state
+
 			if state != old_state:
 				event['previous_state'] = old_state
 
