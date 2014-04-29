@@ -192,13 +192,15 @@ Ext.define('canopsis.view.Schedule.Form', {
 							xtype: 'checkbox',
 							name: 'exporting_enable',
 							checked: false,
-							fieldLabel: _('Enable')
+							fieldLabel: _('Exporting interval enable')
 						},
 						{
 							xtype: 'cfieldset',
 							title: _('Time zone'),
 							itemId: 'exporting_timezone',
 							layout: "hbox",
+							hidden: true,
+							disabled: true,
 							items: [
 								{
 									xtype: 'combobox',
@@ -230,12 +232,16 @@ Ext.define('canopsis.view.Schedule.Form', {
 							xtype: "checkbox",
 							fieldLabel: _('advanced'),
 							checked: false,
-							name: 'exporting_advanced'
+							name: 'exporting_advanced',
+							hidden: true,
+							disabled: true,
 						}, {
 							xtype: 'cfieldset',
 							layout: "hbox",
 							title: _('Duration'),
 							itemId: 'exporting_duration',
+							hidden: true,
+							disabled: true,
 							items: [
 								{
 									xtype: "numberfield",
@@ -520,17 +526,38 @@ Ext.define('canopsis.view.Schedule.Form', {
 		var to = this.down('#to');
 		var from = this.down('#from');
 
+		var exporting_timezone = this.down("#exporting_timezone");
 		var timezone_type = this.down('*[name=timezone_type]');
 		var timezone_value = this.down('*[name=timezone_value]');
 
-		var exporting_enable = this.down('*[exporting_enable]');
+		var exporting_enable = this.down('*[name=exporting_enable]');
 
-		/*exporting_enable.on('change', function(component, value) {
+		var exporting_duration = this.down('#exporting_duration');
+
+		exporting_enable.on('change', function(component, value) {
 			switch(value) {
 				case true:
+					exporting_timezone.show().setDisabled(false);
+					exporting_advanced.show().setDisabled(false);
+					switch(exporting_advanced.getValue()) {
+						case true:
+							to.show().setDisabled(false);
+							from.show().setDisabled(false);
+							break;
+						case false:
+							exporting_duration.show().setDisabled(false);
+							break;
+					}
+					break;
 				case false:
+					exporting_timezone.hide().setDisabled(true);
+					exporting_advanced.hide().setDisabled(true);
+					exporting_duration.hide().setDisabled(true);
+					to.hide().setDisabled(true);
+					from.hide().setDisabled(true);
+					break;
 			}
-		});*/
+		});
 
 		timezone_type.on('change', function(component, value) {
 			switch(value) {
