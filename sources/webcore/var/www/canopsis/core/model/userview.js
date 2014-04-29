@@ -28,16 +28,22 @@ define([
 	Application.Userview = Application.Crecord.extend({
 		_id: DS.attr('string'),
 		crecord_name: DS.attr('string'),
-		container: DS.attr('object'),
+		container: DS.belongsTo('container'),
 		internal: DS.attr('boolean'),
 		enable: DS.attr('boolean')
-	});
+	});  
 
 	Application.Userview.FIXTURES = [{ "_id" : "test_view_vertical", 
 									   "crecord_name" : "Vue Verticale", 
 									   "container" : "test_view_vertical_container", 
 									   "internal" : true,
 									   "enable" : true }];
+
+	Application.UserviewSerializer = DS.ActiveModelSerializer.extend(DS.EmbeddedRecordsMixin,{
+		attrs: { 
+			container: {embedded: 'load'} 
+		}
+	});
 
 	Application.Userview.reopenClass({
 

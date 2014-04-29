@@ -26,48 +26,14 @@ define([
 
 	var Application = Ember.Application.create({});
 
-	// Ember.applicationInstance = Application;
-
-	//Definition of two new data-types :
-
-	Application.ObjectTransform = DS.Transform.extend({
-
-		deserialize: function(serialized){
-			console.log(deserialized);
-			alert(serialized);
-			if( Ember.typeOf(serialized) === 'object'){
-				return serialized;
-			}
-
-			return {};
-		},
-
-		serialize: function(deserialized){
-			console.log(deserialized);
-			alert(deserialized);
-			var type = Ember.typeOf(deserialized);
-
-			if(type === 'object') {
-				return deserialized;
-
-			}else if(type === 'string') {
-				console.log("bad format");
-			}
-
-			return {};
-		}
-
-	});
-
 	Application.initializer({
-		name:"object-transform",
+		name:"RESTAdaptertransforms",
 		after: "transforms",
 		initialize:function(container,application){
-			// alert("Application : init transform:object");
-			application.register('transform:object',Application.ObjectTransform);
+			application.register('transform:array',DS.ArrayTransform);
+			application.register('transform:object',DS.ObjectTransform);
 		}
 	});
-
 
 	Application.AuthenticatedRoute = Ember.Route.extend({
 
@@ -129,7 +95,8 @@ define([
 		}
 	});
 
-	Application.ApplicationSerializer = DS.RESTSerializer.extend({
+	Application.ApplicationSerializer = DS.RESTSerializer.extend({    
+
 		extractFindAll: function(store, type, payload) {
 			if(type.extractFindAll === undefined) {
 				console.old.error("extractFindAll is not set in", type);
