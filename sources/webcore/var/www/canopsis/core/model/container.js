@@ -3,11 +3,27 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-    'app/model/widget'
+    'app/model/widget',
+    'app/model/item',
+    'app/model/userview'
 ], function($, Ember, DS, Application){
 
+	Application.ContainerRoute = Application.AuthenticatedRoute.extend({
+    	setupController: function(controller, model) {
+      		console.log("ContainerRoute setupController");
+      		controller.set('content', model);
+      		controller.set('toolitems', controller.toolbar);
+    	},
+
+    	model: function() {
+      		console.log("model");
+      		return this.store.find('container');
+    	}
+  });
+
 	Application.Container = Application.Widget.extend({
-		//items: DS.attr(),
+		view: DS.belongsTo('userview'),
+		items: DS.hasMany('item'),
         layout_cols : DS.attr('number'),
         layout_rows : DS.attr('number'),
         /*
