@@ -71,7 +71,7 @@ class carchiver(object):
 		try:
 			# Get old record
 			#record = self.storage.get(_id, account=self.account)
-			change_fields = {'state': 1, 'state_type': 1, 'last_state_change': 1, 'perf_data_array': 1, 'output': 1, 'timestamp': 1}
+			change_fields = {'state': 1, 'state_type': 1, 'last_state_change': 1, 'perf_data_array': 1, 'output': 1, 'timestamp': 1, 'cancel': 1}
 			devent = self.collection.find_one(_id, fields=change_fields)
 			self.logger.debug(" + Check with old record:")
 			old_state = devent['state']
@@ -81,6 +81,10 @@ class carchiver(object):
 
 			self.logger.debug("   - State:\t\t'%s'" % legend[old_state])
 			self.logger.debug("   - State type:\t'%s'" % legend_type[old_state_type])
+
+			# Event annulation
+			if 'cancel' in event and event['cancel'] == False:
+				event['state'] = old_state
 
 			if state != old_state:
 				event['previous_state'] = old_state
@@ -120,6 +124,8 @@ class carchiver(object):
 
 			for key in change_fields:
 				if key in event and key in devent and devent[key] != event[key]:
+					change[key] = event[key]
+				elif key in event and key not in devent:
 					change[key] = event[key]
 			if change:
 				self.storage.get_backend('events').update({'_id': _id}, {'$set': change})

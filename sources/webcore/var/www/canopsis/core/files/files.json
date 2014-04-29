@@ -1,0 +1,57 @@
+[{
+
+	"type": "dir",
+	"name": "controller",
+	"files": [
+		{"name": "accounts"},
+		{"name": "application"},
+		{"name": "consolidations"},
+		{"name": "container"},
+		{"name": "container"},
+		{"name": "crecord"},
+		{"name": "crecordform"},
+		{"name": "crecords"},
+		{"name": "curves"},
+		{"name": "editor"},
+		{"name": "eventnavigation"},
+		{"name": "groups"},
+		{"name": "item"},
+		{"name": "login"},
+		{"name": "notifications"},
+		{"name": "perfdatas"},
+		{"name": "selectors"},
+		{"name": "userview"},
+		{"name": "userviews"},
+		{"name": "widget"}
+	]
+},{
+	"type": "dir",
+	"name": "lib",
+	"files": [
+		{"name": "editors"},
+		{"name": "helpers"},
+		{"name": "mmenu"},
+		{"name": "renderers"},
+		{"name": "templates"},
+		{"name": "widgets"}
+	]
+},{
+
+	"type": "dir",
+	"name": "view",
+	"files": [
+		{"name": "accounts"},
+		{"name": "application"},
+		{"name": "consolidations"},
+		{"name": "crecordform"},
+		{"name": "crecords"},
+		{"name": "curves"},
+		{"name": "editor"},
+		{"name": "eventnavigation"},
+		{"name": "groups"},
+		{"name": "login"},
+		{"name": "perfdatas"},
+		{"name": "selectors"},
+		{"name": "widget"}
+	]
+}]

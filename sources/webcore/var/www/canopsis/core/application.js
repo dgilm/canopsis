@@ -26,9 +26,15 @@ define([
 
 	var Application = Ember.Application.create({});
 
-	// Ember.applicationInstance = Application;
+	Application.initializer({
+		name:"RESTAdaptertransforms",
+		after: "transforms",
+		initialize:function(container,application){
+			application.register('transform:array',DS.ArrayTransform);
+			application.register('transform:object',DS.ObjectTransform);
+		}
+	});
 
-	Application.register("transform:array", DS.ArrayTransform);
 	Application.AuthenticatedRoute = Ember.Route.extend({
 
 		beforeModel: function(transition) {
@@ -64,12 +70,16 @@ define([
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
 
 		findAll: function(store, type) {
-			console.log("findAll", type);
+			if(type.findAll === undefined) {
+				console.old.error("findAll is not set in", type);
+			}
 			return type.findAll(store, localStorage.cps_authkey);
 		},
 
 		find: function(store, type) {
-			console.log("find", type);
+			if(type.find === undefined) {
+				console.old.error("find is not set in", type);
+			}
 			return type.find(store, localStorage.cps_authkey);
 		},
 
@@ -79,17 +89,27 @@ define([
 				type = "view";
 			}
 			return "rest/object/" + Ember.String.underscore(type);
+		},
+
+		findBelongsTo: function(store, record, url){
 		}
 	});
 
-	Application.ApplicationSerializer = DS.RESTSerializer.extend({
+	Application.ApplicationSerializer = DS.RESTSerializer.extend({    
+
 		extractFindAll: function(store, type, payload) {
-			var result = type.extractFindAll(store, payload)
-			return result;
+			if(type.extractFindAll === undefined) {
+				console.old.error("extractFindAll is not set in", type);
+			}
+
+			return type.extractFindAll(store, payload);
 		},
 		extractFind: function(store, type, payload) {
-			var result = type.extractFind(store, payload)
-			return result;
+			if(type.extractFind === undefined) {
+				console.old.error("extractFind is not set in", type);
+			}
+
+			return type.extractFind(store, payload);
 		}
 	});
 

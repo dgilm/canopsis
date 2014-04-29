@@ -20,13 +20,15 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
-	'app/application'
+	'app/application',
+	'app/model/item'
 ], function($, Ember, DS, Application) {
 
 	Application.Widget = DS.Model.extend({
         _id: DS.attr('string'),
         title: DS.attr('string'),
-		type: DS.attr('string'),
+		widget_type: DS.attr('string'),
+		item:DS.belongsTo('item'),
         connectionParameters:{}
 	});
 

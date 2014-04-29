@@ -33,7 +33,7 @@
 								{{else}}
 									 <div>
 											<span class="mmenulabel">{{attr.field}}</span>
-											{{editor attr type=attr.model.type value=attr.value}}
+											{{partial attr.editor}}
 									 </div>
 								{{/if}}
 							{{/each}}

@@ -36,6 +36,7 @@ from libexec.auth import get_account ,check_group_rights
 
 logger = logging.getLogger("rest")
 
+
 ctype_to_group_access = {
 							'schedule' : 'group.CPS_schedule_admin',
 							'curve' : 'group.CPS_curve_admin',
@@ -155,7 +156,6 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 	account = get_account()
 
 	limit		= int(params.get('limit', default=20))
-	page		= int(params.get('page', default=0))
 	start		= int(params.get('start', default=0))
 	groups		= params.get('groups', default=None)
 	search		= params.get('search', default=None)
@@ -206,7 +206,6 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 	logger.debug(" + _id: "+str(_id))
 	logger.debug(" + ids: "+str(ids))
 	logger.debug(" + Limit: "+str(limit))
-	logger.debug(" + Page: "+str(page))
 	logger.debug(" + Start: "+str(start))
 	logger.debug(" + Groups: "+str(groups))
 	logger.debug(" + onlyWritable: "+str(onlyWritable))
@@ -271,7 +270,7 @@ def rest_get(namespace, ctype=None, _id=None, params=None):
 		#clean mfilter
 		mfilter = clean_mfilter(mfilter)
 
-		records, total = storage.find(mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True)
+		records, total = storage.find(mfilter, sort=msort, limit=limit, offset=start, account=account, with_total=True, namespace=namespace)
 
 	output = []
 

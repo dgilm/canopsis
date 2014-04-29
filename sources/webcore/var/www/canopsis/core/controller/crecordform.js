@@ -104,9 +104,24 @@ define([
 							key = key.field;
 						}
 
+						//find appropriate editor for the model property
+						var editorName;
+						var attr = modelAttributes.get(key);
+
+						if(attr.options !== undefined && attr.options.role !== undefined){
+							editorName = "editor-" + attr.options.role;
+						} else {
+							editorName = "editor-" + attr.type;
+						}
+
+						if(Ember.TEMPLATES[editorName] === undefined) {
+							editorName = "editor-defaultpropertyeditor";
+						}
+
 						createdCategory.keys[j] = {
 							field: key,
-							model: modelAttributes.get(key)
+							model: modelAttributes.get(key),
+							editor: editorName
 						};
 
 						if(me.editedRecordController !== undefined)

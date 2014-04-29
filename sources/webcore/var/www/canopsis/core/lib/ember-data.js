@@ -46,5 +46,29 @@ define(function(require, exports, module) {
 		}
 	});
 
+	DS.ObjectTransform = DS.Transform.extend({
+		deserialize: function(serialized) {
+			alert("coucou, on passe par DS.ObjectTransform");
+			if(Ember.typeOf(serialized) === 'object'){
+				return serialized;
+			}
+
+			return {};
+		},
+
+		serialize: function(deserialized) {
+			var type = Ember.typeOf(deserialized);
+
+			if(type === 'object') {
+				return deserialized;
+
+			}else if(type === 'string') {
+				console.log("bad format");
+			}
+
+			return {};
+		}
+	});	
+ 
 	return DS;
 });

@@ -4,10 +4,9 @@ define([
 'app/application',
 'app/model/item'
 ], function($, Ember, Application, Item ){
-    Application.ItemController = Ember.ObjectController.extend({
-        needs:"widget",
-        widget: Ember.computed.alias("controllers.widget"),
 
+    Application.ItemController = Ember.ObjectController.extend({
+        needs:["widget"],
         createItem : function( idItem,row,col ){
             this.set('_id',idItem);
             this.set('row',row);

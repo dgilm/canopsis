@@ -43,7 +43,13 @@ define([
 			showView: function() {
 				console.log("test");
 				console.log(this.get("crecord_name"));
+				console.log(" container of view :");
+				var container = this.get("container");
+				console.log(container);
 				this.transitionToRoute("/userview/" + this.get("_id"));
+
+				
+
 
 			}
 		}
