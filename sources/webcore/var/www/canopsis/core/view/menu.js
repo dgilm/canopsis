@@ -52,7 +52,9 @@ define([
 				selectorResult = [selectorResult];
 
 			console.log(selectorResult);
+			
 			return selectorResult;
+
 		}.property('items'),
 
 		isAction: function (scenarioStep) {

@@ -110,8 +110,9 @@ class KnownValues(unittest.TestCase):
 		event['perf_data_array'] = parse_perfdata(event['perf_data'])
 		
 		try:
-			event['rk'] = event_alert['rk']
-			event['event_id'] = event_alert['event_id']
+			event['rk'] = event_alert['rk']	# add in ?
+			event['event_id'] = event_alert['event_id']	# add in eventstore
+			event['downtime'] = event_alert['downtime'] # add in downtime engine.
 		except:
 			pass
 			
@@ -144,12 +145,13 @@ class KnownValues(unittest.TestCase):
 		values = perfstore.get_points(name='test1mymetric', tstart=int(time.time() - 10), tstop=int(time.time()))
 		
 		if len(values) != 2:
-			raise Exception("Perfsore don't work ...")
+			raise Exception("Perfstore don't work : we havent goog number of values in return...")
 			
 		if values[1][1] != 1:
-			raise Exception("Perfsore don't work ...")		
+			raise Exception("Perfstore don't work : we havent the good values in return...")		
 	
 	def test_6_Check_webserver(self):	
+
 		WS = cwebservices()
 		WS.login('root', 'root')
 		

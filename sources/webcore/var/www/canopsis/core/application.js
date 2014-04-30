@@ -26,6 +26,11 @@ define([
 
 	var Application = Ember.Application.create({});
 
+
+	// Ember.applicationInstance = Application;
+
+	//Definition of two new data-types :
+	
 	Application.initializer({
 		name:"RESTAdaptertransforms",
 		after: "transforms",
@@ -104,6 +109,7 @@ define([
 
 			return type.extractFindAll(store, payload);
 		},
+
 		extractFind: function(store, type, payload) {
 			if(type.extractFind === undefined) {
 				console.error("extractFind is not set in", type);
