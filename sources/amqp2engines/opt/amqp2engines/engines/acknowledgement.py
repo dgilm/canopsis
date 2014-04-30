@@ -94,16 +94,19 @@ class engine(cengine):
 					self.logger.info('Added a referer rk to the comment ' + comment['comment'])
 
 
+			ack_info = {
+				'timestamp': event['timestamp'],
+				'ackts': int(time.time()),
+				'rk': rk,
+				'author': event['author'],
+				'comment': event['output']
+			}
+			ack_info = crecord(ack_info).dump()
+			del ack_info['_id']
 			# add rk to acknowledged rks
 			response = self.stbackend.find_and_modify(
 				query = {'rk': rk, 'solved': False},
-				update = {'$set': {
-					'timestamp': event['timestamp'],
-					'ackts': int(time.time()),
-					'rk': rk,
-					'author': event['author'],
-					'comment': event['output']
-				}},
+				update = {'$set': ack_info},
 				upsert = True,
 				full_response = True,
 				new = True

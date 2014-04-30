@@ -1,0 +1,5 @@
+{{#if attr.value}}
+	<span class="badge">Canceled</span>
+{{else}}
+	<button type="button" class="btn btn-default" {{action 'cancel' }} >Cancel</button>
+{{/if}}

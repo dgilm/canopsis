@@ -26,6 +26,7 @@ define([
 ], function($, Ember, DS, Application, Crecord) {
 	Application.Eventnavigation = Application.Crecord.extend({
 		ack			: DS.attr('boolean', {defaultValue: false, 'role': 'ack'}),
+		cancel 		: DS.attr('boolean', {defaultValue: false, 'role': 'cancel-alert'}),
 		timestamp	: DS.attr('number', {'role': 'timestamp'}),
 		component	: DS.attr('string'),
 		resource	: DS.attr('string'),

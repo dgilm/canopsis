@@ -22,7 +22,8 @@
 		{"name": "selectors"},
 		{"name": "userview"},
 		{"name": "userviews"},
-		{"name": "widget"}
+		{"name": "widget"},
+		{"name": "event"}
 	]
 },{
 	"type": "dir",

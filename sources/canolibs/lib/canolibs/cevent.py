@@ -55,7 +55,8 @@ def forger(		connector,
 			ticket=None,
 			ref_rk=None,
 			component_problem=False,
-			cancel=None
+			cancel=None,
+			author=None
 		):
 
 	if not timestamp:
@@ -129,6 +130,9 @@ def forger(		connector,
 
 	if cancel is not None:
 		dump["cancel"] = cancel
+
+	if author:
+		dump["author"] = author
 
 	if perf_data:
 		dump["perf_data"] = perf_data

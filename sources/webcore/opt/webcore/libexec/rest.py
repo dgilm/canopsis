@@ -35,7 +35,7 @@ from ctools import clean_mfilter
 from libexec.auth import get_account ,check_group_rights
 
 logger = logging.getLogger("rest")
-
+logger.setLevel('DEBUG')
 
 ctype_to_group_access = {
 							'schedule' : 'group.CPS_schedule_admin',
@@ -154,7 +154,8 @@ def rest_trees_get(rk=None):
 def rest_get(namespace, ctype=None, _id=None, params=None):
 	#get the session (security)
 	account = get_account()
-
+	logger.info('params')
+	logger.info(dict(params))
 	limit		= int(params.get('limit', default=20))
 	start		= int(params.get('start', default=0))
 	groups		= params.get('groups', default=None)

@@ -65,25 +65,24 @@ def send_event(	routing_key=None):
 		data = request.body.readline()
 		data = json.loads(data)
 	except:
-		data = request.params
+		data = dict(request.params)
+
+	logger.debug(data)
 
 	#-----------------------get params-------------------
 	timestamp = data.get('timestamp', None)
-	if timestamp is None
+	if timestamp is None:
 		data['timestamp'] = time.time()
 	elif not isinstance(timestamp, int):
 		data['timestamp'] = int(timestamp)
 
-
-	if not display_name:
-		display_name = data.get('display_name', None)
-
-	mandatory_fields = ['connector','connector_name','event_type','source_type','component','resource','state']
+	mandatory_fields = ['connector', 'connector_name', 'event_type', 'source_type', 'component', 'state']
 
 	for field in mandatory_fields:
-		if data.get('connector', None) is None:
-			logger.error('No connector argument')
-			return HTTPError(400, 'Missing connector argument')
+		if data.get(field, None) is None:
+			message = 'Missing {} argument in payload'.format(field)
+			logger.error(message)
+			return HTTPError(400, message)
 
 	if data.get('state_type', None) is None:
 		data['state_type'] = 1
@@ -100,32 +99,33 @@ def send_event(	routing_key=None):
 			value = []
 		data[key] = value
 
-	json2py(data, 'tags'):
-	json2py(data, 'perf_data_array'):
+	json2py(data, 'tags')
+	json2py(data, 'perf_data_array')
 
 
 	#------------------------------forging event----------------------------------
-
+	logger.info('AUTOR '+ data.get('author', None))
 	event = cevent.forger(
-				connector = data.get('connector', None),
-				connector_name = data.get('connector_name', None),
-				event_type = data.get('event_type', None),
-				source_type = data.get('source_type', None),
-				component = data.get('component' ,None),
-				resource= data.get('resource', None),
-				state = int(data.get('state', None)),
-				state_type = int(data.get('state_type', None)),
-				output = data.get('output',None),
-				long_output = data.get('long_output', None),
-				perf_data = data.get('perf_data', None),
-				perf_data_array = data.get('perf_data_array', None),
-				timestamp = data.get('timestamp', None),
-				display_name = data.get('display_name', None),
-				tags = data.get('tags', None),
-				ticket = data.get('ticket', None),
-				ref_rk = data.get('ref_rk', None),
-				cancel = data.get('cancel', None),
-			)
+		connector = data.get('connector', None),
+		connector_name = data.get('connector_name', None),
+		event_type = data.get('event_type', None),
+		source_type = data.get('source_type', None),
+		component = data.get('component' ,None),
+		resource= data.get('resource', None),
+		state = int(data.get('state', None)),
+		state_type = int(data.get('state_type', None)),
+		output = data.get('output',None),
+		long_output = data.get('long_output', None),
+		perf_data = data.get('perf_data', None),
+		perf_data_array = data.get('perf_data_array', None),
+		timestamp = data.get('timestamp', None),
+		display_name = data.get('display_name', None),
+		tags = data.get('tags', None),
+		ticket = data.get('ticket', None),
+		ref_rk = data.get('ref_rk', None),
+		cancel = data.get('cancel', None),
+		author = data.get('author', None),
+	)
 
 	logger.debug('Event crafted {}'.format(event))
 

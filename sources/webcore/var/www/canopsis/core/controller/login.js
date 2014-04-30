@@ -32,6 +32,13 @@ define([
 	Application.LoginController = Ember.ObjectController.extend({
 		content: {},
 
+		getUser: function () {
+			controller = this;
+			$.get('/account/me', function (data){
+				controller.set('username', data.data[0].user);
+			});
+		},
+
 		reset: function() {
 			this.setProperties({
 				username: "",
@@ -50,7 +57,6 @@ define([
 		actions: {
 			login: function() {
 				this.set('shadow', $.encoding.digests.hexSha1Str(this.get('password')));
-
 				/* generate salt for authkey */
 				var salt = new Date();
 				salt = salt.getTime() / 10000;
@@ -104,6 +110,7 @@ define([
 
 		loggedIn: function(response) {
 			this.set('authkey', response.data[0].authkey);
+			this.set('username', response.data[0].user);
 
 			var transition = this.get('attempt');
 

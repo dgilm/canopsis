@@ -42,7 +42,7 @@ define([
 				console.log("editRecord", record_raw);
 				this.get("model").setProperties(record_raw);
 				this.get("model").save();
-			}
+			},
 		},
 
 		remove: function() {

@@ -37,7 +37,9 @@ define([
 ], function(commit, $, routesLoader, Application) {
 
     Application.manifest = routes;
-    routesLoader.initializeRoutes(Application, routes, function (){});
+    routesLoader.initializeRoutes(Application, routes, function (){
+
+    });
 
     window.Canopsis = Application;
     Canopsis.commit = commit;

@@ -7,11 +7,11 @@ def get_keys(query_chunk):
 	for key in query_chunk:
 		if not key.startswith('$'):
 			keys_found.append(key)
-	if type(query_chunk[key]) == dict:
-		keys_found += get_keys(query_chunk[key])
-	if type(query_chunk[key]) == list:
-		for sub_query_item in query_chunk[key]:
-			keys_found += get_keys(sub_query_item)
+		if type(query_chunk[key]) == dict:
+			keys_found += get_keys(query_chunk[key])
+		if type(query_chunk[key]) == list:
+			for sub_query_item in query_chunk[key]:
+				keys_found += get_keys(sub_query_item)
 	return keys_found
 
 def get_hint(collection, query_keys):

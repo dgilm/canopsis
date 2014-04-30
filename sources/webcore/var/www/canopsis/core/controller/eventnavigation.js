@@ -24,6 +24,9 @@ define([
 	'app/model/eventnavigation'
 ], function($, Ember, Application, Eventnavigation) {
 	Application.EventnavigationRoute = Application.CrecordsRoute.extend({
+		init: function () {
+			console.log({'TOOLBAR': this.toolbar})
+		},
 		setupController: function(controller, model) {
 			controller.set('content', model);
 			controller.set('toolitems', controller.toolbar);
@@ -35,81 +38,13 @@ define([
 	});
 
 	Application.EventnavigationController = Application.CrecordsController.extend({
-		toolbar: [{
-			title: 'Refresh',
-			action: 'refresh',
-			icon: 'refresh'
-		},{
-			title: 'Add',
-			action: 'showAddForm',
-			icon: 'plus-sign'
-		},{
-			title: 'Duplicate',
-			action: 'duplicate',
-			icon: 'file'
-		},{
-			title: 'Remove',
-			action: 'remove',
-			icon: 'trash'
-		}],
+
+		itemController: "Event",
 
 		actions: {
 			refresh: function() {
 				this.set('model', this.store.findAll('eventnavigation'));
 			},
-
-			updateAcknowlegement: function(crecord) {
-				console.log({crecord: crecord, _id: crecord.get('_id')});
-
-/*
-				console.log({controllerinstance : this.controllerFor("login").get("currentRouteName")});
-				console.log({controllerinstance : this.get('controllers.login.username')});
-				console.log({controller : Application.__container__.lookup('controller:login')});
-*/
-				$.post(
-					'/event/',
-					{
-						"ref_rk"	: "cengine.engine.check.resource.Sphinx.Engine_topology",
-						"connector"		: "canopsis_ui",
-						"connector_name": "canopsis_ui",
-						"event_type"	: "ack",
-						"source_type"	: "ack",
-						"component"		: 'event_ack',
-						"state"			: 0,
-						"state_type"	: 1,
-						"output"		: "comment",
-						"author"		: "author",
-
-					}, function (data) {
-						console.log(data);
-						crecord.set('ack', true);
-					}
-				);
-
-			},
-
-			cancelAlert: function(store, authkey) {
-
-				$.post(
-					'/event/',
-					{
-						"referer_rk"	: "",
-						"connector"		: "canopsis_ui",
-						"connector_name": "canopsis_ui",
-						"event_type"	: "ack",
-						"source_type"	: "ack",
-						"component"		: 'event_ack',
-						"state"			: 0,
-						"state_type"	: 1,
-						"output"		: "plop",
-						"author"		: "plop",
-
-					}, function (data) {
-						console.log(data);
-					}
-				);
-			}
-
 		}
 	});
 

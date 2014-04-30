@@ -40,6 +40,8 @@ define([
 		beforeModel: function(transition) {
 			if(!this.controllerFor('login').get('authkey')) {
 				this.loginRequired(transition);
+			}else{
+				this.controllerFor('login').getUser();
 			}
 		},
 
