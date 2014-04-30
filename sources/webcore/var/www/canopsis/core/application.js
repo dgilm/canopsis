@@ -29,62 +29,7 @@ define([
 	// Ember.applicationInstance = Application;
 
 	//Definition of two new data-types :
-	/*
-	Application.ObjectTransform = DS.Transform.extend({
-
-		deserialize: function(serialized){
-			console.log(deserialized);
-			alert(serialized);
-			if( Ember.typeOf(serialized) === 'object'){
-				return serialized;
-			}
-
-			return {};
-		},
-
-		serialize: function(deserialized){
-			console.log(deserialized);
-			alert(deserialized);
-			var type = Ember.typeOf(deserialized);
-
-			if(type === 'object') {
-				return deserialized;
-
-			}else if(type === 'string') {
-				console.log("bad format");
-			}
-
-			return {};
-		}
-
-	});
-
-	Application.ArrayTransform = DS.Transform.extend({
-		deserialize: function(serialized) {
-			if(Ember.typeOf(serialized) === 'array') {
-				return serialized;
-			}
-
-			return [];
-		},
-
-		serialize: function(deserialized) {
-			var type = Ember.typeOf(deserialized);
-
-			if(type === 'array') {
-				return deserialized;
-			}
-			else if(type === 'string') {
-				return deserialized.split(',').map(function(item) {
-					return jQuery.trim(item);
-				});
-			}
-
-			return [];
-		}
-
-	});
-	*/
+	
 	Application.initializer({
 		name:"RESTAdaptertransforms",
 		after: "transforms",
@@ -155,17 +100,19 @@ define([
 			var result = type.extractFindAll(store, payload)
 			return result;
 		},
+
 		extractFind: function(store, type, payload) {
 			var result = type.extractFind(store, payload)
 			return result;
 		}
 	});
-    /*
+	
+	/*
 	Application.ApplicationSerializer.reopen({
 		serializeHasMany: function(record, json, relationship) {
         	var key = relationship.key,
             hasManyRecords = Ember.get(record, key);
-         
+         	console.log("ApplicationSerializer : serializeHasMany");
         	// Embed hasMany relationship if records exist
         	if (hasManyRecords && relationship.options.embedded == 'always') {
             	json[key] = [];
@@ -182,7 +129,7 @@ define([
     	serializeBelongsTo: function(record, json, relationship) {
     		var key = relationship.key,
         	belongsToRecord = Ember.get(record, key);
-     
+     		console.log("ApplicationSerializer : serializeBelongsTo");
     		if (relationship.options.embedded === 'always') {
         		json[key] = belongsToRecord.serialize();
     		}else{
