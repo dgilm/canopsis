@@ -35,8 +35,10 @@ from pymongo import DESCENDING
 from caccount import caccount
 from crecord import crecord
 from cfile import cfile
+from hint import set_hint
 
 from operator import itemgetter
+
 
 CONFIG = ConfigParser.RawConfigParser()
 CONFIG.read(os.path.expanduser('~/etc/cstorage.conf'))
@@ -343,6 +345,8 @@ class cstorage(object):
 				total = raw_records.count()
 			else:
 				raw_records = backend.find(mfilter, fields=mfields, safe=self.mongo_safe)
+
+				set_hint(mfilter, namespace, raw_records, self,  self.logger)
 
 			total = raw_records.count()
 

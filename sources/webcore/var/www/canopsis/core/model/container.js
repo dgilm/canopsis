@@ -22,8 +22,8 @@ define([
   });
 
 	Application.Container = Application.Widget.extend({
-		view: DS.belongsTo('userview'),
-		items: DS.hasMany('item'),
+		userview: DS.belongsTo('userview'),
+		items: DS.hasMany('item',{embedded: 'always'}),
         layout_cols : DS.attr('number'),
         layout_rows : DS.attr('number'),
         /*

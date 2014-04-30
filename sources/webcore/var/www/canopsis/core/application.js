@@ -26,6 +26,7 @@ define([
 
 	var Application = Ember.Application.create({});
 
+
 	// Ember.applicationInstance = Application;
 
 	//Definition of two new data-types :
@@ -34,7 +35,6 @@ define([
 		name:"RESTAdaptertransforms",
 		after: "transforms",
 		initialize:function(container,application){
-			//alert("Application : init transform:object and transform:array");
 			application.register('transform:array',DS.ArrayTransform);
 			application.register('transform:object',DS.ObjectTransform);
 		}
@@ -75,12 +75,16 @@ define([
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
 
 		findAll: function(store, type) {
-			console.log("findAll", type);
+			if(type.findAll === undefined) {
+				console.old.error("findAll is not set in", type);
+			}
 			return type.findAll(store, localStorage.cps_authkey);
 		},
 
 		find: function(store, type) {
-			console.log("find", type);
+			if(type.find === undefined) {
+				console.old.error("find is not set in", type);
+			}
 			return type.find(store, localStorage.cps_authkey);
 		},
 
@@ -89,55 +93,31 @@ define([
 			if(type === "userview") {
 				type = "view";
 			}
-			
 			return "rest/object/" + Ember.String.underscore(type);
+		},
+
+		findBelongsTo: function(store, record, url){
 		}
 	});
 
 	Application.ApplicationSerializer = DS.RESTSerializer.extend({    
 
 		extractFindAll: function(store, type, payload) {
-			var result = type.extractFindAll(store, payload)
-			return result;
+			if(type.extractFindAll === undefined) {
+				console.old.error("extractFindAll is not set in", type);
+			}
+
+			return type.extractFindAll(store, payload);
 		},
 
 		extractFind: function(store, type, payload) {
-			var result = type.extractFind(store, payload)
-			return result;
+			if(type.extractFind === undefined) {
+				console.old.error("extractFind is not set in", type);
+			}
+
+			return type.extractFind(store, payload);
 		}
 	});
-	
-	/*
-	Application.ApplicationSerializer.reopen({
-		serializeHasMany: function(record, json, relationship) {
-        	var key = relationship.key,
-            hasManyRecords = Ember.get(record, key);
-         	console.log("ApplicationSerializer : serializeHasMany");
-        	// Embed hasMany relationship if records exist
-        	if (hasManyRecords && relationship.options.embedded == 'always') {
-            	json[key] = [];
-            	hasManyRecords.forEach(function(item, index){
-                	json[key].push(item.serialize());
-            	});
-        	}
-        	// Fallback to default serialization behavior
-        	else {
-            	return this._super(record, json, relationship);
-        	}
-    	},
 
-    	serializeBelongsTo: function(record, json, relationship) {
-    		var key = relationship.key,
-        	belongsToRecord = Ember.get(record, key);
-     		console.log("ApplicationSerializer : serializeBelongsTo");
-    		if (relationship.options.embedded === 'always') {
-        		json[key] = belongsToRecord.serialize();
-    		}else{
-        		return this._super(record, json, relationship);
-    		}
-		}
-
-	});
-	*/
 	return Application;
 });

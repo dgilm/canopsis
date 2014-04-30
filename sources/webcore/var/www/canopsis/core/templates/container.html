@@ -1,6 +1,11 @@
 
+
 <div class="gridster" >
-    <script type="text/x-handlebars" data-template-name='container'>
-    {{_id}} : {{title}}
+	<ul>
+    	<script type="text/x-handlebars" data-template-name='container'>
+    	{{#each item in items}}
+    		{{outlet}}
+    	{{/each}}
     </script>
+    </ul>
 </div>

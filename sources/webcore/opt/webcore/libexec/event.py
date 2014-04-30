@@ -18,7 +18,7 @@
 # along with Canopsis.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------
 
-import logging, json
+import logging, json, time
 
 import bottle
 from bottle import route, get, put, delete, request, HTTPError, post, response
@@ -59,44 +59,7 @@ def unload():
 ## Handlers
 
 @post('/event/',checkAuthPlugin={'authorized_grp':group_managing_access})
-@post('/event/:routing_key',checkAuthPlugin={'authorized_grp':group_managing_access})
 def send_event(	routing_key=None):
-	account = get_account()
-
-	connector = None
-	connector_name = None
-	event_type = None
-	source_type = None
-	component = None
-	resource = None
-	state = None
-	state_type = None
-	perf_data = None
-	perf_data_array = None
-	output = None
-	long_output = None
-	timestamp = None
-	display_name = None
-	tags = None
-	ticket = None
-	ref_rk = None
-
-	#--------------------explode routing key----------
-	if routing_key :
-		logger.debug('The routing key is : %s' % str(routing_key))
-
-		routing_key = routing_key.split('.')
-		if len(routing_key) > 6 or len(routing_key) < 5:
-			logger.error('Bad routing key')
-			return HTTPError(400, 'Bad routing key')
-
-		connector = routing_key[0]
-		connector_name = routing_key[1]
-		event_type = routing_key[2]
-		source_type = routing_key[3]
-		component = routing_key[4]
-		if routing_key[5]:
-			resource = routing_key[5]
 
 	try:
 		data = request.body.readline()
@@ -105,124 +68,66 @@ def send_event(	routing_key=None):
 		data = request.params
 
 	#-----------------------get params-------------------
-	if not timestamp:
-		timestamp = data.get('timestamp', None)
+	timestamp = data.get('timestamp', None)
+	if timestamp is None
+		data['timestamp'] = time.time()
+	elif not isinstance(timestamp, int):
+		data['timestamp'] = int(timestamp)
 
-	#fix timestamp type
-	if timestamp and not isinstance(timestamp, int):
-		timestamp = int(timestamp)
 
 	if not display_name:
 		display_name = data.get('display_name', None)
 
-	if not connector:
-		connector = data.get('connector', None)
-		if not connector :
+	mandatory_fields = ['connector','connector_name','event_type','source_type','component','resource','state']
+
+	for field in mandatory_fields:
+		if data.get('connector', None) is None:
 			logger.error('No connector argument')
 			return HTTPError(400, 'Missing connector argument')
 
-	if not connector_name:
-		connector_name = data.get('connector_name', None)
-		if not connector_name:
-			logger.error('No connector name argument')
-			return HTTPError(400, 'Missing connector name argument')
+	if data.get('state_type', None) is None:
+		data['state_type'] = 1
 
-	if not event_type:
-		event_type = data.get('event_type', None)
-		if not event_type:
-			logger.error('No event_type argument')
-			return HTTPError(400, 'Missing event type argument')
-
-	if not source_type:
-		source_type = data.get('source_type', None)
-		if not source_type:
-			logger.error('No source_type argument')
-			return HTTPError(400, 'Missing source type argument')
-
-	if not component:
-		component = data.get('component', None)
-		if not component:
-			logger.error('No component argument')
-			return HTTPError(400, 'Missing component argument')
-
-	if not resource:
-		resource = data.get('resource', None)
-		if not resource and source_type == 'resource':
-			logger.error('No resource argument')
-			return HTTPError(400, 'Missing resource argument')
-
-	if not state:
-		state = data.get('state', None)
-		if state == None:
-			logger.error('No state argument')
-			return HTTPError(400, 'Missing state argument')
-
-	if not state_type:
-		state_type = data.get('state_type', 1)
-
-	if not output:
-		output = data.get('output', None)
-
-	if not long_output:
-		long_output = data.get('long_output', None)
-
-	if not tags:
-		tags = data.get('tags', [])
-		if isinstance(tags, str):
+	def json2py(data, key):
+		value = data.get(key, None)
+		if value:
 			try:
-				tags = json.loads(tags)
+				value = json.loads(value)
 			except Exception, err:
-				logger.error("Impossible to parse 'tags': %s (%s)" % (tags, err))
+				logger.error("Impossible to parse '{}' (%s)" % (key, err))
 
-		if not isinstance(tags, list):
-			tags = []
+		if not isinstance(value, list):
+			value = []
+		data[key] = value
 
-	if not perf_data:
-		perf_data = data.get('perf_data', None)
+	json2py(data, 'tags'):
+	json2py(data, 'perf_data_array'):
 
-	if not perf_data_array:
-		perf_data_array = data.get('perf_data_array', None)
-		if perf_data_array:
-			try:
-				perf_data_array = json.loads(perf_data_array)
-			except Exception, err:
-				logger.error("Impossible to parse 'perf_data_array': %s (%s)" % (perf_data_array, err))
-
-		if not isinstance(perf_data_array, list):
-			perf_data_array = []
-
-	if not ticket:
-		ticket = data.get('ticket', None )
-
-	if not ref_rk:
-		ref_rk = data.get('ref_rk', None )
 
 	#------------------------------forging event----------------------------------
 
 	event = cevent.forger(
-				connector = connector,
-				connector_name = connector_name,
-				event_type = event_type,
-				source_type = source_type,
-				component = component,
-				resource= resource,
-				state = int(state),
-				state_type = int(state_type),
-				output = output,
-				long_output = long_output,
-				perf_data = perf_data,
-				perf_data_array = perf_data_array,
-				timestamp = timestamp,
-				display_name = display_name,
-				tags = tags,
-				ticket = ticket,
-				ref_rk = ref_rk
+				connector = data.get('connector', None),
+				connector_name = data.get('connector_name', None),
+				event_type = data.get('event_type', None),
+				source_type = data.get('source_type', None),
+				component = data.get('component' ,None),
+				resource= data.get('resource', None),
+				state = int(data.get('state', None)),
+				state_type = int(data.get('state_type', None)),
+				output = data.get('output',None),
+				long_output = data.get('long_output', None),
+				perf_data = data.get('perf_data', None),
+				perf_data_array = data.get('perf_data_array', None),
+				timestamp = data.get('timestamp', None),
+				display_name = data.get('display_name', None),
+				tags = data.get('tags', None),
+				ticket = data.get('ticket', None),
+				ref_rk = data.get('ref_rk', None),
+				cancel = data.get('cancel', None),
 			)
 
-	logger.debug(type(perf_data_array))
-	logger.debug(perf_data_array)
-	logger.debug('The forged event is : ')
-	logger.debug(str(event))
+	logger.debug('Event crafted {}'.format(event))
 
 	#------------------------------AMQP Part--------------------------------------
 

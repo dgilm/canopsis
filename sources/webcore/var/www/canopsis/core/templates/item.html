@@ -1,2 +1,8 @@
-<div {{action "modifyItemSelection"}}>
-</div>
+
+<script type="text/x-handlebars" data-template-name='item'>
+<li data-row={{row}} data_col={{col}} data-sizex= {{rowspan }} data-sizey={{colspan}}>
+	<div {{action "modifyItemSelection"}}>
+ 		{{_id}}
+ 	</div>
+</li>
+</script>
