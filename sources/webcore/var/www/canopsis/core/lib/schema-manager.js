@@ -39,7 +39,6 @@ for(var i = 0; i < schemaFiles.length; i++) {
 define(schemasDeps, function(Ember, DS, Application) {
 
 	for(var i = schemasDepsLength; i < arguments.length; i++) {
-		console.log(i, schemasDepsLength, arguments.length);
 		var schemaIndex =  i - schemasDepsLength;
 
 		var schema = JSON.parse(arguments[i]);
