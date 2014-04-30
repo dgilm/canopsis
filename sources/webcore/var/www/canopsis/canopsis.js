@@ -10,6 +10,7 @@ require.config({
 		'moment': 'webcore-libs/moment.min',
 		'jquery': 'webcore-libs/dev/jquery-1.10.2',
 		'plugins': 'webcore-libs/plugins/plugin',
+		'consolejs': 'webcore-libs/console.js/console',
 		'mmenu': 'webcore-libs/mmenu/js/jquery.mmenu.min.all',
 		'colorpicker': 'webcore-libs/colorpicker/js/spectrum',
 		'colorselector': 'webcore-libs/colorselector/js/bootstrap-colorselector',
@@ -25,6 +26,9 @@ require.config({
 	},
 
 	shim: {
+		'consolejs': {
+			deps: ["ember"]
+		},
 		'ember': {
 			deps: ['jquery', 'handlebars']
 		},
@@ -47,11 +51,7 @@ require.config({
 	}
 });
 
-pre_requirements = [
-	'canopsis/core/lib/console'
-];
-
-define(pre_requirements, function () {
+define([], function () {
 	require(['canopsis/main']);
 
 });
