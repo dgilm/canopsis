@@ -145,7 +145,7 @@ class KnownValues(unittest.TestCase):
 		values = perfstore.get_points(name='test1mymetric', tstart=int(time.time() - 10), tstop=int(time.time()))
 		
 		if len(values) != 2:
-			raise Exception("Perfstore don't work : we havent goog number of values in return...")
+			raise Exception("Perfstore don't work : we havent the good number of values in return...")
 			
 		if values[1][1] != 1:
 			raise Exception("Perfstore don't work : we havent the good values in return...")		
