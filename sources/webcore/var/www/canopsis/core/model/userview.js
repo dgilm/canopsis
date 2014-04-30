@@ -24,27 +24,63 @@ define([
 	'app/lib/schema-manager',
 	'app/model/container'
 ], function($, Ember, DS, Application) {
+	Application.UserviewAdapter = DS.FixtureAdapter.extend();
 
 	Application.Userview = Application.Crecord.extend({
 		_id: DS.attr('string'),
 		crecord_name: DS.attr('string'),
-		container: DS.belongsTo('container'),
+		container: DS.belongsTo('container',{embedded: 'always'}),
 		internal: DS.attr('boolean'),
 		enable: DS.attr('boolean')
 	});  
 
-	Application.Userview.FIXTURES = [{ "_id" : "test_view_vertical", 
-									   "crecord_name" : "Vue Verticale", 
-									   "container" : "test_view_vertical_container", 
-									   "internal" : true,
-									   "enable" : true }];
+	Application.Userview.FIXTURES = [{ "_id" : "view_vertical", 
+                                       "enable" : true, 
+                                       "crecord_name" : "Vue Verticale",
+                                       "internal":true,
+                                       "container" : { "_id" : "test_view_vertical_container", 
+                                                       "title" : "", 
+                                                       "widget_type" : "container", 
+                                                       "userview" : "view_vertical", 
+                                                       "layout_rows" : 5, 
+                                                       "layout_cols" : 5,
+                                                       "items" : [ { "_id" : "test_view_vertical_container_item_1", 
+                                                                     "container" : "test_view_vertical_container", 
+                                                                     "widget" : "", "row" : 1, "col" : 1, 
+                                                                     "rowspan" : 1, "colspan" : 1, 
+                                                                     "isSelected" : false, "isActivated" : true }, 
 
-	Application.UserviewSerializer = DS.ActiveModelSerializer.extend(DS.EmbeddedRecordsMixin,{
+                                                                   { "_id" : "test_view_vertical_container_item_2", 
+                                                                     "container" : "test_view_vertical_container", 
+                                                                     "widget" : "", "row" : 2, "col" : 1, "rowspan" : 2, 
+                                                                     "colspan" : 2, "isSelected" : false, 
+                                                                     "isActivated" : true }, 
+
+                                                                    { "_id" : "test_view_vertical_container_item_3", 
+                                                                      "container" : "test_view_vertical_container", 
+                                                                      "widget" : "", "row" : 3, "col" : 2, "rowspan" : 1, 
+                                                                      "colspan" : 2, "isSelected" : false, 
+                                                                      "isActivated" : true }, 
+
+                                                                    { "_id" : "test_view_vertical_container_item_4", 
+                                                                      "container" : "test_view_vertical_container", 
+                                                                      "widget" : "", "row" : 4, "col" : 4, "rowspan" : 1, 
+                                                                      "colspan" : 1, "isSelected" : false, "isActivated" : true }, 
+
+                                                                    { "_id" : "test_view_vertical_container_item_5",
+                                                                      "container" : "test_view_vertical_container", 
+                                                                      "widget" : "", "row" : 3, "col" : 4, 
+                                                                      "rowspan" : 1, "colspan" : 1, "isSelected" : false,
+                                                                      "isActivated" : true } ]
+                                                   	} 
+                                           }];
+	/*							   
+	Application.UserviewSerializer = DS.ActiveModelSerializer.extend( {
 		attrs: { 
-			container: {embedded: 'load'} 
+			container: {embedded: 'always'} 
 		}
 	});
-
+	*/
 	Application.Userview.reopenClass({
 
 		find: function(store, authkey) {
@@ -95,7 +131,6 @@ define([
 			return userview;
 		}
 	});
-
 
 	return Application.Userview;
 });

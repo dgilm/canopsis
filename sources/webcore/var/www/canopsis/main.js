@@ -33,7 +33,8 @@ define([
     'bootstrap',
     'colorpicker',
     'gridster',
-    'components/editors/group/controller'
+    'components/editors/group/controller',
+    'canopsis/core/lib/console'
 ], function(commit, $, routesLoader, Application) {
 
     Application.manifest = routes;

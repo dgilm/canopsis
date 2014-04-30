@@ -48,7 +48,6 @@ define(function(require, exports, module) {
 
 	DS.ObjectTransform = DS.Transform.extend({
 		deserialize: function(serialized) {
-			alert("coucou, on passe par DS.ObjectTransform");
 			if(Ember.typeOf(serialized) === 'object'){
 				return serialized;
 			}

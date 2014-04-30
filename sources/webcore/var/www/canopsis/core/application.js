@@ -26,6 +26,11 @@ define([
 
 	var Application = Ember.Application.create({});
 
+
+	// Ember.applicationInstance = Application;
+
+	//Definition of two new data-types :
+	
 	Application.initializer({
 		name:"RESTAdaptertransforms",
 		after: "transforms",
@@ -73,14 +78,14 @@ define([
 
 		findAll: function(store, type) {
 			if(type.findAll === undefined) {
-				console.old.error("findAll is not set in", type);
+				console.error("findAll is not set in", type);
 			}
 			return type.findAll(store, localStorage.cps_authkey);
 		},
 
 		find: function(store, type) {
 			if(type.find === undefined) {
-				console.old.error("find is not set in", type);
+				console.error("find is not set in", type);
 			}
 			return type.find(store, localStorage.cps_authkey);
 		},
@@ -101,14 +106,15 @@ define([
 
 		extractFindAll: function(store, type, payload) {
 			if(type.extractFindAll === undefined) {
-				console.old.error("extractFindAll is not set in", type);
+				console.error("extractFindAll is not set in", type);
 			}
 
 			return type.extractFindAll(store, payload);
 		},
+
 		extractFind: function(store, type, payload) {
 			if(type.extractFind === undefined) {
-				console.old.error("extractFind is not set in", type);
+				console.error("extractFind is not set in", type);
 			}
 
 			return type.extractFind(store, payload);
