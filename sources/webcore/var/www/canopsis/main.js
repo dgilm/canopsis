@@ -30,6 +30,8 @@ define([
     'jquery',
     'seeds/RoutesLoader',
     'app/application',
+    'app/adapters/application',
+    'app/serializers/application',
     'bootstrap',
     'colorpicker',
     'gridster',

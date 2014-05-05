@@ -1,0 +1,75 @@
+/*
+# Copyright (c) 2014 "Capensis" [http://www.capensis.com]
+#
+# This file is part of Canopsis.
+#
+# Canopsis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Canopsis is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Canopsis. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+define([
+	'jquery',
+	'app/lib/ember',
+	'app/lib/ember-data',
+	'app/application'
+], function($, Ember, DS, Application) {
+	console.log("log loading ApplicationAdapter");
+
+	Application.ApplicationAdapter = DS.RESTAdapter.extend({
+
+		findAll: function(store, type) {
+			if(type.findAll === undefined) {
+				console.error("findAll is not set in", type);
+			}
+			return type.findAll(store, localStorage.cps_authkey);
+		},
+
+		find: function(store, type) {
+			if(type.find === undefined) {
+				console.error("find is not set in", type);
+			}
+			return type.find(store, localStorage.cps_authkey);
+		},
+
+		pathForType: function(type) {
+			console.log("pathForType", type);
+			if(type === "userview") {
+				type = "view";
+			}
+			return "rest/object/" + Ember.String.underscore(type);
+		},
+
+		findBelongsTo: function(store, record, url){
+		},
+
+		createRecord: function(store, type, record) {
+			console.log("ApplicationAdapter::createRecord", arguments);
+			var serializer = store.serializerFor(type.typeKey);
+
+			var data = {};
+			data = serializer.serializeIntoHash(data, type, record, { includeId: true });
+			console.log("ApplicationAdapter::createRecord data", data);
+			return this.ajax(this.buildURL(type.typeKey), "POST", { data: data });
+		},
+
+		updateRecord: function(store, type, record) {
+			console.log("ApplicationAdapter::updateRecord", arguments);
+			var result = this._super.apply(this, arguments);
+			console.log("ApplicationAdapter::updateRecord done", result);
+			return result;
+		}
+
+	});
+
+	return Application.ApplicationAdapter;
+});
