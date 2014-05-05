@@ -29,7 +29,7 @@ var renderersTemplates = [
 	'state',
 	'timestamp',
 	'percent',
-	'ack',
+	// 'ack', //FIXME @eric: 404 not found
 	'cancel-alert'
 ];
 
