@@ -1,91 +1,98 @@
 [{
-	"type": "route",
+	"type": "resource",
 	"name": "login",
 	"description": "Login"
 },{
-	"type": "",
+	"type": "resource",
 	"name": "build",
 	"icon": "cog",
 	"description": "Build",
 	"children": [{
-		"type": "route",
+		"type": "resource",
 		"name": "accounts",
 		"icon": "user",
 		"description": "accounts"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "groups",
 		"icon": "book",
 		"description": "groups"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "curves",
 		"icon": "picture",
-		"description": "curves"
+		"description": "curves",
+		"children": [{
+			"type": "route",
+			"name": "page",
+			"icon": "picture",
+			"description": "curves",
+			"path":"page/:page_id"
+		}]
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "perfdatas",
 		"icon": "stats",
 		"description": "perfdatas"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "selectors",
 		"icon": "link",
 		"description": "selectors"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "consolidations",
 		"icon": "compressed",
 		"description": "consolidations"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "topologies",
 		"icon": "tree-conifer",
 		"description": "topologies"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "eventfilter",
 		"icon": "filter",
 		"description": "eventfilter"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "eventnavigation",
 		"icon": "globe",
 		"description": "eventnavigation"
 	},{
-		"type": "route",
+		"type": "resource",
 		"name": "notifications",
 		"icon": "globe",
 		"description": "notifications"
 	}]
 },{
-	"type": "route",
+	"type": "resource",
 	"name": "item",
 	"description": "item",
 	"path":"/item/:item_id"
 },{
-	"type": "route",
+	"type": "resource",
 	"name": "container",
 	"description": "container",
 	"path":"/container/:container_id"
 	},
 {
-	"type": "",
+	"type": "resource",
 	"name": "run",
 	"icon": "play",
 	"description": "show mmenu",
 	"children": [{
-		"type": "route",
+		"type": "resource",
 		"name": "userviews",
 		"icon": "filter",
 		"description": "userviews"
 	}]
 },{
-	"type": "",
+	"type": "resource",
 	"name": "report",
 	"description": "users"
 },{
-		"type": "route",
+		"type": "resource",
 		"name": "userview",
 		"icon": "filter",
 		"description": "userview",
