@@ -23,7 +23,6 @@ define([
 	'app/lib/ember-data',
 	'app/application'
 ], function($, Ember, DS, Application) {
-	console.log("log loading ApplicationSerializer");
 
 	Application.ApplicationSerializer = DS.RESTSerializer.extend({
 
@@ -46,7 +45,6 @@ define([
 		serialize: function(record, options) {
 			console.log("ApplicationSerializer::serialize", arguments);
 			var result = this._super.apply(this, arguments);
-			// debugger;
 			console.log("ApplicationSerializer::serialize done", result);
 
 			return result;

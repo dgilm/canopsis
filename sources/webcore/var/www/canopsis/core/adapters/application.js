@@ -23,7 +23,6 @@ define([
 	'app/lib/ember-data',
 	'app/application'
 ], function($, Ember, DS, Application) {
-	console.log("log loading ApplicationAdapter");
 
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
 
