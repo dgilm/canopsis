@@ -11,12 +11,7 @@
 		"type": "route",
 		"name": "accounts",
 		"icon": "user",
-		"description": "accounts",
-		"children": [{
-			"type": "route",
-			"name": "AddAccounts",
-			"description": "AddAccounts"
-		}]
+		"description": "accounts"
 	},{
 		"type": "route",
 		"name": "groups",
