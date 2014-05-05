@@ -53,20 +53,27 @@ define([
 		},
 
 		createRecord: function(store, type, record) {
-			console.log("ApplicationAdapter::createRecord", arguments);
+			console.log("createRecord", arguments);
 			var serializer = store.serializerFor(type.typeKey);
 
 			var data = {};
 			data = serializer.serializeIntoHash(data, type, record, { includeId: true });
-			console.log("ApplicationAdapter::createRecord data", data);
+			console.log("createRecord data", data);
 			return this.ajax(this.buildURL(type.typeKey), "POST", { data: data });
 		},
 
 		updateRecord: function(store, type, record) {
-			console.log("ApplicationAdapter::updateRecord", arguments);
-			var result = this._super.apply(this, arguments);
-			console.log("ApplicationAdapter::updateRecord done", result);
-			return result;
+			console.log("updateRecord", arguments);
+
+			var data = {};
+			var serializer = store.serializerFor(type.typeKey);
+
+			data = serializer.serializeIntoHash(data, type, record);
+
+			var id = Ember.get(record, 'id');
+
+			console.log("updateRecord data", data);
+			return this.ajax(this.buildURL(type.typeKey, id), "PUT", { data: data });
 		}
 
 	});

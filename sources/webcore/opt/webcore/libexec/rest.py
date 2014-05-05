@@ -475,8 +475,6 @@ def rest_put(namespace, ctype, _id=None):
 	except:
 		pass
 
-	data = data[str(ctype)]
-
 	logger.debug(" + _id: "+str(_id))
 	logger.debug(" + ctype: "+str(ctype))
 	logger.debug(" + Data: "+str(data))
