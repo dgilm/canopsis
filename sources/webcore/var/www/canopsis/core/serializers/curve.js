@@ -22,36 +22,35 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord',
-	'app/serializers/perfdata'
-], function($, Ember, DS, Application) {
-	Application.Perfdata = Application.Crecord.extend({
-		component: DS.attr('string'),
-		resource: DS.attr('string'),
-		metric: DS.attr('string'),
-		unit: DS.attr('string'),
-		type: DS.attr('string'),
-		retention: DS.attr('number'),
-		first_point: DS.attr('number'),
-		last_point: DS.attr('number'),
-		last_value: DS.attr('number'),
-		min: DS.attr('number'),
-		max: DS.attr('number'),
-		tags: DS.attr('array', {role: "tags"})
-	});
+	'app/serializers/application'
+], function($, Ember, DS, Application, ApplicationSerializer) {
 
-	Application.Perfdata.reopenClass({
-		findAll: function(store, authkey) {
-			return $.ajax({
-				url: '/perfstore',
-				method: 'GET',
-				contentType: 'application/json',
-				data: {
-					authkey: authkey
+	Application.CurveSerializer = ApplicationSerializer.extend({
+		extractFindAll: function(store, type, payload) {
+			console.log("extractFindAll", arguments);
+			try{
+				var curves = [];
+
+				for(var i = 0; i < payload.data.length; i++) {
+					var curve = payload.data[i];
+
+					curve.line_color = '#' + curve.line_color;
+					curve.area_color = '#' + curve.area_color;
+					curve.line_style = curve.dashStyle;
+					curve.zindex = curve.zIndex;
+
+					delete curve.dashStyle;
+					delete curve.zIndex;
+
+					curves.push(curve);
 				}
-			});
+
+				return curves;
+			} catch(e) {
+				console.error(e.message, e.stack);
+			}
 		}
 	});
 
-	return Application.Perfdata;
+	return Application.CurveSerializer;
 });

@@ -22,36 +22,24 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord',
-	'app/serializers/perfdata'
-], function($, Ember, DS, Application) {
-	Application.Perfdata = Application.Crecord.extend({
-		component: DS.attr('string'),
-		resource: DS.attr('string'),
-		metric: DS.attr('string'),
-		unit: DS.attr('string'),
-		type: DS.attr('string'),
-		retention: DS.attr('number'),
-		first_point: DS.attr('number'),
-		last_point: DS.attr('number'),
-		last_value: DS.attr('number'),
-		min: DS.attr('number'),
-		max: DS.attr('number'),
-		tags: DS.attr('array', {role: "tags"})
-	});
+	'app/serializers/application'
+], function($, Ember, DS, Application, ApplicationSerializer) {
 
-	Application.Perfdata.reopenClass({
-		findAll: function(store, authkey) {
-			return $.ajax({
-				url: '/perfstore',
-				method: 'GET',
-				contentType: 'application/json',
-				data: {
-					authkey: authkey
-				}
-			});
+	Application.GroupSerializer = ApplicationSerializer.extend({
+		extractFindAll: function(store, type, payload) {
+			var groups = [];
+
+			for(var i = 0; i < payload.data.length; i++) {
+				var group = payload.data[i];
+
+				group.name = group.crecord_name;
+
+				groups.push(group);
+			}
+
+			return groups;
 		}
 	});
 
-	return Application.Perfdata;
+	return Application.GroupSerializer;
 });

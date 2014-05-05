@@ -23,7 +23,8 @@ define([
 	'app/lib/ember-data',
 	'app/application',
 	'app/model/crecord',
-	'app/lib/schema-manager'
+	'app/lib/schema-manager',
+	'app/serializers/account'
 ], function($, Ember, DS, Application) {
 	// var accountModelDict = {
 	// 	enable: DS.attr('boolean'),
@@ -49,24 +50,6 @@ define([
 					authkey: authkey
 				}
 			});
-		},
-
-		extractFindAll: function(store, payload) {
-			var data = [];
-			for(var i = 0; i < payload.data.length; i++) {
-				var account = payload.data[i];
-
-				account.group = account.aaa_group.substring('group.'.length);
-				delete account.aaa_group;
-
-				for(var j = 0; j < account.groups.length; j++) {
-					account.groups[j] = account.groups[j].substring('group.'.length);
-				}
-
-				data.push(account);
-			}
-
-			return data;
 		}
 	});
 

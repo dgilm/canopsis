@@ -22,36 +22,9 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/lib/schema-manager'
+	'app/lib/schema-manager',
+	'app/serializers/consolidation'
 ], function($, Ember, DS, Application) {
-
-	Application.Consolidation.reopenClass({
-		findAll: function(store, authkey) {
-			return $.ajax({
-				url: '/rest/object/consolidation',
-				method: 'GET',
-				contentType: 'application/json',
-				data: {
-					authkey: authkey
-				}
-			});
-		},
-
-		extractFindAll: function(store, payload) {
-			var consolidations = [];
-
-			for(var i = 0; i < payload.data.length; i++) {
-				var conso = payload.data[i];
-
-				conso.name = conso.crecord_name;
-				conso.message = conso.output_engine;
-
-				consolidations.push(conso);
-			}
-
-			return consolidations;
-		}
-	});
 
 	return Application.Consolidation;
 });

@@ -22,36 +22,32 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
-	'app/model/crecord',
-	'app/serializers/perfdata'
-], function($, Ember, DS, Application) {
-	Application.Perfdata = Application.Crecord.extend({
-		component: DS.attr('string'),
-		resource: DS.attr('string'),
-		metric: DS.attr('string'),
-		unit: DS.attr('string'),
-		type: DS.attr('string'),
-		retention: DS.attr('number'),
-		first_point: DS.attr('number'),
-		last_point: DS.attr('number'),
-		last_value: DS.attr('number'),
-		min: DS.attr('number'),
-		max: DS.attr('number'),
-		tags: DS.attr('array', {role: "tags"})
-	});
+	'app/serializers/application'
+], function($, Ember, DS, Application, ApplicationSerializer) {
 
-	Application.Perfdata.reopenClass({
-		findAll: function(store, authkey) {
-			return $.ajax({
-				url: '/perfstore',
-				method: 'GET',
-				contentType: 'application/json',
-				data: {
-					authkey: authkey
+	Application.AccountSerializer = ApplicationSerializer.extend({
+		extractFindAll: function(store, type, payload) {
+			try{
+				var data = [];
+				for(var i = 0; i < payload.data.length; i++) {
+					var account = payload.data[i];
+
+					account.group = account.aaa_group.substring('group.'.length);
+					delete account.aaa_group;
+
+					for(var j = 0; j < account.groups.length; j++) {
+						account.groups[j] = account.groups[j].substring('group.'.length);
+					}
+
+					data.push(account);
 				}
-			});
+
+				return data;
+			} catch(e) {
+				console.error(e.message, e.stack);
+			}
 		}
 	});
 
-	return Application.Perfdata;
+	return Application.AccountSerializer;
 });

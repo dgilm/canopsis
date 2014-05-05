@@ -34,6 +34,8 @@ define([
 					console.error("extractFindAll is not set in", type);
 				}
 
+				console.warn("extractFindAll methods in models are deprecated. You should extend ApplicationSerializer instead", arguments);
+
 				var result = type.extractFindAll(store, payload);
 
 			} catch (e) {
@@ -52,6 +54,8 @@ define([
 				if(type.extractFind === undefined) {
 					console.error("extractFind is not set in", type);
 				}
+
+				console.warn("extractFind methods in models are deprecated. You should extend ApplicationSerializer instead", arguments);
 
 				var result = type.extractFind(store, payload);
 
