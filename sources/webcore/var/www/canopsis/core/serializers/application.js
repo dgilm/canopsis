@@ -27,19 +27,41 @@ define([
 	Application.ApplicationSerializer = DS.RESTSerializer.extend({
 
 		extractFindAll: function(store, type, payload) {
-			if(type.extractFindAll === undefined) {
-				console.error("extractFindAll is not set in", type);
+			console.group("extractFindAll", arguments);
+
+			try{
+				if(type.extractFindAll === undefined) {
+					console.error("extractFindAll is not set in", type);
+				}
+
+				var result = type.extractFindAll(store, payload);
+
+			} catch (e) {
+				console.error(e.message, e.stack);
+				console.groupEnd();
 			}
 
-			return type.extractFindAll(store, payload);
+			console.groupEnd();
+			return result;
 		},
 
 		extractFind: function(store, type, payload) {
-			if(type.extractFind === undefined) {
-				console.error("extractFind is not set in", type);
+			console.group("extractFind", arguments);
+
+			try{
+				if(type.extractFind === undefined) {
+					console.error("extractFind is not set in", type);
+				}
+
+				var result = type.extractFind(store, payload);
+
+			} catch (e) {
+				console.error(e.message, e.stack);
+				console.groupEnd();
 			}
 
-			return type.extractFind(store, payload);
+			console.groupEnd();
+			return result;
 		},
 
 		serialize: function(record, options) {

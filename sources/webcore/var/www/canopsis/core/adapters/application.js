@@ -25,12 +25,20 @@ define([
 ], function($, Ember, DS, Application) {
 
 	Application.ApplicationAdapter = DS.RESTAdapter.extend({
+		getApiUrl: function(type) {
+			return "/rest/object/" + type.typeKey
+		},
 
 		findAll: function(store, type) {
-			if(type.findAll === undefined) {
-				console.error("findAll is not set in", type);
-			}
-			return type.findAll(store, localStorage.cps_authkey);
+			console.log("ApplicationAdapter authkey", localStorage.cps_authkey);
+			return $.ajax({
+				url: this.getApiUrl(type),
+				method: 'GET',
+				contentType: 'application/json',
+				data: {
+					authkey: localStorage.cps_authkey
+				}
+			});
 		},
 
 		find: function(store, type) {
