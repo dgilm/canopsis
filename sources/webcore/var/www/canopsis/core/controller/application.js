@@ -19,7 +19,8 @@
 
 define(['app/lib/ember',
 	'app/application',
-	'app/model/notifications'
+	'app/model/notifications',
+	'app/lib/helpers'
 	], function(Ember, Application) {
 	Application.ApplicationRoute = Application.AuthenticatedRoute.extend({
 		model: function() {
