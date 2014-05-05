@@ -30,6 +30,8 @@ define([
     'jquery',
     'seeds/RoutesLoader',
     'app/application',
+    'app/routes/authenticated',
+    'app/routes/paginated',
     'app/adapters/application',
     'app/serializers/application',
     'bootstrap',

@@ -21,24 +21,42 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
-	'jsonselect'
-], function($, Ember, DS) {
+	'app/application'
+], function($, Ember, DS, Application) {
 
-	var Application = Ember.Application.create({});
+	Application.AuthenticatedRoute = Ember.Route.extend({
 
+		beforeModel: function(transition) {
+			if(!this.controllerFor('login').get('authkey')) {
+				this.loginRequired(transition);
+			}else{
+				this.controllerFor('login').getUser();
+			}
+		},
 
-	// Ember.applicationInstance = Application;
+		loginRequired: function(transition) {
+			console.log('Login required');
 
-	//Definition of two new data-types :
+			this.controllerFor('login').setProperties({
+				'attempt': transition,
+				'content': {
+					errors: [{
+						message: "You don't have enough permissions to access this view."
+					}]
+				}
+			});
 
-	Application.initializer({
-		name:"RESTAdaptertransforms",
-		after: "transforms",
-		initialize:function(container,application){
-			application.register('transform:array',DS.ArrayTransform);
-			application.register('transform:object',DS.ObjectTransform);
+			this.transitionTo('login');
+		},
+
+		actions: {
+			error: function(reason, transition) {
+				if(reason.status === 403 || reason.status === 401) {
+					this.loginRequired(transition);
+				}
+			}
 		}
 	});
 
-	return Application;
+	return Application.AuthenticatedRoute;
 });

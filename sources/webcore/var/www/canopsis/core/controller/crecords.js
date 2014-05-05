@@ -21,10 +21,12 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
+	'app/routes/paginated',
+	'app/mixins/pagination',
 	'app/lib/schema-manager'
-], function($, Ember, Application) {
+], function($, Ember, Application, PaginatedRoute) {
 
-	Application.CrecordsRoute = Application.AuthenticatedRoute.extend({
+	Application.CrecordsRoute = PaginatedRoute.extend({
 		actions: {
 			show_add_crecord_form: function(crecord_type, model){
 				var crecordformController = Application.CrecordformController.create({container: this.container});
@@ -46,7 +48,7 @@ define([
 		}
 	});
 
-	Application.CrecordsController = Ember.ArrayController.extend({
+	Application.CrecordsController = Ember.ArrayController.extend(Ember.PaginationMixin, {
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',

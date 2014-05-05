@@ -21,24 +21,12 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
-	'jsonselect'
-], function($, Ember, DS) {
+	'app/application',
+	'app/routes/authenticated'
+], function($, Ember, DS, Application, AuthenticatedRoute) {
 
-	var Application = Ember.Application.create({});
+	console.log("PaginatedRoute Loading", AuthenticatedRoute);
+	Application.PaginatedRoute = AuthenticatedRoute.extend({});
 
-
-	// Ember.applicationInstance = Application;
-
-	//Definition of two new data-types :
-
-	Application.initializer({
-		name:"RESTAdaptertransforms",
-		after: "transforms",
-		initialize:function(container,application){
-			application.register('transform:array',DS.ArrayTransform);
-			application.register('transform:object',DS.ObjectTransform);
-		}
-	});
-
-	return Application;
+	return Application.PaginatedRoute;
 });
