@@ -29,8 +29,7 @@ define([
 	/**
 	  Implements pagination in ArrayControllers
 
-	  You should set :
-		  - the `itemType` property
+	  You should define on the ArrayController:
 		  - the `findOptions` property
 		  - the `findItems()` method
 
