@@ -21,7 +21,8 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/curve'
+	'app/model/curve',
+	'app/controller/crecords'
 ], function($, Ember, Application, Curve) {
 	Application.CurvesRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {
@@ -35,6 +36,7 @@ define([
 	});
 
 	Application.CurvesController = Application.CrecordsController.extend({
+		itemType: "curve", //TODO put this in route (or widget config)
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',

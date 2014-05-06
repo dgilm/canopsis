@@ -49,8 +49,10 @@ define([
 
 		extractFindQuery: function(store, type, payload) {
 			console.group("extractFindQuery", arguments);
+			result = this.extractFindAll(store, type, payload);
+			console.groupEnd();
 
-			return this.extractFindAll(store, type, payload);
+			return result;
 		},
 
 		extractFind: function(store, type, payload) {

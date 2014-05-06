@@ -21,14 +21,7 @@
 		"type": "resource",
 		"name": "curves",
 		"icon": "picture",
-		"description": "curves",
-		"children": [{
-			"type": "route",
-			"name": "page",
-			"icon": "picture",
-			"description": "curves",
-			"path":"page/:page_id"
-		}]
+		"description": "curves"
 	},{
 		"type": "resource",
 		"name": "perfdatas",

@@ -34,7 +34,9 @@ define([
 		}
 	});
 
-	Application.AccountsController = Application.CrecordsController.extend({});
+	Application.AccountsController = Application.CrecordsController.extend({
+		itemType: 'account'
+	});
 
 	return Application.AccountsController;
 });

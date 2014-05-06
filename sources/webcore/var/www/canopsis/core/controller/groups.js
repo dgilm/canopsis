@@ -35,6 +35,7 @@ define([
 	});
 
 	Application.GroupsController = Application.CrecordsController.extend({
+		itemType: 'group',
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',

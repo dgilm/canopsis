@@ -36,7 +36,8 @@ define([
 		}
 	});
 
-	Application.SelectorsController = Ember.ObjectController.extend({
+	Application.SelectorsController = Application.CrecordsController.extend({
+		itemType: 'selector',
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',

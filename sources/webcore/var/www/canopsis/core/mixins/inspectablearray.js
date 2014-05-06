@@ -26,36 +26,33 @@ define([
 ], function($, Ember, DS, Application, ApplicationSerializer) {
 	var get = Ember.get, set = Ember.set;
 
-	//Mixin for pagination. Classes must have the "itemType" property
-	Ember.PaginationMixin = Ember.Mixin.create({
-		itemsTotal: 1,
+	Ember.InspectableArrayMixin = Ember.Mixin.create({
+		attributesKeys: function() {
+			var attributes = [];
 
-		itemsPerPage: 10,
+			var attributesDict = this.get('content.type.attributes.values');
 
-		currentPage: 1,
+			console.log(this);
+			console.log("attributesKeys", attributesDict, this.get('content'));
 
-		totalPages: function() {
-			console.log("totalPages", this.itemsTotal, this.itemsPerPage);
-
-			return Math.ceil(this.itemsTotal / this.itemsPerPage);
-		}.property("itemsTotal", "model.isLoaded"),
-
-		refreshContent: function() {
-			var start = this.itemsPerPage * (this.currentPage - 1)
-			console.log(this.itemsPerPage);
-			var me = this;
-
-			var result = this.store.findQuery(this.itemType, { start: start, itemsPerPage: this.itemsPerPage }).then(function(queryResult){
-				console.log("refreshContent promise", queryResult);
-
-				var metadata = queryResult.meta;
-				console.log("meta", metadata);
-				me.set('itemsTotal', metadata.total);
-				me.set('totalPages', Math.ceil(metadata.total / me.itemsPerPage));
-
-				me.set("content", queryResult);
-			});
-		}.observes('currentPage')
+			for(key in attributesDict) {
+				var attr = attributesDict[key];
+				// console.log('isAttrHidden? ', attr.name, attr.options.hiddenInLists, attr.options.hiddenInLists !== false);
+				if(attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
+					attributes.push({
+						field: attr.name,
+						type: attr.type,
+						options: attr.options
+					});
+					console.log("pushed attr", {
+						field: attr.name,
+						type: attr.type,
+						options: attr.options
+					});
+				}
+			};
+			return attributes;
+		}.property('content')
 	});
 	return Application.AccountSerializer;
 });

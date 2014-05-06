@@ -20,43 +20,21 @@
 define([
 	'jquery',
 	'app/lib/ember',
+	'app/lib/ember-data',
 	'app/application',
-	'app/mixins/inspectableitem',
-	'app/lib/schema-manager'
-], function($, Ember, Application, Account) {
+	'app/serializers/application'
+], function($, Ember, DS, Application, ApplicationSerializer) {
+	var get = Ember.get, set = Ember.set;
 
-	Application.CrecordController = Ember.ObjectController.extend({
-		actions: {
-			showEditForm: function() {
-				var crecord_type = this.get("model.constructor.typeKey");
-				console.log("Form generation for", crecord_type);
-
-				crecordformController = Application.CrecordformController.create();
-				crecordformController.set("crecord_type", crecord_type);
-				crecordformController.set("editMode", "edit");
-				crecordformController.set("editedRecordController", this);
-
-				this.send('showEditFormWithController', crecordformController);
-			},
-
-			editRecord: function(record_raw){
-				console.log("editRecord", record_raw);
-				this.get("model").setProperties(record_raw);
-				this.get("model").save();
-			},
-		},
-
-		remove: function() {
-			this.get("model").deleteRecord();
-			this.get("model").save();
-		},
-
+	Ember.InspectableItemMixin = Ember.Mixin.create({
 		//This is where to get data from the crecord. It should not be changed, and is for internal use only
 		dataAccessKey: "content._data",
 
 		attributes: function() {
 			var attributes = [];
 			var attributesDict = this.parentController.get("attributesKeys");
+
+			console.log("attributes", attributesDict);
 
 			for(key in attributesDict) {
 				if(attributesDict[key] !== undefined) {
@@ -79,6 +57,7 @@ define([
 							field: attr.field,
 							type: attr.type,
 							options: attr.options,
+							renderer: attr.options.role,
 							value: this.content.get(attr.field),
 							renderer: rendererName
 						});
@@ -89,6 +68,5 @@ define([
 
 		}.property('content')
 	});
-
-	return Application.CrecordController;
+	return Application.AccountSerializer;
 });

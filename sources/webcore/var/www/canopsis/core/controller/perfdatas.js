@@ -36,6 +36,7 @@ define([
 	});
 
 	Application.PerfdatasController = Application.CrecordsController.extend({
+		itemType: 'perfdata',
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',

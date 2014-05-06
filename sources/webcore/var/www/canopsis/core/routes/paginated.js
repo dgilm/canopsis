@@ -25,7 +25,6 @@ define([
 	'app/routes/authenticated'
 ], function($, Ember, DS, Application, AuthenticatedRoute) {
 
-	console.log("PaginatedRoute Loading", AuthenticatedRoute);
 	Application.PaginatedRoute = AuthenticatedRoute.extend({});
 
 	return Application.PaginatedRoute;

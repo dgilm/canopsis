@@ -23,6 +23,7 @@ define([
 	'app/application',
 	'app/routes/paginated',
 	'app/mixins/pagination',
+	'app/mixins/inspectablearray',
 	'app/lib/schema-manager'
 ], function($, Ember, Application, PaginatedRoute) {
 
@@ -48,7 +49,7 @@ define([
 		}
 	});
 
-	Application.CrecordsController = Ember.ArrayController.extend(Ember.PaginationMixin, {
+	Application.CrecordsController = Ember.ArrayController.extend(Ember.PaginationMixin, Ember.InspectableArrayMixin, {
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',
@@ -81,7 +82,12 @@ define([
 			do: function(action) {
 				this.send(action);
 			},
-
+			prevPage: function() {
+				this.set("currentPage", this.get("currentPage") - 1);
+			},
+			nextPage:function() {
+				this.set("currentPage", this.get("currentPage") + 1);
+			},
 			//add record to the crecord array
 			addRecord: function(crecord_type, raw_record) {
 				raw_record[crecord_type] = crecord_type;
@@ -99,30 +105,7 @@ define([
 				console.log("remove action", selected);
 				selected.invoke('remove');
 			}
-		},
-
-		attributesKeys: function() {
-			var attributes = [];
-			var attributesDict = this.get('content.type.attributes.values');
-
-			for(key in attributesDict) {
-				var attr = attributesDict[key];
-				console.log('isAttrHidden? ', attr.name, attr.options.hiddenInLists, attr.options.hiddenInLists !== false);
-				if(attr.options.hiddenInLists === false || attr.options.hiddenInLists === undefined) {
-					attributes.push({
-						field: attr.name,
-						type: attr.type,
-						options: attr.options
-					});
-					console.log("pushed attr", {
-						field: attr.name,
-						type: attr.type,
-						options: attr.options
-					});
-				}
-			};
-			return attributes;
-		}.property('content')
+		}
 	});
 
 	return Application.CrecordsController;
