@@ -56,6 +56,8 @@ define([
 			icon: 'trash'
 		}],
 
+		searchableAttributes: ["metric"],
+
 		actions: {
 			refresh: function() {
 				controller.set('content', this.store.findAll('curve'));

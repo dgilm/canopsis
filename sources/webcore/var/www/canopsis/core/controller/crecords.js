@@ -24,10 +24,11 @@ define([
 	'app/routes/paginated',
 	'app/mixins/pagination',
 	'app/mixins/inspectablearray',
+	'app/mixins/arraysearch',
 	'app/lib/schema-manager'
-], function($, Ember, Application, PaginatedRoute, PaginationMixin, InspectableArrayMixin) {
+], function($, Ember, Application, PaginatedRoute, PaginationMixin, InspectableArrayMixin, ArraySearchMixin) {
 
-	Application.CrecordsController = Ember.ArrayController.extend(PaginationMixin, InspectableArrayMixin, {
+	Application.CrecordsController = Ember.ArrayController.extend(PaginationMixin, InspectableArrayMixin, ArraySearchMixin, {
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',

@@ -36,7 +36,8 @@ define([
 	});
 
 	Application.AccountsController = Application.CrecordsController.extend({
-		itemType: 'account'
+		itemType: 'account',
+		searchableAttributes: ["firstname", "lastname"]
 	});
 
 	return Application.AccountsController;
