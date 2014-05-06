@@ -83,6 +83,14 @@ define([
 				console.log("remove action", selected);
 				selected.invoke('remove');
 			}
+		},
+
+		findItems: function(callback) {
+			var me = this;
+			this.store.findQuery(this.itemType, this.findOptions).then(function(queryResult) {
+				callback(queryResult);
+				me.set("content", queryResult);
+			});
 		}
 	});
 

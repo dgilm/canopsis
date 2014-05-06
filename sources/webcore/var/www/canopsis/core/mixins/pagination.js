@@ -26,26 +26,33 @@ define([
 ], function($, Ember, DS, Application, ApplicationSerializer) {
 	var get = Ember.get, set = Ember.set;
 
-	//Mixin for pagination. Classes must have the "itemType" property
+	/**
+	  Implements pagination in ArrayControllers
+
+	  You should set :
+		  - the `itemType` property
+		  - the `findOptions` property
+		  - the `findItems()` method
+
+	*/
 	Ember.PaginationMixin = Ember.Mixin.create({
 		itemsTotal: 1,
-
 		itemsPerPage: 10,
-
 		currentPage: 1,
-
-		totalPages: function() {
-			console.log("totalPages", this.itemsTotal, this.itemsPerPage);
-
-			return Math.ceil(this.itemsTotal / this.itemsPerPage);
-		}.property("itemsTotal", "model.isLoaded"),
+		totalPages: 1,
 
 		refreshContent: function() {
-			var start = this.itemsPerPage * (this.currentPage - 1)
-			console.log(this.itemsPerPage);
+			var start = this.itemsPerPage * (this.currentPage - 1);
 			var me = this;
 
-			var result = this.store.findQuery(this.itemType, { start: start, itemsPerPage: this.itemsPerPage }).then(function(queryResult){
+			if(this.findOptions === undefined) {
+				this.findOptions = {};
+			}
+
+			this.findOptions.start = start;
+			this.findOptions.itemsPerPage = this.itemsPerPage;
+
+			this.findItems(function(queryResult) {
 				console.log("refreshContent promise", queryResult);
 
 				var metadata = queryResult.meta;
@@ -56,8 +63,6 @@ define([
 				} else {
 					me.set('totalPages', Math.ceil(metadata.total / me.itemsPerPage));
 				}
-
-				me.set("content", queryResult);
 			});
 		}.observes('currentPage')
 	});
