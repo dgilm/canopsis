@@ -35,6 +35,15 @@ define([
 
 	*/
 	Ember.PaginationMixin = Ember.Mixin.create({
+		actions: {
+			prevPage: function() {
+				this.set("currentPage", this.get("currentPage") - 1);
+			},
+			nextPage:function() {
+				this.set("currentPage", this.get("currentPage") + 1);
+			}
+		},
+
 		itemsTotal: 1,
 		itemsPerPage: 10,
 		currentPage: 1,

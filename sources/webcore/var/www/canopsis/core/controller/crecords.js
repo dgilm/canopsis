@@ -60,12 +60,6 @@ define([
 			do: function(action) {
 				this.send(action);
 			},
-			prevPage: function() {
-				this.set("currentPage", this.get("currentPage") - 1);
-			},
-			nextPage:function() {
-				this.set("currentPage", this.get("currentPage") + 1);
-			},
 			//add record to the crecord array
 			addRecord: function(crecord_type, raw_record) {
 				raw_record[crecord_type] = crecord_type;
