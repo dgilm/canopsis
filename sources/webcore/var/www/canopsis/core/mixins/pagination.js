@@ -51,7 +51,11 @@ define([
 				var metadata = queryResult.meta;
 				console.log("meta", metadata);
 				me.set('itemsTotal', metadata.total);
-				me.set('totalPages', Math.ceil(metadata.total / me.itemsPerPage));
+				if(metadata.total === 0) {
+					me.set('totalPages', 0);
+				} else {
+					me.set('totalPages', Math.ceil(metadata.total / me.itemsPerPage));
+				}
 
 				me.set("content", queryResult);
 			});
