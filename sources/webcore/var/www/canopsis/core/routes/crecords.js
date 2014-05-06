@@ -20,43 +20,32 @@
 define([
 	'jquery',
 	'app/lib/ember',
+	'app/lib/ember-data',
 	'app/application',
-	'app/model/group',
-	'app/routes/crecords'
-], function($, Ember, Application, Group) {
-	Application.GroupsRoute = Application.CrecordsRoute.extend({
-		setupController: function(controller, model) {
-			controller.set('content', model);
-			controller.set('toolitems', controller.toolbar);
-		},
+	'app/routes/paginated'
+], function($, Ember, DS, Application, PaginatedRoute) {
 
-		model: function() {
-			return this.store.findAll('group');
-		}
-	});
-
-	Application.GroupsController = Application.CrecordsController.extend({
-		itemType: 'group',
-		toolbar: [{
-			title: 'Refresh',
-			action: 'refresh',
-			icon: 'refresh'
-		},{
-			title: 'Add',
-			action: 'showAddForm',
-			icon: 'plus-sign'
-		},{
-			title: 'Remove',
-			action: 'remove',
-			icon: 'trash'
-		}],
-
+	Application.CrecordsRoute = PaginatedRoute.extend({
 		actions: {
-			refresh: function() {
-				this.set('content', this.store.findAll('group'));
+			show_add_crecord_form: function(crecord_type, model){
+				var crecordformController = Application.CrecordformController.create({container: this.container});
+				crecordformController.set("crecord_type", crecord_type);
+				crecordformController.set("editMode", "add");
+
+				this.render("crecordform", {
+					outlet: 'popup',
+					controller: crecordformController
+				});
+			},
+			showEditFormWithController: function(crecordformController) {
+				crecordformController.set("container", this.container);
+				this.render("crecordform", {
+					outlet: 'popup',
+					controller: crecordformController
+				});
 			}
 		}
 	});
 
-	return Application.GroupsController;
+	return Application.CrecordsRoute;
 });

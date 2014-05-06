@@ -54,5 +54,6 @@ define([
 			return attributes;
 		}.property('content')
 	});
-	return Application.AccountSerializer;
+
+	return Ember.InspectableArrayMixin;
 });

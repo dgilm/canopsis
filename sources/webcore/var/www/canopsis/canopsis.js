@@ -51,7 +51,6 @@ require.config({
 	}
 });
 
-define([], function () {
+define(["canopsis/file_loader"], function () {
 	require(['canopsis/main']);
-
 });

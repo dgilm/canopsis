@@ -21,7 +21,8 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/account'
+	'app/model/account',
+	'app/routes/crecords'
 ], function($, Ember, Application, Account) {
 	Application.AccountsRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {

@@ -61,5 +61,6 @@ define([
 			});
 		}.observes('currentPage')
 	});
-	return Application.AccountSerializer;
+
+	return Ember.PaginationMixin;
 });

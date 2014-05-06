@@ -22,7 +22,8 @@ define([
 	'app/lib/ember',
 	'app/application',
 	'app/model/curve',
-	'app/controller/crecords'
+	'app/controller/crecords',
+	'app/routes/crecords'
 ], function($, Ember, Application, Curve) {
 	Application.CurvesRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {

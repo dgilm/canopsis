@@ -21,7 +21,8 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/application',
-	'app/model/consolidation'
+	'app/model/consolidation',
+	'app/routes/crecords'
 ], function($, Ember, Application, Consolidation) {
 	Application.ConsolidationsRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {

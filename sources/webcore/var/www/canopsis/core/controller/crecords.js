@@ -25,31 +25,9 @@ define([
 	'app/mixins/pagination',
 	'app/mixins/inspectablearray',
 	'app/lib/schema-manager'
-], function($, Ember, Application, PaginatedRoute) {
+], function($, Ember, Application, PaginatedRoute, PaginationMixin, InspectableArrayMixin) {
 
-	Application.CrecordsRoute = PaginatedRoute.extend({
-		actions: {
-			show_add_crecord_form: function(crecord_type, model){
-				var crecordformController = Application.CrecordformController.create({container: this.container});
-				crecordformController.set("crecord_type", crecord_type);
-				crecordformController.set("editMode", "add");
-
-				this.render("crecordform", {
-					outlet: 'popup',
-					controller: crecordformController
-				});
-			},
-			showEditFormWithController: function(crecordformController) {
-				crecordformController.set("container", this.container);
-				this.render("crecordform", {
-					outlet: 'popup',
-					controller: crecordformController
-				});
-			}
-		}
-	});
-
-	Application.CrecordsController = Ember.ArrayController.extend(Ember.PaginationMixin, Ember.InspectableArrayMixin, {
+	Application.CrecordsController = Ember.ArrayController.extend(PaginationMixin, InspectableArrayMixin, {
 		toolbar: [{
 			title: 'Refresh',
 			action: 'refresh',

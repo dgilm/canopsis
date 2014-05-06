@@ -68,5 +68,6 @@ define([
 
 		}.property('content')
 	});
-	return Application.AccountSerializer;
+
+	return Ember.InspectableItemMixin;
 });
