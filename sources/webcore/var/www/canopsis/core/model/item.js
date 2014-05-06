@@ -3,6 +3,7 @@ define([
 	'app/lib/ember',
 	'app/lib/ember-data',
 	'app/application',
+  'app/serializers/item',
   'app/model/container'
 ], function($, Ember, DS, Application){
 
