@@ -71,7 +71,7 @@ define([
      @param {Object} primaryType The DS.Model class of the record object
     */
     	extract: function(store, type, payload, id, requestType){
-    		console.
+    		console.log("extract:userview");
     	},
 
     	extractFindAll: function(store, payload) {
