@@ -30,18 +30,31 @@ define([
 		},
 
 		findAll: function(store, type) {
-			console.log("ApplicationAdapter authkey", localStorage.cps_authkey);
-			return $.ajax({
-				url: this.getApiUrl(type),
-				method: 'GET',
-				contentType: 'application/json',
-				data: {
-					authkey: localStorage.cps_authkey
-				}
-			});
+			console.log("findAll", arguments);
+			return this.findQuery(store, type, { authkey : localStorage.cps_authkey });
+		},
+
+		findQuery: function(store, type, options) {
+			console.log("findQuery", arguments);
+
+			try{
+				options["authkey"] = localStorage.cps_authkey;
+				console.log("new options", options);
+
+				return $.ajax({
+					url: this.getApiUrl(type),
+					method: 'GET',
+					contentType: 'application/json',
+					data: options
+				});
+			} catch (e) {
+				console.log(e.message, e.stack);
+			}
 		},
 
 		find: function(store, type) {
+			console.log("findQuery", arguments);
+
 			if(type.find === undefined) {
 				console.error("find is not set in", type);
 			}

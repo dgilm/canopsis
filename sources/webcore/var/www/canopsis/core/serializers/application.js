@@ -47,6 +47,12 @@ define([
 			return result;
 		},
 
+		extractFindQuery: function(store, type, payload) {
+			console.group("extractFindQuery", arguments);
+
+			return this.extractFindAll(store, type, payload);
+		},
+
 		extractFind: function(store, type, payload) {
 			console.group("extractFind", arguments);
 
@@ -88,6 +94,14 @@ define([
 			hash = this.serialize(record, options);
 			console.log("serializeIntoHash done", hash);
 			return hash;
+		},
+
+		extractMeta: function(store, type, payload) {
+			console.log("extractMeta", arguments);
+			if (payload && payload.total) {
+				store.metaForType(type, { total: payload.total });  // sets the metadata for "post"
+				delete payload.total;  // keeps ember data from trying to parse "total" as a record
+			}
 		}
 	});
 
