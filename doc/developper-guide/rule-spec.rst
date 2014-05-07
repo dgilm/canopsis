@@ -27,6 +27,7 @@ mFilter Structure
     }
 
 With :
+
 * ``FIELD``: a valid field of event (see event-spec)
 * ``VALUE``: a value to match
 * ``OPERATOR``: in ['$eq', '$ne', '$gt', '$gte', '$lt', '$lte']
@@ -48,4 +49,4 @@ Action Structure
 
 
 
-See `event_filter-Myunittest<https://github.com/capensis/canopsis/blob/25612145b7ebbbde318f499eb52a01bef375cb76/sources/amqp2engines/opt/amqp2engines/unittest/event_filter-Myunittest.py>` for examples
+See `event_filter-Myunittest <https://github.com/capensis/canopsis/blob/25612145b7ebbbde318f499eb52a01bef375cb76/sources/amqp2engines/opt/amqp2engines/unittest/event_filter-Myunittest.py>`_ for examples
