@@ -21,8 +21,7 @@ define([
 	'jquery',
 	'app/lib/ember',
 	'app/lib/ember-data',
-	'app/application',
-	'app/serializers/application'
+	'app/application'
 ], function($, Ember, DS, Application, ApplicationSerializer) {
 	var get = Ember.get, set = Ember.set;
 
@@ -37,15 +36,19 @@ define([
 	Ember.PaginationMixin = Ember.Mixin.create({
 		actions: {
 			prevPage: function() {
-				this.set("currentPage", this.get("currentPage") - 1);
+				if(this.get("currentPage") > 1) {
+					this.set("currentPage", this.get("currentPage") - 1);
+				}
 			},
 			nextPage:function() {
-				this.set("currentPage", this.get("currentPage") + 1);
+				if(this.get("currentPage") < this.get("totalPages")) {
+					this.set("currentPage", this.get("currentPage") + 1);
+				}
 			}
 		},
 
 		itemsTotal: 1,
-		itemsPerPage: 10,
+		itemsPerPage: 20,
 		currentPage: 1,
 		totalPages: 1,
 
