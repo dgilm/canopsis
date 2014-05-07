@@ -25,69 +25,74 @@ define([
 	'app/mixins/pagination',
 	'app/mixins/inspectablearray',
 	'app/mixins/arraysearch',
+	'app/mixins/sortablearray',
 	'app/lib/schema-manager'
-], function($, Ember, Application, PaginatedRoute, PaginationMixin, InspectableArrayMixin, ArraySearchMixin) {
+], function($, Ember, Application, PaginatedRoute, PaginationMixin, InspectableArrayMixin, ArraySearchMixin, SortableArrayMixin) {
 
-	Application.CrecordsController = Ember.ArrayController.extend(PaginationMixin, InspectableArrayMixin, ArraySearchMixin, {
-		toolbar: [{
-			title: 'Refresh',
-			action: 'refresh',
-			icon: 'refresh'
-		},{
-			title: 'Add',
-			action: 'showAddForm',
-			icon: 'plus-sign'
-		},{
-			title: 'Duplicate',
-			action: 'duplicate',
-			icon: 'file'
-		},{
-			title: 'Remove',
-			action: 'remove',
-			icon: 'trash'
-		},{
-			title: 'Import',
-			action: 'import',
-			icon: 'import'
-		},{
-			title: 'Export',
-			action: 'export',
-			icon: 'open'
-		}],
+	Application.CrecordsController = Ember.ArrayController.extend(
+		PaginationMixin,
+		InspectableArrayMixin,
+		ArraySearchMixin,
+		SortableArrayMixin, {
+			toolbar: [{
+				title: 'Refresh',
+				action: 'refresh',
+				icon: 'refresh'
+			},{
+				title: 'Add',
+				action: 'showAddForm',
+				icon: 'plus-sign'
+			},{
+				title: 'Duplicate',
+				action: 'duplicate',
+				icon: 'file'
+			},{
+				title: 'Remove',
+				action: 'remove',
+				icon: 'trash'
+			},{
+				title: 'Import',
+				action: 'import',
+				icon: 'import'
+			},{
+				title: 'Export',
+				action: 'export',
+				icon: 'open'
+			}],
 
-		itemController: "Crecord",
+			itemController: "Crecord",
 
-		actions: {
-			do: function(action) {
-				this.send(action);
+			actions: {
+				do: function(action) {
+					this.send(action);
+				},
+				//add record to the crecord array
+				addRecord: function(crecord_type, raw_record) {
+					raw_record[crecord_type] = crecord_type;
+
+					var record = this.store.createRecord(crecord_type, raw_record);
+
+					//send the new item via the API
+					record.save();
+				},
+				showAddForm: function() {
+					this.send('show_add_crecord_form', this.get("content").type.typeKey);
+				},
+				remove: function(){
+					var selected = this.filterBy('isSelected', true);
+					console.log("remove action", selected);
+					selected.invoke('remove');
+				}
 			},
-			//add record to the crecord array
-			addRecord: function(crecord_type, raw_record) {
-				raw_record[crecord_type] = crecord_type;
 
-				var record = this.store.createRecord(crecord_type, raw_record);
-
-				//send the new item via the API
-				record.save();
-			},
-			showAddForm: function() {
-				this.send('show_add_crecord_form', this.get("content").type.typeKey);
-			},
-			remove: function(){
-				var selected = this.filterBy('isSelected', true);
-				console.log("remove action", selected);
-				selected.invoke('remove');
+			findItems: function(callback) {
+				var me = this;
+				this.store.findQuery(this.itemType, this.findOptions).then(function(queryResult) {
+					callback(queryResult);
+					me.set("content", queryResult);
+				});
 			}
-		},
-
-		findItems: function(callback) {
-			var me = this;
-			this.store.findQuery(this.itemType, this.findOptions).then(function(queryResult) {
-				callback(queryResult);
-				me.set("content", queryResult);
-			});
-		}
-	});
+		});
 
 	return Application.CrecordsController;
 });
