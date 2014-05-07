@@ -30,7 +30,7 @@ With :
 
 * ``FIELD``: a valid field of event (see event-spec)
 * ``VALUE``: a value to match
-* ``OPERATOR``: in ['$eq', '$ne', '$gt', '$gte', '$lt', '$lte']
+* ``OPERATOR``: ``['$eq', '$ne', '$gt', '$gte', '$lt', '$lte']``
 * ``VALUE_LIST``: a list of ``VALUE``
 
 
