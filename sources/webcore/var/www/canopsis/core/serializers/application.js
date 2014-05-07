@@ -99,10 +99,14 @@ define([
 		},
 
 		extractMeta: function(store, type, payload) {
-			console.log("extractMeta", arguments);
-			if (payload && payload.total) {
-				store.metaForType(type, { total: payload.total });  // sets the metadata for "post"
-				delete payload.total;  // keeps ember data from trying to parse "total" as a record
+			try{
+				console.log("extractMeta", arguments);
+				if (payload && payload.total) {
+					store.metaForType(type, { total: payload.total });  // sets the metadata for "post"
+					delete payload.total;  // keeps ember data from trying to parse "total" as a record
+				}
+			} catch (e) {
+				console.error(e.message, e.stack);
 			}
 		}
 	});

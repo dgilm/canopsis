@@ -38,6 +38,9 @@ define([
 			console.log("findQuery", arguments);
 
 			try{
+				if(options === undefined) {
+					options = {};
+				}
 				options["authkey"] = localStorage.cps_authkey;
 				console.log("new options", options);
 
@@ -48,7 +51,7 @@ define([
 					data: options
 				});
 			} catch (e) {
-				console.log(e.message, e.stack);
+				console.error(e.message, e.stack);
 			}
 		},
 

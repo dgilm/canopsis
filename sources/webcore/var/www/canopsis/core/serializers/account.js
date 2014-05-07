@@ -35,8 +35,10 @@ define([
 					account.group = account.aaa_group.substring('group.'.length);
 					delete account.aaa_group;
 
-					for(var j = 0; j < account.groups.length; j++) {
-						account.groups[j] = account.groups[j].substring('group.'.length);
+					if(account.groups !== undefined) {
+						for(var j = 0; j < account.groups.length; j++) {
+							account.groups[j] = account.groups[j].substring('group.'.length);
+						}
 					}
 
 					data.push(account);

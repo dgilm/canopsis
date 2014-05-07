@@ -27,8 +27,8 @@ define([
 ], function($, Ember, Application, Curve) {
 	Application.CurvesRoute = Application.CrecordsRoute.extend({
 		setupController: function(controller, model) {
-			controller.set('content', model);
-			controller.set('toolitems', controller.toolbar);
+			//this is useless now because we use routes to load views and widgets, not data
+			// controller.set('content', model);
 		},
 
 		model: function() {

@@ -24,7 +24,7 @@ define([
 	'app/application',
 	'app/model/crecord'
 ], function($, Ember, DS, Application, Crecord) {
-	Application.Eventnavigation = Application.Crecord.extend({
+	Application.Eventnavigation = Crecord.extend({
 		ack			: DS.attr('boolean', {defaultValue: false, 'role': 'ack'}),
 		cancel 		: DS.attr('boolean', {defaultValue: false, 'role': 'cancel-alert'}),
 		timestamp	: DS.attr('number', {'role': 'timestamp'}),
