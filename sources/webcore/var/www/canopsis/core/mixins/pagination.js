@@ -52,30 +52,33 @@ define([
 		currentPage: 1,
 		totalPages: 1,
 
+		onCurrentPageChanges: function(){
+			this.refreshContent();
+		}.observes('currentPage'),
+
 		refreshContent: function() {
 			var start = this.itemsPerPage * (this.currentPage - 1);
 			var me = this;
 
-			if(this.findOptions === undefined) {
-				this.findOptions = {};
-			}
-
 			this.findOptions.start = start;
 			this.findOptions.itemsPerPage = this.itemsPerPage;
+		},
 
-			this.findItems(function(queryResult) {
-				console.log("refreshContent promise", queryResult);
+		extractItems: function(queryResult) {
+			//this may be more appropriate in CrecordsSerializer...
+			console.log("extractItems", arguments);
+			var metadata = queryResult.meta;
 
-				var metadata = queryResult.meta;
-				console.log("meta", metadata);
-				me.set('itemsTotal', metadata.total);
-				if(metadata.total === 0) {
-					me.set('totalPages', 0);
-				} else {
-					me.set('totalPages', Math.ceil(metadata.total / me.itemsPerPage));
-				}
-			});
-		}.observes('currentPage')
+			this.set('itemsTotal', metadata.total);
+
+			if(metadata.total === 0) {
+				this.set('totalPages', 0);
+			} else {
+				this.set('totalPages', Math.ceil(metadata.total / this.itemsPerPage));
+			}
+
+			this._super(queryResult);
+		}
 	});
 
 	return Ember.PaginationMixin;

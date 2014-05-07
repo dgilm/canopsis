@@ -85,12 +85,32 @@ define([
 				}
 			},
 
-			findItems: function(callback) {
+			findItems: function() {
+				console.log("findItems", arguments);
+
 				var me = this;
-				this.store.findQuery(this.itemType, this.findOptions).then(function(queryResult) {
-					callback(queryResult);
-					me.set("content", queryResult);
+				this.store.findQuery(this.itemType, this.findOptions).then(function(queryResults) {
+					me.extractItems.apply(me, arguments);
 				});
+			},
+
+			refreshContent: function() {
+				if(this.findOptions === undefined) {
+					this.findOptions = {};
+				}
+
+				this._super();
+
+				this.findItems();
+			},
+
+			extractItems: function(queryResult) {
+				this._super(queryResult);
+
+				console.log("extractItems", arguments);
+
+				this.set("content", queryResult);
+
 			}
 		});
 
